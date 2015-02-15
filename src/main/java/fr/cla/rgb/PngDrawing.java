@@ -1,7 +1,6 @@
 package fr.cla.rgb;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,7 +10,6 @@ import java.time.Instant;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageOutputStream;
 import static java.lang.System.out;
 import static java.util.function.Function.identity;
 
@@ -66,12 +64,6 @@ public abstract class PngDrawing {
         return img;
     }
 
-
-
-//    private DataBuffer createDataBuffer() {
-//        return new DiskDataBuffer();
-//    }
-
     protected abstract int size();
     private Stream<Point> points() {
 //        //DiagonalSierpinsky(8192): Rendering took: PT6.194S
@@ -106,4 +98,7 @@ public abstract class PngDrawing {
     protected abstract int g(int x, int y, int size);
     protected abstract int b(int x, int y, int size);
 
+    @Override public String toString() {
+        return String.format("%s {size:%d}", getClass().getSimpleName(), size());
+    }
 }

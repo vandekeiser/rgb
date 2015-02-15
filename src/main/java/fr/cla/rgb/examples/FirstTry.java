@@ -5,11 +5,9 @@ import fr.cla.rgb.PngDrawing;
 
 public class FirstTry extends PngDrawing {
 
-    public static void main(String[] args) throws IOException {
-        new FirstTry().draw();
-    }
-
-    @Override protected int size() { return 1024; }
+    private final int size;
+    public FirstTry(int size) { this.size = size; }
+    @Override protected int size() { return size; }
 
     @Override protected int r(int x, int y, int size) {
         return x + y;
@@ -19,4 +17,7 @@ public class FirstTry extends PngDrawing {
     }
     @Override protected int b(int x, int y, int size) { return x * y; }
 
+    public static void main(String[] args) throws IOException {
+        new FirstTry(1024).draw();
+    }
 }
