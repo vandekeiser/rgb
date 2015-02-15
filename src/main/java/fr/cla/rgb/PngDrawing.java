@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Spliterator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
@@ -101,4 +102,8 @@ public abstract class PngDrawing {
     @Override public String toString() {
         return String.format("%s {size:%d}", getClass().getSimpleName(), size());
     }
+
+//    Spliterator<PngDrawing> spliterator() {
+//        return new PngDrawingSpliterator(this);
+//    }
 }
