@@ -20,9 +20,10 @@ public abstract class AbstractDessinRgb {
     }
 
     protected final void dessine() throws IOException {
-        BufferedImage img = new BufferedImage(xsize(), ysize(), BufferedImage.TYPE_INT_RGB);
+        final int size = size();
+        BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
 
-        points().forEach((Point p) -> img.setRGB(p.x, p.y, rgb(p)));
+        points().forEach((Point p) -> img.setRGB(p.x, p.y, rgb(p, size)));
 
         try (OutputStream out = new BufferedOutputStream(new FileOutputStream(
                 getClass().getSimpleName() + "." + IMG_TYPE
@@ -31,21 +32,21 @@ public abstract class AbstractDessinRgb {
         }
     }
 
-    protected abstract int xsize();
-    protected abstract int ysize();
+    protected abstract int size();
     private Stream<Point> points() {
-        return IntStream.rangeClosed(0, xsize() - 1).mapToObj(
-                x -> IntStream.rangeClosed(0, ysize() - 1).mapToObj(
+        return IntStream.range(0, size()).mapToObj(
+                x -> IntStream.range(0, size()).mapToObj(
                         y -> new Point(x, y)
                 )
         )
         .flatMap(Function.identity()); //workaround: pas de Stream.flatMapToObj..
     }
 
-    private int rgb(Point p) {
-            return (red(p) << 8 | green(p)) << 8 | blue(p);
-        }
-    protected abstract int red(Point p);
-    protected abstract int green(Point p);
-    protected abstract int blue(Point p);
+    private int rgb(Point p, int size) {
+        int x = p.x, y = p.y;
+        return (r(x, y, size) << 8 | g(x, y, size)) << 8 | b(x, y, size);
+    }
+    protected abstract int r(int x, int y, int size);
+    protected abstract int g(int x, int y, int size);
+    protected abstract int b(int x, int y, int size);
 }
