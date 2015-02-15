@@ -13,6 +13,12 @@ import javax.imageio.ImageIO;
 import static java.util.function.Function.identity;
 import static java.lang.System.out;
 
+/**
+ * https://codegolf.stackexchange.com/questions/35569/tweetable-mathematical-art
+ * https://codegolf.stackexchange.com/questions/22144/images-with-all-colors
+ *
+ * -Djava.util.concurrent.ForkJoinPool.common.parallelism=5
+ */
 public abstract class RgbDrawing {
 
     static final String IMG_TYPE = "png";
@@ -28,28 +34,48 @@ public abstract class RgbDrawing {
         final int size = size();
         BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
 
+        //1. Rendering
+        out.println("Rendering...");
         Instant beforeRendering = Instant.now();
-        //__Should__ be threadsafe since we write to different pixels
-        points().parallel().forEach(p -> img.setRGB(p.x, p.y, rgb(p, size)));
+            //__Should__ be threadsafe since we write to different pixels, so could use parallel()
+        points().forEach(p -> img.setRGB(p.x, p.y, rgb(p, size)));
         Instant afterRendering = Instant.now();
         out.printf("Rendering took: %s%n", Duration.between(beforeRendering, afterRendering));
 
+        //2. Writing to file
+        out.println("Writing to file...");
         Instant beforeWrite = Instant.now();
         try (OutputStream out = new BufferedOutputStream(new FileOutputStream(imageFileName()))) {
             ImageIO.write(img, IMG_TYPE, out);
         }
         Instant afterWrite = Instant.now();
-        out.printf("Writing took: %s%n", Duration.between(beforeWrite, afterWrite));
+        out.printf("Writing to file took: %s%n", Duration.between(beforeWrite, afterWrite));
     }
 
     protected abstract int size();
     private Stream<Point> points() {
+//        //DiagonalSierpinsky(8192): Rendering took: PT6.194S
+//        //JuliaSet(8192): Rendering took: PT4M19.659S
+//        return IntStream.range(0, size()).mapToObj(
+//                x -> IntStream.range(0, size()).mapToObj(
+//                        y -> new Point(x, y)
+//                )
+//        ).flatMap(identity()); //Workaround: IntStream.flatMapToObj doesn't exist
+
+        //DiagonalSierpinsky(8192): Rendering took: PT8.551S
+        //JuliaSet(8192): Rendering took: PT2M29.091S
         return IntStream.range(0, size()).mapToObj(
                 x -> IntStream.range(0, size()).mapToObj(
                         y -> new Point(x, y)
                 )
-        )
-        .flatMap(identity()); //Workaround: IntStream.flatMapToObj doesn't exist
+        ).flatMap(identity()).parallel(); //Workaround: IntStream.flatMapToObj doesn't exist
+
+        //OOME
+//        return IntStream.range(0, size()).mapToObj(
+//                x -> IntStream.range(0, size()).mapToObj(
+//                        y -> new Point(x, y)
+//                )
+//        ).flatMap(identity()).collect(toList()).stream(); //Workaround: IntStream.flatMapToObj doesn't exist
     }
 
     private int rgb(Point p, int size) {

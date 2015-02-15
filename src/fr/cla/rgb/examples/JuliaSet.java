@@ -9,7 +9,7 @@ public class JuliaSet extends RgbDrawing {
         new JuliaSet().draw();
     }
 
-    @Override protected int size() { return 1024; }
+    @Override protected int size() { return 8192; }
 
     @Override protected int r(int i, int j, int size) {
         float x=D(i, size),y=D(j, size),X,Y,n=0;
