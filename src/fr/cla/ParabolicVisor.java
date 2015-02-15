@@ -3,10 +3,10 @@ package fr.cla;
 import java.io.IOException;
 import static java.lang.Math.sqrt;
 
-public class ViseurParabolique extends DessinRgb {
+public class ParabolicVisor extends RgbDrawing {
 
     public static void main(String[] args) throws IOException {
-        new ViseurParabolique().dessine();
+        new ParabolicVisor().draw();
     }
 
     @Override protected int size() { return 1024; }

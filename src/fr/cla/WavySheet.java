@@ -3,10 +3,10 @@ package fr.cla;
 import java.io.IOException;
 import static java.lang.Math.sin;
 
-public class NappeOndulee extends DessinRgb {
+public class WavySheet extends RgbDrawing {
 
     public static void main(String[] args) throws IOException {
-        new NappeOndulee().dessine();
+        new WavySheet().draw();
     }
 
     @Override protected int size() { return 1024; }
