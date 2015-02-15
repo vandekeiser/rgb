@@ -1,9 +1,9 @@
 package fr.cla.rgb.examples;
 
 import java.io.IOException;
-import fr.cla.rgb.RgbDrawing;
+import fr.cla.rgb.PngDrawing;
 
-public class FirstTry extends RgbDrawing {
+public class FirstTry extends PngDrawing {
 
     public static void main(String[] args) throws IOException {
         new FirstTry().draw();

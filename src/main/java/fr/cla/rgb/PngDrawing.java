@@ -1,6 +1,7 @@
 package fr.cla.rgb;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBuffer;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,8 +11,9 @@ import java.time.Instant;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
-import static java.util.function.Function.identity;
+import javax.imageio.stream.ImageOutputStream;
 import static java.lang.System.out;
+import static java.util.function.Function.identity;
 
 /**
  * Heavily inspired by:
@@ -26,10 +28,10 @@ import static java.lang.System.out;
  * Times are measured on an old 2-cores machine
  * NOT SET: -Djava.util.concurrent.ForkJoinPool.common.parallelism=2
  */
-public abstract class RgbDrawing {
+public abstract class PngDrawing {
 
     static final String IMG_TYPE = "png";
-    private String imageFileName() {
+    String imageFileName() {
         return getClass().getSimpleName() + "." + IMG_TYPE;
     }
 
@@ -38,14 +40,10 @@ public abstract class RgbDrawing {
         Point(int x, int y) {this.x = x; this.y = y;}
     }
     protected final void draw() throws IOException {
-        final int size = size();
-        BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
-
         //1. Rendering
         out.println("Rendering...");
         Instant beforeRendering = Instant.now();
-            //__Should__ be threadsafe since we write to different pixels, so could use parallel()
-        points().forEach(p -> img.setRGB(p.x, p.y, rgb(p, size)));
+        BufferedImage img = render();
         Instant afterRendering = Instant.now();
         out.printf("Rendering took: %s%n", Duration.between(beforeRendering, afterRendering));
 
@@ -58,6 +56,21 @@ public abstract class RgbDrawing {
         Instant afterWrite = Instant.now();
         out.printf("Writing to file took: %s%n", Duration.between(beforeWrite, afterWrite));
     }
+
+    public BufferedImage render() {
+        int size = size();
+        BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+
+            //__Should__ be threadsafe since we write to different pixels, so could use parallel()
+        points().forEach(p -> img.setRGB(p.x, p.y, rgb(p, size)));
+        return img;
+    }
+
+
+
+//    private DataBuffer createDataBuffer() {
+//        return new DiskDataBuffer();
+//    }
 
     protected abstract int size();
     private Stream<Point> points() {

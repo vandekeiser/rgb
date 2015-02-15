@@ -1,11 +1,11 @@
 package fr.cla.rgb.examples;
 
 import java.io.IOException;
-import fr.cla.rgb.RgbDrawing;
+import fr.cla.rgb.PngDrawing;
 import fr.cla.rgb.U;
 import static java.lang.Math.sqrt;
 
-public class ParabolicVisor extends RgbDrawing {
+public class ParabolicVisor extends PngDrawing {
 
     public static void main(String[] args) throws IOException {
         new ParabolicVisor().draw();

@@ -1,15 +1,15 @@
 package fr.cla.rgb.examples;
 
 import java.io.IOException;
-import fr.cla.rgb.RgbDrawing;
+import fr.cla.rgb.PngDrawing;
 
-public class AllBlue extends RgbDrawing {
+public class AllBlue extends PngDrawing {
 
     public static void main(String[] args) throws IOException {
         new AllBlue().draw();
     }
 
-    @Override protected int size() { return 1024; }
+    @Override public int size() { return 128; }
 
     @Override protected int r(int x, int y, int size) {
         return 0x00;
