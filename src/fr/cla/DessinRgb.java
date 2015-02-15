@@ -10,24 +10,25 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 
-public abstract class AbstractDessinRgb {
+public abstract class DessinRgb {
 
     static final String IMG_TYPE = "png";
+    private String imageFileName() {
+        return getClass().getSimpleName() + "." + IMG_TYPE;
+    }
 
     static class Point {
         final int x, y;
         Point(int x, int y) {this.x = x; this.y = y;}
     }
-
     protected final void dessine() throws IOException {
         final int size = size();
         BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
 
-        points().forEach((Point p) -> img.setRGB(p.x, p.y, rgb(p, size)));
+        //__Devrait__ etre thread-safe puisqu'on n'ecrit sur des pixel independants
+        points().forEach(p -> img.setRGB(p.x, p.y, rgb(p, size)));
 
-        try (OutputStream out = new BufferedOutputStream(new FileOutputStream(
-                getClass().getSimpleName() + "." + IMG_TYPE
-        ))) {
+        try (OutputStream out = new BufferedOutputStream(new FileOutputStream(imageFileName()))) {
             ImageIO.write(img, IMG_TYPE, out);
         }
     }
@@ -39,7 +40,7 @@ public abstract class AbstractDessinRgb {
                         y -> new Point(x, y)
                 )
         )
-        .flatMap(Function.identity()); //workaround: pas de Stream.flatMapToObj..
+        .flatMap(Function.identity()); //workaround: Stream.flatMapToObj n'existe pas
     }
 
     private int rgb(Point p, int size) {

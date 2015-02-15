@@ -2,7 +2,7 @@ package fr.cla;
 
 import java.io.IOException;
 
-public class DessinRgb1 extends AbstractDessinRgb {
+public class DessinRgb1 extends DessinRgb {
 
     public static void main(String[] args) throws IOException {
         new DessinRgb1().dessine();

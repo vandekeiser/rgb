@@ -3,7 +3,7 @@ package fr.cla;
 import java.io.IOException;
 import static java.lang.Math.sin;
 
-public class NappeOndulee extends AbstractDessinRgb {
+public class NappeOndulee extends DessinRgb {
 
     public static void main(String[] args) throws IOException {
         new NappeOndulee().dessine();
