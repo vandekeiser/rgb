@@ -50,4 +50,5 @@ public abstract class RgbDrawing {
     protected abstract int r(int x, int y, int size);
     protected abstract int g(int x, int y, int size);
     protected abstract int b(int x, int y, int size);
+
 }
