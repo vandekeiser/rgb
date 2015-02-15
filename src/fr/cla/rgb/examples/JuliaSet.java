@@ -1,6 +1,7 @@
-package fr.cla;
+package fr.cla.rgb.examples;
 
 import java.io.IOException;
+import fr.cla.rgb.RgbDrawing;
 
 public class JuliaSet extends RgbDrawing {
 

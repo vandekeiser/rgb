@@ -1,7 +1,8 @@
-package fr.cla;
+package fr.cla.rgb.examples;
 
 import java.io.IOException;
-import static fr.cla.U.sq;
+import fr.cla.rgb.RgbDrawing;
+import fr.cla.rgb.U;
 import static java.lang.Math.sin;
 
 public class WavySheet extends RgbDrawing {
@@ -14,7 +15,7 @@ public class WavySheet extends RgbDrawing {
 
     @Override protected int r(int i, int j, int size) {
         float s=3.0F/(j+99);
-        float y= (float) ((j+sin((i*i+sq(j - 700)*5)/100.0F/size)*35)*s);
+        float y= (float) ((j+sin((i*i+ U.sq(j - 700)*5)/100.0F/size)*35)*s);
         return (
                 ((int)((i+size)*s+y))%2
                 +
@@ -23,7 +24,7 @@ public class WavySheet extends RgbDrawing {
     }
     @Override protected int g(int i, int j, int size) {
         float s=3.0F/(j+99);
-        float y= (float) ((j+sin((i*i+sq(j - 700)*5)/100./size)*35)*s);
+        float y= (float) ((j+sin((i*i+ U.sq(j - 700)*5)/100./size)*35)*s);
         return (
                 ((int)(5*((i+size)*s+y)))%2
                 +
@@ -32,7 +33,7 @@ public class WavySheet extends RgbDrawing {
     }
     @Override protected int b(int i, int j, int size) {
         float s=3.0F/(j+99);
-        float y= (float) ((j+sin((i*i+sq(j - 700)*5)/100./size)*35)*s);
+        float y= (float) ((j+sin((i*i+ U.sq(j - 700)*5)/100./size)*35)*s);
         return (
                 ((int)(29*((i+size)*s+y)))%2
                 +

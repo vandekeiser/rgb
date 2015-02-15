@@ -1,4 +1,4 @@
-package fr.cla;
+package fr.cla.rgb;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
@@ -50,7 +49,7 @@ public abstract class RgbDrawing {
                         y -> new Point(x, y)
                 )
         )
-        .flatMap(identity()); //workaround: IntStream.flatMapToObj doesn't exist
+        .flatMap(identity()); //Workaround: IntStream.flatMapToObj doesn't exist
     }
 
     private int rgb(Point p, int size) {

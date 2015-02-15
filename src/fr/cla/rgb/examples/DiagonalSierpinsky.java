@@ -1,7 +1,7 @@
-package fr.cla;
+package fr.cla.rgb.examples;
 
 import java.io.IOException;
-import static java.lang.Math.sin;
+import fr.cla.rgb.RgbDrawing;
 
 public class DiagonalSierpinsky extends RgbDrawing {
 
