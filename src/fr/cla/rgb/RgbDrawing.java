@@ -14,10 +14,17 @@ import static java.util.function.Function.identity;
 import static java.lang.System.out;
 
 /**
- * https://codegolf.stackexchange.com/questions/35569/tweetable-mathematical-art
- * https://codegolf.stackexchange.com/questions/22144/images-with-all-colors
+ * Heavily inspired by:
+ *  -https://codegolf.stackexchange.com/questions/35569/tweetable-mathematical-art
+ *  -https://codegolf.stackexchange.com/questions/22144/images-with-all-colors
  *
- * -Djava.util.concurrent.ForkJoinPool.common.parallelism=5
+ * The goal is to:
+ *  -make the code easier to extend to any drawing by factoring points generation and rendering,
+ *   so that concrete classes only need to implement the RGB computation
+ *  -use [parallel] streams
+ *
+ * Times are measured on an old 2-cores machine
+ * NOT SET: -Djava.util.concurrent.ForkJoinPool.common.parallelism=2
  */
 public abstract class RgbDrawing {
 
