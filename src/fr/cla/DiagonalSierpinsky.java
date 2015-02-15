@@ -9,7 +9,7 @@ public class DiagonalSierpinsky extends RgbDrawing {
         new DiagonalSierpinsky().draw();
     }
 
-    @Override protected int size() { return 1024; }
+    @Override protected int size() { return 8192; }
 
     @Override protected int r(int i, int j, int size) {
         return (i!=0&&j!=0)?((i%j)&(j%i)):0;
