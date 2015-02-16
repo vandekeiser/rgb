@@ -10,6 +10,7 @@ import java.time.Instant;
 import java.util.Spliterator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import javax.imageio.ImageIO;
 import static java.lang.System.out;
 import static java.util.function.Function.identity;
@@ -34,10 +35,17 @@ public abstract class PngDrawing {
         return getClass().getSimpleName() + "." + IMG_TYPE;
     }
 
-    static class Point {
-        final int x, y;
-        Point(int x, int y) {this.x = x; this.y = y;}
+    final int xmin, xmax, ymin, ymax;
+    protected PngDrawing(int xmin, int xmax, int ymin, int ymax) {
+        this.xmin = xmin;
+        this.xmax = xmax;
+        this.ymin = ymin;
+        this.ymax = ymax;
     }
+    protected PngDrawing() {
+        this(-1, -1, -1, -1);
+    }
+
     protected final void draw() throws IOException {
         //1. Rendering
         out.println("Rendering...");
@@ -77,8 +85,8 @@ public abstract class PngDrawing {
 
         //DiagonalSierpinsky(8192): Rendering took: PT8.551S
         //JuliaSet(8192): Rendering took: PT2M29.091S
-        return IntStream.range(0, size()).mapToObj(
-                x -> IntStream.range(0, size()).mapToObj(
+        return IntStream.range(xmin(), xmax()).mapToObj(
+                x -> IntStream.range(xmin(), xmax()).mapToObj(
                         y -> new Point(x, y)
                 )
         ).flatMap(identity()).parallel(); //Workaround: IntStream.flatMapToObj doesn't exist
@@ -91,6 +99,11 @@ public abstract class PngDrawing {
 //        ).flatMap(identity()).collect(toList()).stream(); //Workaround: IntStream.flatMapToObj doesn't exist
     }
 
+    private int xmin() { return xmin!=-1 ? xmin : 0; }
+    private int xmax() { return xmin!=-1 ? xmin : size(); }
+    private int ymin() { return ymin!=-1 ? ymin : 0; }
+    private int ymax() { return ymin!=-1 ? ymin : size(); }
+
     private int rgb(Point p, int size) {
         int x = p.x, y = p.y;
         return (r(x, y, size) << 8 | g(x, y, size)) << 8 | b(x, y, size);
@@ -102,6 +115,21 @@ public abstract class PngDrawing {
     @Override public String toString() {
         return String.format("%s {size:%d}", getClass().getSimpleName(), size());
     }
+
+    public boolean isSmallEnough() {
+        return size()<=128; //For tests; OOME at 4096*4
+    }
+
+    public Stream<PngDrawing> split() {
+        Spliterator<PngDrawing> thisSpliterator = new PngDrawingSpliterator(this);
+        return StreamSupport.stream(thisSpliterator, true);
+    }
+
+//    public Pair<PngDrawing> splitIntoTwo() {
+//        return new Pair<>(
+//            new PngDrawing(xmin(), xmin()+xmax)/2);
+//        );
+//    }
 
 //    Spliterator<PngDrawing> spliterator() {
 //        return new PngDrawingSpliterator(this);

@@ -6,7 +6,9 @@ import fr.cla.rgb.PngDrawing;
 public class FirstTry extends PngDrawing {
 
     private final int size;
-    public FirstTry(int size) { this.size = size; }
+    public FirstTry(int size) {
+        this.size = size;
+    }
     @Override protected int size() { return size; }
 
     @Override protected int r(int x, int y, int size) {
