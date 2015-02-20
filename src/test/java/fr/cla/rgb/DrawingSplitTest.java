@@ -46,13 +46,23 @@ public class DrawingSplitTest {
         smallDrawing.split();
     }
 
-    @Test public void drawXsJulia() {
+    @Test public void drawXsJulia_basic() {
+        new BasicDrawer().draw(new JuliaSet(128));
+    }
+    @Test public void drawSJulia_basic() {
+        new BasicDrawer().draw(new JuliaSet(1024));
+    }
+    @Test public void drawMJulia_basic() {
+        new BasicDrawer().draw(new JuliaSet(2048));
+    }
+
+    @Test public void drawXsJulia_tiling() {
         new TilingDrawer().draw(new JuliaSet(128));
     }
-    @Test public void drawSJulia() {
+    @Test public void drawSJulia_tiling() {
         new TilingDrawer().draw(new JuliaSet(1024));
     }
-    @Test public void drawMJulia() {
+    @Test public void drawMJulia_tiling() {
         new TilingDrawer().draw(new JuliaSet(2048));
     }
 }

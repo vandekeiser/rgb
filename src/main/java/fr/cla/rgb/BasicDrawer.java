@@ -2,10 +2,7 @@ package fr.cla.rgb;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -17,7 +14,15 @@ public class BasicDrawer {
         return drawing.getClass().getSimpleName() + "." + Drawing.IMG_TYPE;
     }
 
-    public final void draw(Drawing drawing) throws IOException {
+    public final void draw(Drawing drawing) {
+        try {
+            doDraw(drawing);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private void doDraw(Drawing drawing) throws IOException {
         //1. Rendering
         out.println("Rendering...");
         Instant beforeRendering = Instant.now();
@@ -34,5 +39,4 @@ public class BasicDrawer {
         Instant afterWrite = Instant.now();
         out.printf("Writing to file took: %s%n", Duration.between(beforeWrite, afterWrite));
     }
-
 }
