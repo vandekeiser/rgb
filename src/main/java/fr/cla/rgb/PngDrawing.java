@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -74,7 +74,7 @@ public abstract class PngDrawing {
     }
 
     protected abstract int size();
-    private Stream<Point> points() {
+    public Stream<Point> points() {
 //        //DiagonalSierpinsky(8192): Rendering took: PT6.194S
 //        //JuliaSet(8192): Rendering took: PT4M19.659S
 //        return IntStream.range(0, size()).mapToObj(
@@ -120,9 +120,62 @@ public abstract class PngDrawing {
         return size()<=128; //For tests; OOME at 4096*4
     }
 
-    public Stream<PngDrawing> split() {
-        Spliterator<PngDrawing> thisSpliterator = new PngDrawingSpliterator(this);
-        return StreamSupport.stream(thisSpliterator, true);
+    public Stream<Tile> split() {
+        Spliterator<Tile> thisSpliterator = new PngDrawingSpliterator(this);
+        return StreamSupport.stream(thisSpliterator, false);
+    }
+    public Deque<Tile> tile() {
+        int TILES_PER_LINE = 2;
+        int nbOfTiles = nbOfTiles();
+        int lines = nbOfTiles/TILES_PER_LINE;
+        int linesRemainder = nbOfTiles%TILES_PER_LINE;
+//        if(linesRemainder!=0) throw new UnsupportedOperationException(String.format(
+//                "nbOfTiles=%d is not a multiple of TILES_PER_LINE=%d, remainder=%d",
+//                nbOfTiles,
+//                TILES_PER_LINE,
+//                linesRemainder
+//        ));
+
+        int size = size();
+        int tileSize = size/nbOfTiles;
+        int tileSizeRemainder = size()%nbOfTiles;
+        if(tileSizeRemainder!=0) throw new UnsupportedOperationException(String.format(
+                "nbOfTiles=%d is not a multiple of size=%d, remainder=%d",
+                nbOfTiles,
+                size,
+                tileSizeRemainder
+        ));
+
+        System.out.println("nbOfTiles: " + nbOfTiles);
+        Deque<Tile> tiles = new LinkedList<>();
+
+        //if(nbOfTiles==1) tiles.add(new Tile(this));
+        for(int line = 0; line < lines; line++) {
+            for(int col = 0; col < TILES_PER_LINE; col++) {
+                tiles.add(new Tile(this, col*tileSize, line*tileSize));
+            }
+        }
+
+        return tiles;
+    }
+    private static final int MAX_DRAWING_SIZE = 1024;
+    private int nbOfTiles() {
+        int drawingSize = this.size();
+        int tilesQuotient = drawingSize / MAX_DRAWING_SIZE;
+        int tilesRemainder = drawingSize % MAX_DRAWING_SIZE;
+
+        if(tilesQuotient==0) return 1;
+
+        if(tilesQuotient!=0 && tilesRemainder !=0) {
+            throw new UnsupportedOperationException(String.format(
+                "drawingSize=%d is not a multiple of MAX_DRAWING_SIZE=%d: remainder=%d",
+                drawingSize,
+                MAX_DRAWING_SIZE,
+                tilesRemainder)
+            );
+        }
+
+        return tilesQuotient;
     }
 
 //    public Pair<PngDrawing> splitIntoTwo() {

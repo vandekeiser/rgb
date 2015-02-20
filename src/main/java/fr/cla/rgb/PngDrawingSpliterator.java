@@ -1,44 +1,37 @@
 package fr.cla.rgb;
 
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-public class PngDrawingSpliterator implements Spliterator<PngDrawing> {
+public class PngDrawingSpliterator implements Spliterator<Tile> {
 
-    private static final int MAX_DRAWING_SIZE = 1024;
-    private PngDrawing drawing;
-    private int tilesLeft;
+    private final Deque<Tile> tiles;
 
     public PngDrawingSpliterator(PngDrawing drawing) {
-        this.drawing = drawing;
-        this.tilesLeft = nbOfTiles(drawing);
+        this.tiles = drawing.tile();
     }
 
-    private int nbOfTiles(PngDrawing drawing) {
-        int drawingSize = drawing.size();
-        int tilesQuotient = MAX_DRAWING_SIZE % drawingSize;
-        int tilesRemainder = MAX_DRAWING_SIZE % drawingSize;
+    @Override public boolean tryAdvance(Consumer<? super Tile> action) {
+        if(action==null) throw new NullPointerException();
+        boolean hasMoreElements = !tiles.isEmpty();
+        if(!hasMoreElements) return false;
 
-        if(tilesRemainder !=0 ) {
-            throw new UnsupportedOperationException("fffff: "+drawingSize + " , " + MAX_DRAWING_SIZE);
-        }
-
-        return tilesQuotient;
+        Tile next = tiles.removeFirst();
+        action.accept(next);
+        return hasMoreElements;
     }
 
-    @Override public boolean tryAdvance(Consumer<? super PngDrawing> action) {
-        action.accept(drawing);
-        return --tilesLeft==0;
-    }
-
-    @Override public Spliterator<PngDrawing> trySplit() {
+    @Override public Spliterator<Tile> trySplit() {
         /*if(drawing.isSmallEnough())*/ return null;
 
         //Pair<PngDrawing> split = drawing.splitIntoTwo();
     }
 
     @Override public long estimateSize() {
-        return 0;
+        return tiles.size();
     }
 
     @Override public int characteristics() {
