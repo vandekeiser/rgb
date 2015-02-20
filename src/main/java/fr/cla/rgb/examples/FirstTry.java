@@ -1,9 +1,11 @@
 package fr.cla.rgb.examples;
 
-import java.io.IOException;
-import fr.cla.rgb.PngDrawing;
+import fr.cla.rgb.Drawer;
+import fr.cla.rgb.Drawing;
 
-public class FirstTry extends PngDrawing {
+import java.io.IOException;
+
+public class FirstTry extends Drawing {
 
     private final int size;
     public FirstTry(int size) {
@@ -20,6 +22,6 @@ public class FirstTry extends PngDrawing {
     @Override protected int b(int x, int y, int size) { return x * y; }
 
     public static void main(String[] args) throws IOException {
-        new FirstTry(1024).draw();
+        new Drawer().draw(new FirstTry(1024));
     }
 }

@@ -1,12 +1,14 @@
 package fr.cla.rgb.examples;
 
-import java.io.IOException;
-import fr.cla.rgb.PngDrawing;
+import fr.cla.rgb.Drawer;
+import fr.cla.rgb.Drawing;
 
-public class AllRed extends PngDrawing {
+import java.io.IOException;
+
+public class AllRed extends Drawing {
 
     public static void main(String[] args) throws IOException {
-        new AllRed().draw();
+        new Drawer().draw(new AllRed());
     }
 
     @Override protected int size() { return 128; }

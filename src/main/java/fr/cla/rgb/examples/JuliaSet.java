@@ -1,12 +1,14 @@
 package fr.cla.rgb.examples;
 
-import java.io.IOException;
-import fr.cla.rgb.PngDrawing;
+import fr.cla.rgb.Drawer;
+import fr.cla.rgb.Drawing;
 
-public class JuliaSet extends PngDrawing {
+import java.io.IOException;
+
+public class JuliaSet extends Drawing {
 
     public static void main(String[] args) throws IOException {
-        new JuliaSet().draw();
+        new Drawer().draw(new JuliaSet());
     }
 
     @Override protected int size() { return 16384; }   //16384: OOME

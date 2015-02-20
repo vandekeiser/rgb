@@ -1,5 +1,9 @@
 package fr.cla.rgb;
 
+import fr.cla.rgb.examples.AllBlue;
+import fr.cla.rgb.examples.AllRed;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
@@ -7,22 +11,20 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.ImageIO;
-import fr.cla.rgb.examples.AllBlue;
-import fr.cla.rgb.examples.AllRed;
-import static fr.cla.rgb.PngDrawing.IMG_TYPE;
+
+import static fr.cla.rgb.Drawing.IMG_TYPE;
 import static java.lang.System.out;
 
 /**
  */
 public class BigPngDrawing_TryWithPnjg2 {
 
-    private final PngDrawing big;
-    public BigPngDrawing_TryWithPnjg2(PngDrawing big) {
+    private final Drawing big;
+    private final String imageFileName;
+
+    public BigPngDrawing_TryWithPnjg2(Drawing big) {
         this.big = big;
-    }
-    private String imageFileName() {
-        return big.imageFileName();
+        this.imageFileName = Drawer.imageFileName(this.big);
     }
 
     final void draw() throws IOException {
@@ -87,7 +89,7 @@ public class BigPngDrawing_TryWithPnjg2 {
         //5. Recolle les morceaux
         PngjSamples.doTiling(
                 tiles.toArray(new String[tiles.size()]),
-                imageFileName(),
+                imageFileName,
                 2
         );
     }

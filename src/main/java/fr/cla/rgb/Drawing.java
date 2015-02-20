@@ -1,68 +1,25 @@
 package fr.cla.rgb;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.*;
+import java.util.Spliterator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import javax.imageio.ImageIO;
-import static java.lang.System.out;
 import static java.util.function.Function.identity;
 
-/**
- * Heavily inspired by:
- *  -https://codegolf.stackexchange.com/questions/35569/tweetable-mathematical-art
- *  -https://codegolf.stackexchange.com/questions/22144/images-with-all-colors
- *
- * The goal is to:
- *  -make the code easier to extend to any drawing by factoring points generation and rendering,
- *   so that concrete classes only need to implement the RGB computation
- *  -use [parallel] streams
- *
- * Times are measured on an old 2-cores machine
- * NOT SET: -Djava.util.concurrent.ForkJoinPool.common.parallelism=2
- */
-public abstract class PngDrawing {
+public abstract class Drawing {
 
     static final String IMG_TYPE = "png";
-    String imageFileName() {
-        return getClass().getSimpleName() + "." + IMG_TYPE;
-    }
-
     final int xmin, xmax, ymin, ymax;
     protected PngDrawing(int xmin, int xmax, int ymin, int ymax) {
         this.xmin = xmin;
         this.xmax = xmax;
         this.ymin = ymin;
         this.ymax = ymax;
-    }
     protected PngDrawing() {
         this(-1, -1, -1, -1);
     }
 
-    protected final void draw() throws IOException {
-        //1. Rendering
-        out.println("Rendering...");
-        Instant beforeRendering = Instant.now();
-        BufferedImage img = render();
-        Instant afterRendering = Instant.now();
-        out.printf("Rendering took: %s%n", Duration.between(beforeRendering, afterRendering));
-
-        //2. Writing to file
-        out.println("Writing to file...");
-        Instant beforeWrite = Instant.now();
-        try (OutputStream out = new BufferedOutputStream(new FileOutputStream(imageFileName()))) {
-            ImageIO.write(img, IMG_TYPE, out);
-        }
-        Instant afterWrite = Instant.now();
-        out.printf("Writing to file took: %s%n", Duration.between(beforeWrite, afterWrite));
-    }
 
     public BufferedImage render() {
         int size = size();

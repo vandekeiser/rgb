@@ -1,16 +1,19 @@
 package fr.cla.rgb;
 
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.Iterator;
-import java.util.Locale;
+import fr.cla.rgb.examples.AllBlue;
+import fr.cla.rgb.examples.AllRed;
+
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
-import fr.cla.rgb.examples.AllBlue;
-import fr.cla.rgb.examples.AllRed;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Locale;
+
 import static java.lang.System.out;
 
 /**

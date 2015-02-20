@@ -1,12 +1,14 @@
 package fr.cla.rgb;
 
+import fr.cla.rgb.examples.FirstTry;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.List;
 import java.util.stream.IntStream;
-import javax.imageio.ImageIO;
-import fr.cla.rgb.examples.FirstTry;
-import static fr.cla.rgb.PngDrawing.IMG_TYPE;
+
+import static fr.cla.rgb.Drawing.IMG_TYPE;
 import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
 
@@ -14,12 +16,12 @@ import static java.util.stream.Collectors.toList;
  */
 public class BigPngDrawing_TryWithPnjg4 {
 
-    private final PngDrawing big;
-    public BigPngDrawing_TryWithPnjg4(PngDrawing big) {
+    private final Drawing big;
+    private final String imageFileName;
+
+    public BigPngDrawing_TryWithPnjg4(Drawing big) {
         this.big = big;
-    }
-    private String imageFileName() {
-        return big.imageFileName();
+        this.imageFileName = Drawer.imageFileName(this.big);
     }
 
     final void draw() throws IOException {
@@ -29,7 +31,7 @@ public class BigPngDrawing_TryWithPnjg4 {
             BufferedImage tile = big.render();
 
             //1.2. Write tile to disk
-            String tileFileName = imageFileName() + tileNumber;
+            String tileFileName = imageFileName + tileNumber;
             out.printf("Writing tile %s n°%d to file %s ...%n", big, tileNumber, tileFileName);
             try (OutputStream out = new BufferedOutputStream(new FileOutputStream(tileFileName))) {
                 ImageIO.write(tile, IMG_TYPE, out);
@@ -42,7 +44,7 @@ public class BigPngDrawing_TryWithPnjg4 {
         //2. Stick tiles together
         PngjSamples.doTiling(
                 tiles.toArray(new String[tiles.size()]),
-                imageFileName(),
+                imageFileName,
                 2
         );
     }

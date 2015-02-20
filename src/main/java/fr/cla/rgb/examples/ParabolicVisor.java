@@ -1,14 +1,17 @@
 package fr.cla.rgb.examples;
 
-import java.io.IOException;
-import fr.cla.rgb.PngDrawing;
+import fr.cla.rgb.Drawer;
+import fr.cla.rgb.Drawing;
 import fr.cla.rgb.U;
+
+import java.io.IOException;
+
 import static java.lang.Math.sqrt;
 
-public class ParabolicVisor extends PngDrawing {
+public class ParabolicVisor extends Drawing {
 
     public static void main(String[] args) throws IOException {
-        new ParabolicVisor().draw();
+        new Drawer().draw(new ParabolicVisor());
     }
 
     @Override protected int size() { return 1024; }
