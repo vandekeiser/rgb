@@ -21,7 +21,7 @@ public class BigPngDrawing_TryWithPnjg3 {
 
     public BigPngDrawing_TryWithPnjg3(Drawing big) {
         this.big = big;
-        this.imageFileName = Drawer.imageFileName(this.big);
+        this.imageFileName = BasicDrawer.imageFileName(this.big);
     }
 
     final void draw() throws IOException {

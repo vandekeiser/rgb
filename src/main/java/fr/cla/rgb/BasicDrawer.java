@@ -11,7 +11,7 @@ import java.time.Instant;
 
 import static java.lang.System.out;
 
-public class Drawer {
+public class BasicDrawer {
 
     public static String imageFileName(Drawing drawing) {
         return drawing.getClass().getSimpleName() + "." + Drawing.IMG_TYPE;

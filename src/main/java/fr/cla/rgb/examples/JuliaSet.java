@@ -1,6 +1,6 @@
 package fr.cla.rgb.examples;
 
-import fr.cla.rgb.Drawer;
+import fr.cla.rgb.BasicDrawer;
 import fr.cla.rgb.Drawing;
 
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.io.IOException;
 public class JuliaSet extends Drawing {
 
     public static void main(String[] args) throws IOException {
-        new Drawer().draw(new JuliaSet());
+        new BasicDrawer().draw(new JuliaSet());
     }
 
     @Override protected int size() { return 16384; }   //16384: OOME
