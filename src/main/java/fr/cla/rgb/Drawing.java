@@ -94,10 +94,17 @@ public abstract class Drawing {
         System.out.println("nbOfTiles: " + nbOfTiles);
         Deque<Tile> tiles = new LinkedList<>();
 
-        //if(nbOfTiles==1) tiles.add(new Tile(this));
-        for(int line = 0; line < lines; line++) {
-            for(int col = 0; col < TILES_PER_LINE; col++) {
-                tiles.add(new Tile(this, col*tileSize, line*tileSize));
+//        for(int line = 0; line < lines; line++) {
+//            for(int col = 0; col < TILES_PER_LINE; col++) {
+//                tiles.add(new Tile(this, col*tileSize, line*tileSize));
+//            }
+//        }
+        int col=0, line=0;
+        for(int tile = 1; tile <= nbOfTiles; tile++) {
+            tiles.add(new Tile(this, col*tileSize, line*tileSize));
+            ++col;
+            if(TILES_PER_LINE%tile==0) {
+                col=0; ++line;
             }
         }
 

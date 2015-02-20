@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import fr.cla.rgb.examples.FirstTry;
 import org.junit.Test;
 
-public class PngDrawingSplitTest {
+public class DrawingSplitTest {
 
     //PngDrawingSpliterator.MAX_DRAWING_SIZE = 1024;
 
