@@ -13,6 +13,10 @@ import static java.lang.System.out;
 
 public class Drawer {
 
+    public static String imageFileName(Drawing drawing) {
+        return drawing.getClass().getSimpleName() + "." + Drawing.IMG_TYPE;
+    }
+
     public final void draw(Drawing drawing) throws IOException {
         //1. Rendering
         out.println("Rendering...");
@@ -24,7 +28,7 @@ public class Drawer {
         //2. Writing to file
         out.println("Writing to file...");
         Instant beforeWrite = Instant.now();
-        try (OutputStream out = new BufferedOutputStream(new FileOutputStream(drawing.imageFileName()))) {
+        try (OutputStream out = new BufferedOutputStream(new FileOutputStream(imageFileName(drawing)))) {
             ImageIO.write(img, Drawing.IMG_TYPE, out);
         }
         Instant afterWrite = Instant.now();

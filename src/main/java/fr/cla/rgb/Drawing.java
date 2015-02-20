@@ -1,25 +1,14 @@
 package fr.cla.rgb;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Spliterator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import javax.imageio.ImageIO;
-import static java.lang.System.out;
+
 import static java.util.function.Function.identity;
 
 public abstract class Drawing {
 
     static final String IMG_TYPE = "png";
-    String imageFileName() {
-        return getClass().getSimpleName() + "." + IMG_TYPE;
-    }
 
     public BufferedImage render() {
         int size = size();
