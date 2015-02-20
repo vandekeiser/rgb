@@ -32,4 +32,16 @@ public class DrawingSplitTest {
         Set<Drawing> tiles = smallDrawingSplit.collect(toSet());
         assertEquals(2, tiles.size());
     }
+
+    @Test public void fourWaySplit() {
+        Drawing smallDrawing = new FirstTry(4096);
+        Stream<Tile> smallDrawingSplit = smallDrawing.split();
+        Set<Drawing> tiles = smallDrawingSplit.collect(toSet());
+        assertEquals(4, tiles.size());
+    }
+
+    @Test(expected = UnsupportedOperationException.class) public void illegalSplit() {
+        Drawing smallDrawing = new FirstTry(4097);
+        smallDrawing.split();
+    }
 }
