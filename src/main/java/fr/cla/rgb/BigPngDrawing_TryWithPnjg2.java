@@ -10,15 +10,15 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import fr.cla.rgb.examples.AllBlue;
 import fr.cla.rgb.examples.AllRed;
-import static fr.cla.rgb.PngDrawing.IMG_TYPE;
+import static fr.cla.rgb.Drawing.IMG_TYPE;
 import static java.lang.System.out;
 
 /**
  */
 public class BigPngDrawing_TryWithPnjg2 {
 
-    private final PngDrawing big;
-    public BigPngDrawing_TryWithPnjg2(PngDrawing big) {
+    private final Drawing big;
+    public BigPngDrawing_TryWithPnjg2(Drawing big) {
         this.big = big;
     }
     private String imageFileName() {

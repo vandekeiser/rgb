@@ -1,5 +1,7 @@
 # RGB Streams
 
+WORK IN PROGRESS
+
  Heavily inspired by:
  * https://codegolf.stackexchange.com/questions/35569/tweetable-mathematical-art
  * https://codegolf.stackexchange.com/questions/22144/images-with-all-colors

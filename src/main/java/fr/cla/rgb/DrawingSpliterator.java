@@ -3,19 +3,19 @@ package fr.cla.rgb;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-public class PngDrawingSpliterator implements Spliterator<PngDrawing> {
+public class DrawingSpliterator implements Spliterator<Drawing> {
 
-    private final PngDrawing drawing;
+    private final Drawing drawing;
 
-    public PngDrawingSpliterator(PngDrawing drawing) {
+    public DrawingSpliterator(Drawing drawing) {
         this.drawing = drawing;
     }
 
-    @Override public boolean tryAdvance(Consumer<? super PngDrawing> action) {
+    @Override public boolean tryAdvance(Consumer<? super Drawing> action) {
         return false;
     }
 
-    @Override public Spliterator<PngDrawing> trySplit() {
+    @Override public Spliterator<Drawing> trySplit() {
         return null;
     }
 

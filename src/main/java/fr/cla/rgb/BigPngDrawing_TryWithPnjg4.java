@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 import fr.cla.rgb.examples.FirstTry;
-import static fr.cla.rgb.PngDrawing.IMG_TYPE;
+import static fr.cla.rgb.Drawing.IMG_TYPE;
 import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
 
@@ -14,8 +14,8 @@ import static java.util.stream.Collectors.toList;
  */
 public class BigPngDrawing_TryWithPnjg4 {
 
-    private final PngDrawing big;
-    public BigPngDrawing_TryWithPnjg4(PngDrawing big) {
+    private final Drawing big;
+    public BigPngDrawing_TryWithPnjg4(Drawing big) {
         this.big = big;
     }
     private String imageFileName() {
