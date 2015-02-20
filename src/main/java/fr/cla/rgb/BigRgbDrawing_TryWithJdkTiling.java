@@ -44,7 +44,7 @@ public class BigRgbDrawing_TryWithJdkTiling {
 
         //1. Render RED LEFT
         out.println("Rendering RED LEFT...");
-        AllRed allRed = new AllRed();
+        AllRed allRed = new AllRed(128);
         BufferedImage redLeft = allRed.render();
 
         //2. Write RED LEFT to disk
@@ -55,7 +55,7 @@ public class BigRgbDrawing_TryWithJdkTiling {
 
         //3. Render BLUE RIGHT
         out.println("Rendering BLUE RIGHT...");
-        AllBlue allBlue = new AllBlue();
+        AllBlue allBlue = new AllBlue(128);
         BufferedImage blueRight = allBlue.render();
 
         //4. Write BLUE RIGHT to disk

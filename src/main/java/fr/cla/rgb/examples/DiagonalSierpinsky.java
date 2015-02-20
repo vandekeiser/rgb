@@ -7,11 +7,13 @@ import java.io.IOException;
 
 public class DiagonalSierpinsky extends Drawing {
 
-    public static void main(String[] args) throws IOException {
-        new BasicDrawer().draw(new DiagonalSierpinsky());
+    public DiagonalSierpinsky(int size) {
+        super(size);
     }
 
-    @Override protected int size() { return 1024; }
+    public static void main(String[] args) throws IOException {
+        new BasicDrawer().draw(new DiagonalSierpinsky(128));
+    }
 
     @Override protected int r(int i, int j, int size) {
         return (i!=0&&j!=0)?((i%j)&(j%i)):0;

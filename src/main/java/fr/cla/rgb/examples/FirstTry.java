@@ -7,11 +7,9 @@ import java.io.IOException;
 
 public class FirstTry extends Drawing {
 
-    private final int size;
     public FirstTry(int size) {
-        this.size = size;
+        super(size);
     }
-    @Override protected int size() { return size; }
 
     @Override protected int r(int x, int y, int size) {
         return x + y;

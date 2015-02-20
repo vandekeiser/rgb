@@ -10,11 +10,13 @@ import static java.lang.Math.sqrt;
 
 public class ParabolicVisor extends Drawing {
 
-    public static void main(String[] args) throws IOException {
-        new BasicDrawer().draw(new ParabolicVisor());
+    public ParabolicVisor(int size) {
+        super(size);
     }
 
-    @Override protected int size() { return 1024; }
+    public static void main(String[] args) throws IOException {
+        new BasicDrawer().draw(new ParabolicVisor(1024));
+    }
 
     @Override protected int r(int i, int j, int size) {
         return (char)sqrt((double)(U.sq(i - size / 2)* U.sq(j - size / 2))*2.0);

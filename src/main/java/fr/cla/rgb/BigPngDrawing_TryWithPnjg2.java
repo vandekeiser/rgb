@@ -30,7 +30,7 @@ public class BigPngDrawing_TryWithPnjg2 {
     final void draw() throws IOException {
         //0. Prepare
         //0.1 Images
-        AllRed allRed = new AllRed(); AllBlue allBlue = new AllBlue();
+        AllRed allRed = new AllRed(128); AllBlue allBlue = new AllBlue(128);
         BufferedImage redTile, blueTile;
         //0.2 Files
         String RED_TILE_FILE = "RED_TILE.png", BLUE_TILE_FILE = "BLUE_TILE.png";
@@ -95,6 +95,6 @@ public class BigPngDrawing_TryWithPnjg2 {
     }
 
     public static void main(String[] args) throws IOException {
-        new BigPngDrawing_TryWithPnjg2(new AllBlue()).draw();
+        new BigPngDrawing_TryWithPnjg2(new AllBlue(128)).draw();
     }
 }

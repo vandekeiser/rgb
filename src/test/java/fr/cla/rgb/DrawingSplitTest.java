@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.*;
 import static org.junit.Assert.assertEquals;
 
 import fr.cla.rgb.examples.FirstTry;
+import fr.cla.rgb.examples.JuliaSet;
 import org.junit.Test;
 
 public class DrawingSplitTest {
@@ -43,5 +44,15 @@ public class DrawingSplitTest {
     @Test(expected = UnsupportedOperationException.class) public void illegalSplit() {
         Drawing smallDrawing = new FirstTry(4097);
         smallDrawing.split();
+    }
+
+    @Test public void drawXsJulia() {
+        new TilingDrawer().draw(new JuliaSet(128));
+    }
+    @Test public void drawSJulia() {
+        new TilingDrawer().draw(new JuliaSet(1024));
+    }
+    @Test public void drawMJulia() {
+        new TilingDrawer().draw(new JuliaSet(2048));
     }
 }

@@ -10,18 +10,11 @@ public class Tile extends Drawing {
     private final Drawing whole;
     private final int xoffset, yoffset;
 
-    public Tile(Drawing whole) {
-        this(whole, 0, 0);
-    }
-
-    public Tile(Drawing pngDrawing, int xoffset, int yoffset) {
-        this.whole = pngDrawing;
+    public Tile(Drawing drawing, int size, int xoffset, int yoffset) {
+        super(size);
+        this.whole = drawing;
         this.xoffset = xoffset;
         this.yoffset = yoffset;
-    }
-
-    @Override protected int size() {
-        return 0;
     }
 
     @Override protected int r(int x, int y, int size) {
@@ -61,12 +54,28 @@ public class Tile extends Drawing {
 //        ).flatMap(identity()).collect(toList()).stream(); //Workaround: IntStream.flatMapToObj doesn't exist
     }
 
-    public BufferedImage render() {
+    public NamedImage renderTile() {
         int size = size();
         BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
 
             //__Should__ be threadsafe since we write to different pixels, so could use parallel()
-        points().forEach(p -> img.setRGB(p.x, p.y, rgb(p, size)));
-        return img;
+
+        points().forEach(p -> {
+            try {
+                img.setRGB(p.x, p.y, rgb(p, size));
+            } catch(ArrayIndexOutOfBoundsException e) {
+                System.out.println(String.format(
+                    "Tile/renderTile/AIOOBE: p.x=%d, p.y=%d, size=%d",
+                    p.x,
+                    p.y,
+                    size
+                ));
+                throw e;
+            }
+        });
+
+        String name = whole.getClass().getSimpleName()+"_"+xoffset+"_"+yoffset+".png";
+
+        return new NamedImage(img, name);
     }
 }

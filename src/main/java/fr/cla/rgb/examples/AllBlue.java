@@ -7,11 +7,13 @@ import java.io.IOException;
 
 public class AllBlue extends Drawing {
 
-    public static void main(String[] args) throws IOException {
-        new BasicDrawer().draw(new AllBlue());
+    public AllBlue(int size) {
+        super(size);
     }
 
-    @Override public int size() { return 128; }
+    public static void main(String[] args) throws IOException {
+        new BasicDrawer().draw(new AllBlue(128));
+    }
 
     @Override protected int r(int x, int y, int size) {
         return 0x00;

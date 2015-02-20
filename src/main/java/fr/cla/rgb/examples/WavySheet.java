@@ -10,11 +10,13 @@ import static java.lang.Math.sin;
 
 public class WavySheet extends Drawing {
 
-    public static void main(String[] args) throws IOException {
-        new BasicDrawer().draw(new WavySheet());
+    public WavySheet(int size) {
+        super(size);
     }
 
-    @Override protected int size() { return 1024; }
+    public static void main(String[] args) throws IOException {
+        new BasicDrawer().draw(new WavySheet(1024));
+    }
 
     @Override protected int r(int i, int j, int size) {
         float s=3.0F/(j+99);

@@ -13,6 +13,12 @@ public abstract class Drawing {
 
     public static final String IMG_TYPE = "png";
 
+    private final int size;
+
+    protected Drawing(int size) {
+        this.size = size;
+    }
+
     public BufferedImage render() {
         int size = size();
         BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
@@ -47,7 +53,7 @@ public abstract class Drawing {
 //        ).flatMap(identity()).collect(toList()).stream(); //Workaround: IntStream.flatMapToObj doesn't exist
     }
 
-    protected abstract int size();
+    protected final int size() {return size;}
 
     protected final int rgb(Point p, int size) {
         int x = p.x, y = p.y;
@@ -101,7 +107,7 @@ public abstract class Drawing {
 //        }
         int col=0, line=0;
         for(int tile = 1; tile <= nbOfTiles; tile++) {
-            tiles.add(new Tile(this, col*tileSize, line*tileSize));
+            tiles.add(new Tile(this, tileSize, col*tileSize, line*tileSize));
             ++col;
             if(TILES_PER_LINE%tile==0) {
                 col=0; ++line;

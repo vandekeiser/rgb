@@ -1,17 +1,20 @@
 package fr.cla.rgb.examples;
 
-import fr.cla.rgb.BasicDrawer;
 import fr.cla.rgb.Drawing;
+import fr.cla.rgb.TilingDrawer;
 
 import java.io.IOException;
 
 public class JuliaSet extends Drawing {
 
-    public static void main(String[] args) throws IOException {
-        new BasicDrawer().draw(new JuliaSet());
+    public JuliaSet(int size) {
+        super(size);
     }
 
-    @Override protected int size() { return 16384; }   //16384: OOME
+    public static void main(String[] args) throws IOException {
+        //new BasicDrawer().draw(new JuliaSet());
+        new TilingDrawer().draw(new JuliaSet(2048));     //16384: OOME
+    }
 //    Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
 //    	at java.awt.image.DataBufferInt.<init>(DataBufferInt.java:75)
 //    	at java.awt.image.Raster.createPackedRaster(Raster.java:467)
