@@ -13,23 +13,23 @@ public class PngDrawingSplitTest {
     //PngDrawingSpliterator.MAX_DRAWING_SIZE = 1024;
 
 	@Test public void neutralSplit() {
-        PngDrawing smallDrawing = new FirstTry(128);
+        Drawing smallDrawing = new FirstTry(128);
         Stream<Tile> smallDrawingSplit = smallDrawing.split();
-        Set<PngDrawing> tiles = smallDrawingSplit.collect(toSet());
+        Set<Drawing> tiles = smallDrawingSplit.collect(toSet());
         assertEquals(1, tiles.size());
 	}
 
     @Test public void neutralSplitLimit() {
-        PngDrawing smallDrawing = new FirstTry(1024);
+        Drawing smallDrawing = new FirstTry(1024);
         Stream<Tile> smallDrawingSplit = smallDrawing.split();
-        Set<PngDrawing> tiles = smallDrawingSplit.collect(toSet());
+        Set<Drawing> tiles = smallDrawingSplit.collect(toSet());
         assertEquals(1, tiles.size());
     }
 
     @Test public void twoWaySplit() {
-        PngDrawing smallDrawing = new FirstTry(2048);
+        Drawing smallDrawing = new FirstTry(2048);
         Stream<Tile> smallDrawingSplit = smallDrawing.split();
-        Set<PngDrawing> tiles = smallDrawingSplit.collect(toSet());
+        Set<Drawing> tiles = smallDrawingSplit.collect(toSet());
         assertEquals(2, tiles.size());
     }
 }

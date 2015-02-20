@@ -1,6 +1,8 @@
 package fr.cla.rgb;
 
 import java.awt.image.BufferedImage;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Spliterator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -9,17 +11,7 @@ import static java.util.function.Function.identity;
 
 public abstract class Drawing {
 
-    static final String IMG_TYPE = "png";
-    final int xmin, xmax, ymin, ymax;
-    protected PngDrawing(int xmin, int xmax, int ymin, int ymax) {
-        this.xmin = xmin;
-        this.xmax = xmax;
-        this.ymin = ymin;
-        this.ymax = ymax;
-    protected PngDrawing() {
-        this(-1, -1, -1, -1);
-    }
-
+    public static final String IMG_TYPE = "png";
 
     public BufferedImage render() {
         int size = size();
@@ -30,7 +22,6 @@ public abstract class Drawing {
         return img;
     }
 
-    protected abstract int size();
     public Stream<Point> points() {
 //        //DiagonalSierpinsky(8192): Rendering took: PT6.194S
 //        //JuliaSet(8192): Rendering took: PT4M19.659S
@@ -42,8 +33,8 @@ public abstract class Drawing {
 
         //DiagonalSierpinsky(8192): Rendering took: PT8.551S
         //JuliaSet(8192): Rendering took: PT2M29.091S
-        return IntStream.range(xmin(), xmax()).mapToObj(
-                x -> IntStream.range(xmin(), xmax()).mapToObj(
+        return IntStream.range(0, size()).mapToObj(
+                x -> IntStream.range(0, size()).mapToObj(
                         y -> new Point(x, y)
                 )
         ).flatMap(identity()).parallel(); //Workaround: IntStream.flatMapToObj doesn't exist
@@ -56,12 +47,9 @@ public abstract class Drawing {
 //        ).flatMap(identity()).collect(toList()).stream(); //Workaround: IntStream.flatMapToObj doesn't exist
     }
 
-    private int xmin() { return xmin!=-1 ? xmin : 0; }
-    private int xmax() { return xmin!=-1 ? xmin : size(); }
-    private int ymin() { return ymin!=-1 ? ymin : 0; }
-    private int ymax() { return ymin!=-1 ? ymin : size(); }
+    protected abstract int size();
 
-    private int rgb(Point p, int size) {
+    protected final int rgb(Point p, int size) {
         int x = p.x, y = p.y;
         return (r(x, y, size) << 8 | g(x, y, size)) << 8 | b(x, y, size);
     }
@@ -78,7 +66,7 @@ public abstract class Drawing {
     }
 
     public Stream<Tile> split() {
-        Spliterator<Tile> thisSpliterator = new PngDrawingSpliterator(this);
+        Spliterator<Tile> thisSpliterator = new DrawingSpliterator(this);
         return StreamSupport.stream(thisSpliterator, false);
     }
     public Deque<Tile> tile() {
@@ -135,13 +123,4 @@ public abstract class Drawing {
         return tilesQuotient;
     }
 
-//    public Pair<PngDrawing> splitIntoTwo() {
-//        return new Pair<>(
-//            new PngDrawing(xmin(), xmin()+xmax)/2);
-//        );
-//    }
-
-//    Spliterator<PngDrawing> spliterator() {
-//        return new PngDrawingSpliterator(this);
-//    }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-public class PngDrawingSpliterator implements Spliterator<Tile> {
+public class DrawingSpliterator implements Spliterator<Tile> {
 
     private final Deque<Tile> tiles;
 
