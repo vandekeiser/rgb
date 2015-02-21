@@ -25,7 +25,7 @@ public class TilingDrawer {
             try (OutputStream out = new BufferedOutputStream(new FileOutputStream(t.getName()))) {
                 ImageIO.write(t.getImage(), Drawing.IMG_TYPE, out);
             }catch (IOException e) { throw new UncheckedIOException(e); };
-        } );
+        });
     }
 
 }

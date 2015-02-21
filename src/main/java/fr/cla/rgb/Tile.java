@@ -40,11 +40,11 @@ public class Tile extends Drawing {
 
         //DiagonalSierpinsky(8192): Rendering took: PT8.551S
         //JuliaSet(8192): Rendering took: PT2M29.091S
-        return IntStream.range(xoffset, xoffset+size()).mapToObj(
-                x -> IntStream.range(yoffset, yoffset+size()).mapToObj(
+        return IntStream.range(0, size()).mapToObj(
+                x -> IntStream.range(0, size()).mapToObj(
                         y -> new Point(x, y)
                 )
-        ).flatMap(identity()).parallel(); //Workaround: IntStream.flatMapToObj doesn't exist
+        ).flatMap(identity()); //Workaround: IntStream.flatMapToObj doesn't exist
 
         //OOME
 //        return IntStream.range(0, size()).mapToObj(
