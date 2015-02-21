@@ -14,10 +14,29 @@ public abstract class Drawing {
         this.xsize = xsize;
         this.ysize = ysize;
     }
-    public int xsize() { return xsize; }
-    public int ysize() { return ysize; }
+    public final int xsize() { return xsize; }
+    public final int ysize() { return ysize; }
 
-    public Stream<Point> points() {
+    final NamedImage render() {
+        BufferedImage img = new BufferedImage(xsize, ysize, BufferedImage.TYPE_INT_RGB);
+
+        //__Should__ be threadsafe since we write to different pixels, so could use parallel()
+        //..BUT it's already not so great to have side-effect from a lambda..
+
+        //Sometime the drawing's size is used in calculating the RGB values of each pixel.
+        //The size of the whole drawing, not the size of the tile, should be used.
+        points().forEach(p ->
+                img.setRGB(
+                        p.x,
+                        p.y,
+                        RGB(p, wholeDrawingSize())
+                )
+        );
+
+        return new NamedImage(img, name());
+    }
+
+    private Stream<Point> points() {
         return IntStream.range(0, xsize).mapToObj(
                 x -> IntStream.range(0, ysize).mapToObj(
                         y -> new Point(x, y)
@@ -25,31 +44,18 @@ public abstract class Drawing {
         ).flatMap(identity()); //Workaround: IntStream.flatMapToObj doesn't exist
     }
 
-    public NamedImage render() {
-        BufferedImage img = new BufferedImage(xsize, ysize, BufferedImage.TYPE_INT_RGB);
-
-        //__Should__ be threadsafe since we write to different pixels, so could use parallel()
-        //The size of the whole drawing is used in calculating the RGB values of each pixel
-        points().forEach(p ->
-                img.setRGB(
-                        p.x,
-                        p.y,
-                        rgb(p, wholeDrawingSize())
-                )
-        );
-
-        return new NamedImage(img, name());
-    }
+    /**
+     * @return The future file's name
+     */
     protected abstract String name();
 
-    protected final int rgb(Point p, int wholeDrawingsize) {
+    private int RGB(Point p, int wholeDrawingsize) {
         int x = p.x, y = p.y, s = wholeDrawingsize;
-        return (r(x, y, s) << 8 | g(x, y, s)) << 8 | b(x, y, s);
+        return (R(x, y, s) << 8 | G(x, y, s)) << 8 | B(x, y, s);
     }
-    protected abstract int r(int x, int y, int wholeDrawingsize);
-    protected abstract int g(int x, int y, int wholeDrawingsize);
-    protected abstract int b(int x, int y, int wholeDrawingsize);
-
+    protected abstract int R(int x, int y, int wholeDrawingsize);
+    protected abstract int G(int x, int y, int wholeDrawingsize);
+    protected abstract int B(int x, int y, int wholeDrawingsize);
     /**
      * Used by some drawings, in addition to the (x, y) pixel coordinate,
      * to compute the pixel's RGB.

@@ -10,13 +10,13 @@ public class FirstTry extends SquareDrawing {
         super(size);
     }
 
-    @Override protected int r(int x, int y, int size) {
+    @Override protected int R(int x, int y, int size) {
         return x + y;
     }
-    @Override protected int g(int x, int y, int size) {
+    @Override protected int G(int x, int y, int size) {
         return x - y;
     }
-    @Override protected int b(int x, int y, int size) { return x * y; }
+    @Override protected int B(int x, int y, int size) { return x * y; }
 
     public static void main(String[] args) throws IOException {
         new BasicDrawer().draw(new FirstTry(1024));

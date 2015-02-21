@@ -12,20 +12,18 @@ public abstract class SquareDrawing extends Drawing {
         super(size, size);
     }
 
-    public final int size() {return xsize();}
-    public final int wholeDrawingSize() {return size();}
-    @Override protected String name() {
-        return getClass().getSimpleName() + "." + Drawing.IMG_TYPE;
-    }
+    final int size() {return xsize();}
+    protected final int wholeDrawingSize() {return size();}
 
-    @Override public String toString() {
-        return String.format("%s {size:%d}", getClass().getSimpleName(), size());
+    @Override protected final String name() {
+        return getClass().getSimpleName() + "." + Drawing.IMG_TYPE;
     }
 
     public Stream<Tile> split() {
         Spliterator<Tile> thisSpliterator = new DrawingSpliterator(this);
         return StreamSupport.stream(thisSpliterator, false);
     }
+
     public Deque<Tile> tile() {
         int nbOfTiles = nbOfTiles();
         int lines = nbOfTiles;

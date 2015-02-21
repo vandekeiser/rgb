@@ -31,17 +31,17 @@ public class JuliaSet extends SquareDrawing {
 //    Libraries are not on Maven Central
 //    Last stable release in 2006
 
-    @Override protected int r(int i, int j, int size) {
+    @Override protected int R(int i, int j, int size) {
         float x=D(i, size),y=D(j, size),X,Y,n=0;
         while(n++<200&&(X=x*x)+(Y=y*y)<4){x=X-Y+0.36237F;y=2*x*y+0.32F;}
         return (int)(Math.log(n)*256);
     }
-    @Override protected int g(int i, int j, int size) {
+    @Override protected int G(int i, int j, int size) {
         float x=D(i, size),y=D(j, size),X,Y,n=0;
         while(n++<200&&(x*x+y*y)<4){X=x;Y=y;x=X*X-Y*Y+-0.7F;y=2*X*Y+0.27015F;}
         return (int)(Math.log(n)*128);
     }
-    @Override protected int b(int i, int j, int size) {
+    @Override protected int B(int i, int j, int size) {
         float x=D(i, size),y=D(j, size),X,Y,n=0;
         while(n++<600&&(x*x+y*y)<4){X=x;Y=y;x=X*X-Y*Y+0.36237F;y=2*X*Y+0.32F;}
         return (int)(Math.log(n)*128);

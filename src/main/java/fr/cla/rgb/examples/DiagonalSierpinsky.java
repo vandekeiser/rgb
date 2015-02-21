@@ -14,13 +14,13 @@ public class DiagonalSierpinsky extends SquareDrawing {
         new BasicDrawer().draw(new DiagonalSierpinsky(128));
     }
 
-    @Override protected int r(int i, int j, int size) {
+    @Override protected int R(int i, int j, int size) {
         return (i!=0&&j!=0)?((i%j)&(j%i)):0;
     }
-    @Override protected int g(int i, int j, int size) {
+    @Override protected int G(int i, int j, int size) {
         return (i!=0&&j!=0)?((i%j)+(j%i)):0;
     }
-    @Override protected int b(int i, int j, int size) {
+    @Override protected int B(int i, int j, int size) {
         return (i!=0&&j!=0)?((i%j)|(j%i)):0;
     }
 

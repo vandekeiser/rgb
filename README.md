@@ -15,7 +15,6 @@ Goals:
 Times are measured on an old 2-cores machine
 
 
-
   public Stream<Point> points() {
 //        //DiagonalSierpinsky(8192): Rendering took: PT6.194S
 //        //JuliaSet(8192): Rendering took: PT4M19.659S
@@ -40,3 +39,7 @@ Times are measured on an old 2-cores machine
 //                )
 //        ).flatMap(identity()).collect(toList()).stream(); //Workaround: IntStream.flatMapToObj doesn't exist
     }
+
+TODO
+ -Add finally for closes in PngjSamples
+ -Split properly in SquareDrawing (no Deque)/DrawingSpliterator (non-null trySplit)

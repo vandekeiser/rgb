@@ -14,12 +14,12 @@ public class AllRed extends SquareDrawing {
         new BasicDrawer().draw(new AllRed(128));
     }
 
-    @Override protected int r(int x, int y, int size) {
+    @Override protected int R(int x, int y, int size) {
         return 0xff;
     }
-    @Override protected int g(int x, int y, int size) {
+    @Override protected int G(int x, int y, int size) {
         return 0x00;
     }
-    @Override protected int b(int x, int y, int size) { return 0x00; }
+    @Override protected int B(int x, int y, int size) { return 0x00; }
 
 }

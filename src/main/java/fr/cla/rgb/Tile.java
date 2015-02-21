@@ -5,13 +5,13 @@ public class Tile extends Drawing {
     private final SquareDrawing whole;
     private final int xoffset, yoffset;
 
-    public Tile(SquareDrawing drawing, int xsize, int ysize, int xoffset, int yoffset) {
+    public Tile(SquareDrawing whole, int xsize, int ysize, int xoffset, int yoffset) {
         super(xsize, ysize);
-        this.whole = drawing;
+        this.whole = whole;
         this.xoffset = xoffset;
         this.yoffset = yoffset;
     }
-    public final int wholeDrawingSize() {return whole.size();}
+
     @Override protected String name() {
         return whole.getClass().getSimpleName()
                 + "_"
@@ -22,14 +22,15 @@ public class Tile extends Drawing {
                 + Drawing.IMG_TYPE;
     }
 
-    @Override protected int r(int x, int y, int wholeDrawingSize) {
-        return whole.r(x+xoffset, y+yoffset, wholeDrawingSize);
+    @Override protected int R(int x, int y, int wholeDrawingSize) {
+        return whole.R(x + xoffset, y + yoffset, wholeDrawingSize);
     }
-    @Override protected int g(int x, int y, int wholeDrawingSize) {
-        return whole.g(x+xoffset, y+yoffset, wholeDrawingSize);
+    @Override protected int G(int x, int y, int wholeDrawingSize) {
+        return whole.G(x + xoffset, y + yoffset, wholeDrawingSize);
     }
-    @Override protected int b(int x, int y, int wholeDrawingSize) {
-        return whole.b(x+xoffset, y+yoffset, wholeDrawingSize);
+    @Override protected int B(int x, int y, int wholeDrawingSize) {
+        return whole.B(x + xoffset, y + yoffset, wholeDrawingSize);
     }
+    public final int wholeDrawingSize() {return whole.size();}
 
 }

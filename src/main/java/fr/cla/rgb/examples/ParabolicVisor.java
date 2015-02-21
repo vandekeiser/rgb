@@ -16,16 +16,16 @@ public class ParabolicVisor extends SquareDrawing {
         new BasicDrawer().draw(new ParabolicVisor(1024));
     }
 
-    @Override protected int r(int i, int j, int size) {
+    @Override protected int R(int i, int j, int size) {
         return (char)sqrt((double)(U.sq(i - size / 2)* U.sq(j - size / 2))*2.0);
     }
-    @Override protected int g(int i, int j, int size) {
+    @Override protected int G(int i, int j, int size) {
         return (char)sqrt((double)(
                 (U.sq(i - size / 2)| U.sq(j - size / 2))*
                 (U.sq(i - size / 2)& U.sq(j - size / 2))
         ));
     }
-    @Override protected int b(int i, int j, int size) {
+    @Override protected int B(int i, int j, int size) {
         return (char)sqrt((double)(U.sq(i - size / 2)& U.sq(j - size / 2))*2.0);
     }
 
