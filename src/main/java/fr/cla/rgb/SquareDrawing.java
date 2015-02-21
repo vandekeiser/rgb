@@ -13,16 +13,11 @@ public abstract class SquareDrawing extends Drawing {
         super(size, size);
     }
 
-    public BufferedImage render() {
-        int size = size();
-        BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
-
-            //__Should__ be threadsafe since we write to different pixels, so could use parallel()
-        points().forEach(p -> img.setRGB(p.x, p.y, rgb(p, size)));
-        return img;
-    }
-
     public final int size() {return xsize();}
+    public final int wholeDrawingSize() {return size();}
+    @Override protected String name() {
+        return getClass().getSimpleName()+Drawing.IMG_TYPE;
+    }
 
     @Override public String toString() {
         return String.format("%s {size:%d}", getClass().getSimpleName(), size());

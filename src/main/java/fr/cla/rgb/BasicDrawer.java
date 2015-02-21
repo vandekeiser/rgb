@@ -25,7 +25,7 @@ public class BasicDrawer {
         //1. Rendering
         out.println("Rendering...");
         Instant beforeRendering = Instant.now();
-        BufferedImage img = drawing.render();
+        BufferedImage img = drawing.render().getImage();
         Instant afterRendering = Instant.now();
         out.printf("Rendering took: %s%n", Duration.between(beforeRendering, afterRendering));
 

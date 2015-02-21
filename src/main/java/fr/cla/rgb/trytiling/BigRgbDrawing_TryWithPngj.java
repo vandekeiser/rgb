@@ -24,7 +24,7 @@ public class BigRgbDrawing_TryWithPngj {
         //1. Render RED LEFT
         out.println("Rendering RED LEFT...");
         AllRed allRed = new AllRed(128);
-        BufferedImage redLeft = allRed.render();
+        BufferedImage redLeft = allRed.render().getImage();
 
         //2. Write RED LEFT to disk
         String RED_LEFT_FILE = "RED_LEFT.png";
@@ -37,7 +37,7 @@ public class BigRgbDrawing_TryWithPngj {
         //3. Render BLUE RIGHT
         out.println("Rendering BLUE RIGHT...");
         AllBlue allBlue = new AllBlue(128);
-        BufferedImage blueRight = allBlue.render();
+        BufferedImage blueRight = allBlue.render().getImage();
 
         //4. Write BLUE RIGHT to disk
         out.println("Writing BLUE RIGHT to file...");

@@ -1,5 +1,6 @@
 package fr.cla.rgb;
 
+import java.awt.image.BufferedImage;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import static java.util.function.Function.identity;
@@ -14,9 +15,7 @@ public abstract class Drawing {
         this.ysize = ysize;
     }
     public int xsize() { return xsize; }
-    public int ysize() {
-            return ysize;
-        }
+    public int ysize() { return ysize; }
 
     public Stream<Point> points() {
         return IntStream.range(0, xsize).mapToObj(
@@ -26,12 +25,26 @@ public abstract class Drawing {
         ).flatMap(identity()); //Workaround: IntStream.flatMapToObj doesn't exist
     }
 
-    protected final int rgb(Point p, int size) {
-        int x = p.x, y = p.y;
-        return (r(x, y, size) << 8 | g(x, y, size)) << 8 | b(x, y, size);
+    public NamedImage render() {
+        int wholeDrawingSize = wholeDrawingSize();
+        BufferedImage img = new BufferedImage(xsize, ysize, BufferedImage.TYPE_INT_RGB);
+
+        //__Should__ be threadsafe since we write to different pixels, so could use parallel()
+        //The size of the whole drawing is used in calculating the RGB values of each pixel
+        points().forEach(p -> img.setRGB(p.x, p.y, rgb(p, wholeDrawingSize)));
+
+        String name = name();
+        return new NamedImage(img, name);
     }
-    protected abstract int r(int x, int y, int size);
-    protected abstract int g(int x, int y, int size);
-    protected abstract int b(int x, int y, int size);
+    protected abstract String name();
+
+    protected final int rgb(Point p, int wholeDrawingsize) {
+        int x = p.x, y = p.y, s = wholeDrawingsize;
+        return (r(x, y, s) << 8 | g(x, y, s)) << 8 | b(x, y, s);
+    }
+    protected abstract int r(int x, int y, int wholeDrawingsize);
+    protected abstract int g(int x, int y, int wholeDrawingsize);
+    protected abstract int b(int x, int y, int wholeDrawingsize);
+    protected abstract int wholeDrawingSize();
 
 }

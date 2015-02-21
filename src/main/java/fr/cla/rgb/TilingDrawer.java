@@ -14,7 +14,7 @@ public class TilingDrawer {
 
     public final void draw(SquareDrawing drawing) {
         List<NamedImage> collectedNamedImages = drawing.split()
-                .map(Tile::renderTile)
+                .map(Drawing::render)
                 .collect(toList());
 
         collectedNamedImages.stream().forEach(t -> {

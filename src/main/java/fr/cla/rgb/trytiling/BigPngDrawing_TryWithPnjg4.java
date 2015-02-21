@@ -29,7 +29,7 @@ public class BigPngDrawing_TryWithPnjg4 {
         List<String> tiles = IntStream.rangeClosed(1, 4).mapToObj(tileNumber -> {
             //1.1. Render tile
             out.printf("Rendering tile %s n°%d ...%n", big, tileNumber);
-            BufferedImage tile = big.render();
+            BufferedImage tile = big.render().getImage();
 
             //1.2. Write tile to disk
             String tileFileName = imageFileName + tileNumber;

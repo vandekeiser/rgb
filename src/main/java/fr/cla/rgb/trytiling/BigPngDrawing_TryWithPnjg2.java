@@ -41,7 +41,7 @@ public class BigPngDrawing_TryWithPnjg2 {
 
         //1.1. Render RED LEFT
         out.println("Rendering RED TILE...");
-        redTile = allRed.render();
+        redTile = allRed.render().getImage();
 
         //1.2. Write RED LEFT to disk
         tileNb++; tileName = RED_TILE_FILE + tileNb; tiles.add(tileName);
@@ -53,7 +53,7 @@ public class BigPngDrawing_TryWithPnjg2 {
 
         //2.1. Render BLUE RIGHT
         out.println("Rendering BLUE TILE...");
-        blueTile = allBlue.render();
+        blueTile = allBlue.render().getImage();
 
         //2.2. Write BLUE RIGHT to disk
         tileNb++; tileName = BLUE_TILE_FILE + tileNb; tiles.add(tileName);
@@ -65,7 +65,7 @@ public class BigPngDrawing_TryWithPnjg2 {
 
         //3.1. Render BLUE RIGHT
         out.println("Rendering BLUE TILE...");
-        blueTile = allBlue.render();
+        blueTile = allBlue.render().getImage();
 
         //3.2. Write BLUE RIGHT to disk
         tileNb++; tileName = BLUE_TILE_FILE + tileNb; tiles.add(tileName);
@@ -77,7 +77,7 @@ public class BigPngDrawing_TryWithPnjg2 {
 
         //4.1. Render RED LEFT
         out.println("Rendering RED TILE...");
-        redTile = allRed.render();
+        redTile = allRed.render().getImage();
 
         //4.2. Write RED LEFT to disk
         tileNb++; tileName = RED_TILE_FILE + tileNb; tiles.add(tileName);
