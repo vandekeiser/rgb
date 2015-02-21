@@ -28,12 +28,12 @@ public class TilingDrawer {
         String[] collectedImagesNames = collectedNamedImages.stream()
                 .map(NamedImage::getName)
                 .collect(Collectors.toList())
-                .toArray(new String[0]);
+                .toArray(new String[collectedNamedImages.size()]);
 
         PngjSamples.doTiling (
             collectedImagesNames,
-            "toto.png",
-            2
+            imageFileName(drawing),
+            1 //Image is split into lines, so 1 image per row
         );
     }
 
