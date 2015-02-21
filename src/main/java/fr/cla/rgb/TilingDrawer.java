@@ -4,31 +4,46 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import static java.lang.System.out;
-import static java.util.stream.Collectors.toList;
 
 public class TilingDrawer {
 
     public final void draw(SquareDrawing drawing) {
         Path tempTilesPath = createTempTilesPath();
-        out.printf("TilingDrawer/draw/will store tiles in temp directory: %n", tempTilesPath);
+        out.printf("TilingDrawer/draw/will store tiles in temp directory: %s%n", tempTilesPath);
 
         //1. Get paths of temp tiles
+        Instant beforeComputeTempTilesPaths = Instant.now();
         String[] imagesPaths = computeTempTilesPaths(drawing, tempTilesPath);
-        out.printf("TilingDrawer/draw/there will be %d tiles%n", imagesPaths.length);
+        Instant afterComputeTempTilesPaths = Instant.now();
+        out.printf("TilingDrawer/draw/there will be %d tiles, computeTempTilesPaths took %s%n",
+                imagesPaths.length,
+                Duration.between(beforeComputeTempTilesPaths, afterComputeTempTilesPaths)
+        );
 
         //2. Write temp tiles without holding on to any BufferedImage
         out.printf("TilingDrawer/draw/start rendering %d tiles%n", imagesPaths.length);
+        Instant beforeWriteTiles = Instant.now();
         writeTiles(drawing, tempTilesPath);
-        out.printf("TilingDrawer/draw/done rendering %d tiles%n", imagesPaths.length);
+        Instant afterWriteTiles = Instant.now();
+        out.printf("TilingDrawer/draw/done rendering %d tiles, it took %s%n",
+                imagesPaths.length,
+                Duration.between(beforeWriteTiles, afterWriteTiles)
+        );
 
         //3. Use PNGJ (https://code.google.com/p/pngj/wiki/Snippets) to stitch the tiles together
         out.printf("TilingDrawer/draw/stitching tiles together%n");
-        stickTilesTogether(imagesPaths, drawing.name());
-        out.printf("TilingDrawer/draw/stitching tiles done%n");
+        Instant beforeStitchTilesTogether = Instant.now();
+        stitchTilesTogether(imagesPaths, drawing.name());
+        Instant afterStitchTilesTogether = Instant.now();
+        out.printf("TilingDrawer/draw/done stitching %d tiles, it took %s%n",
+                imagesPaths.length,
+                Duration.between(beforeStitchTilesTogether, afterStitchTilesTogether)
+        );
     }
 
     private String[] computeTempTilesPaths(SquareDrawing drawing, Path tempTilesPath) {
@@ -52,7 +67,7 @@ public class TilingDrawer {
                 });
     }
 
-    private void stickTilesTogether(String[] imagesPaths, String wholeImageName) {
+    private void stitchTilesTogether(String[] imagesPaths, String wholeImageName) {
         PngjSamples.doTiling (
                     imagesPaths,
                     wholeImageName,

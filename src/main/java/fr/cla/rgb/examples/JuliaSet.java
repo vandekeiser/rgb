@@ -11,7 +11,7 @@ public class JuliaSet extends SquareDrawing {
     }
 
     public static void main(String[] args) throws IOException {
-        new TilingDrawer().draw(new JuliaSet(16384));
+        new TilingDrawer().draw(new JuliaSet(128));
     }
 
     @Override protected int R(int i, int j, int size) {
