@@ -1,5 +1,8 @@
-package fr.cla.rgb;
+package fr.cla.rgb.trytiling;
 
+import fr.cla.rgb.BasicDrawer;
+import fr.cla.rgb.Drawing;
+import fr.cla.rgb.PngjSamples;
 import fr.cla.rgb.examples.AllBlue;
 import fr.cla.rgb.examples.AllRed;
 

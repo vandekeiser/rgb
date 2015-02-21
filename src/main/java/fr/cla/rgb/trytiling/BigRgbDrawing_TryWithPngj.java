@@ -1,5 +1,6 @@
-package fr.cla.rgb;
+package fr.cla.rgb.trytiling;
 
+import fr.cla.rgb.PngjSamples;
 import fr.cla.rgb.examples.AllBlue;
 import fr.cla.rgb.examples.AllRed;
 
@@ -51,7 +52,7 @@ public class BigRgbDrawing_TryWithPngj {
 
         //5. Recolle les morceaux
         PngjSamples.doTiling(
-                new String[] {RED_LEFT_FILE, BLUE_RIGHT_FILE},
+                new String[]{RED_LEFT_FILE, BLUE_RIGHT_FILE},
                 imageFileName(),
                 2
         );

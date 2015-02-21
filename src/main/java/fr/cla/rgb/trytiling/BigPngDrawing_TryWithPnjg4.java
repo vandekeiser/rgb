@@ -1,5 +1,8 @@
-package fr.cla.rgb;
+package fr.cla.rgb.trytiling;
 
+import fr.cla.rgb.BasicDrawer;
+import fr.cla.rgb.Drawing;
+import fr.cla.rgb.PngjSamples;
 import fr.cla.rgb.examples.FirstTry;
 
 import javax.imageio.ImageIO;
@@ -14,12 +17,12 @@ import static java.util.stream.Collectors.toList;
 
 /**
  */
-public class BigPngDrawing_TryWithPnjg3 {
+public class BigPngDrawing_TryWithPnjg4 {
 
     private final Drawing big;
     private final String imageFileName;
 
-    public BigPngDrawing_TryWithPnjg3(Drawing big) {
+    public BigPngDrawing_TryWithPnjg4(Drawing big) {
         this.big = big;
         this.imageFileName = BasicDrawer.imageFileName(this.big);
     }
@@ -50,6 +53,6 @@ public class BigPngDrawing_TryWithPnjg3 {
     }
 
     public static void main(String[] args) throws IOException {
-        new BigPngDrawing_TryWithPnjg3(new FirstTry(128)).draw();
+        new BigPngDrawing_TryWithPnjg4(new FirstTry(128)).draw();
     }
 }

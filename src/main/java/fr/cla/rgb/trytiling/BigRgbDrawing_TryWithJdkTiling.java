@@ -1,4 +1,4 @@
-package fr.cla.rgb;
+package fr.cla.rgb.trytiling;
 
 import fr.cla.rgb.examples.AllBlue;
 import fr.cla.rgb.examples.AllRed;
