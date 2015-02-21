@@ -11,9 +11,10 @@ public class JuliaSet extends WholeDrawing {
     }
 
     public static void main(String[] args) throws IOException {
-//        TilingDrawer/draw/done rendering 64 tiles, it took PT1M11.424S
-//        TilingDrawer/draw/done stitching 64 tiles, it took PT25.971S
-        new SequentialTilingDrawer().draw(new JuliaSet(4096));
+        //new SequentialTilingDrawer().draw(new JuliaSet(8192));
+        //new SequentialTilingDrawer().draw(new JuliaSet(16384));
+        //new SequentialTilingDrawer().draw(new JuliaSet(32768));
+        new SequentialTilingDrawer().draw(new JuliaSet(65536)); //MAX_SIZE_BEFORE_SPLIT = 2048 --> OK
     }
 
     @Override protected int R(int i, int j, int size) {

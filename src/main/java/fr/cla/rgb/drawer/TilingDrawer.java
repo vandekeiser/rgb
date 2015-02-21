@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
@@ -19,33 +20,36 @@ public abstract class TilingDrawer implements Drawer {
 
     @Override public final void draw(WholeDrawing drawing) {
         Path tempTilesPath = createTempTilesPath();
-        out.printf("ParallelReadyTilingDrawer/draw/will store tiles in temp directory: %s%n", tempTilesPath);
+        out.printf("%s/draw/will store tiles in temp directory: %s%n", getClass().getSimpleName(), tempTilesPath);
 
         //1. Get paths of temp tiles
         Instant beforeComputeTempTilesPaths = Instant.now();
         String[] imagesPaths = computeTempTilesPaths(drawing, tempTilesPath);
         Instant afterComputeTempTilesPaths = Instant.now();
-        out.printf("ParallelReadyTilingDrawer/draw/there will be %d tiles, computeTempTilesPaths took %s%n",
+        out.printf("%s/draw/there will be %d tiles, computeTempTilesPaths took %s%n",
+                getClass().getSimpleName(),
                 imagesPaths.length,
                 Duration.between(beforeComputeTempTilesPaths, afterComputeTempTilesPaths)
         );
 
         //2. Write temp tiles without holding on to any BufferedImage
-        out.printf("ParallelReadyTilingDrawer/draw/start rendering %d tiles%n", imagesPaths.length);
+        out.printf("%s/draw/start rendering %d tiles%n", getClass().getSimpleName(), imagesPaths.length);
         Instant beforeWriteTiles = Instant.now();
         writeTiles(drawing, tempTilesPath);
         Instant afterWriteTiles = Instant.now();
-        out.printf("ParallelReadyTilingDrawer/draw/done rendering %d tiles, it took %s%n",
+        out.printf("%s/draw/done rendering %d tiles, it took %s%n",
+                getClass().getSimpleName(),
                 imagesPaths.length,
                 Duration.between(beforeWriteTiles, afterWriteTiles)
         );
 
         //3. Use PNGJ (https://code.google.com/p/pngj/wiki/Snippets) to stitch the tiles together
-        out.printf("ParallelReadyTilingDrawer/draw/stitching tiles together%n");
+        out.printf("%s/draw/stitching tiles together%n", getClass().getSimpleName());
         Instant beforeStitchTilesTogether = Instant.now();
         stitchTilesTogether(imagesPaths, drawing.name());
         Instant afterStitchTilesTogether = Instant.now();
-        out.printf("ParallelReadyTilingDrawer/draw/done stitching %d tiles, it took %s%n",
+        out.printf("%s/draw/done stitching %d tiles, it took %s%n",
+                getClass().getSimpleName(),
                 imagesPaths.length,
                 Duration.between(beforeStitchTilesTogether, afterStitchTilesTogether)
         );
@@ -61,9 +65,11 @@ public abstract class TilingDrawer implements Drawer {
     }
 
     private void writeTiles(WholeDrawing drawing, Path tempTilesPath) {
+        AtomicInteger tilenb = new AtomicInteger(0);
         tile(drawing)
                 .map(Drawing::render)
                 .forEach(t -> {
+                    System.out.printf("%s/writeTiles/tilenb: %d%n", getClass().getSimpleName(), tilenb.incrementAndGet());
                     try (OutputStream out = outputStreamFor(t, tempTilesPath)) {
                         ImageIO.write(t.image, Drawing.IMG_TYPE, out);
                     } catch (IOException e) {

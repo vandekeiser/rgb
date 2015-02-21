@@ -56,25 +56,24 @@ public abstract class WholeDrawing extends Drawing {
                 .collect(Collectors.toList());
     }
     
-    //private static final int MAX_DRAWING_SIZE = 1024;
-    public static final int MAX_DRAWING_SIZE = 64;
-    
+    public static final int MAX_SIZE_BEFORE_SPLIT = 2048;
+
     /**
-     * @return this.size() / MAX_DRAWING_SIZE
-     * @throws BadTilingException if size()%MAX_DRAWING_SIZE!=0 && size()/MAX_DRAWING_SIZE!=0
+     * @return this.size() / MAX_SIZE_BEFORE_SPLIT
+     * @throws BadTilingException if size()%MAX_SIZE_BEFORE_SPLIT!=0 && size()/MAX_SIZE_BEFORE_SPLIT!=0
      */
     int nbOfLines() {
         int wholeSize = this.size();
-        int tilesQuotient = wholeSize / MAX_DRAWING_SIZE;
-        int tilesRemainder = wholeSize % MAX_DRAWING_SIZE;
+        int tilesQuotient = wholeSize / MAX_SIZE_BEFORE_SPLIT;
+        int tilesRemainder = wholeSize % MAX_SIZE_BEFORE_SPLIT;
 
         if(tilesQuotient==0) return 1;
 
         if(tilesQuotient!=0 && tilesRemainder !=0) {
             throw new BadTilingException(String.format(
-                "drawingSize=%d is not a multiple of MAX_DRAWING_SIZE=%d: remainder=%d",
+                "drawingSize=%d is not a multiple of MAX_SIZE_BEFORE_SPLIT=%d: remainder=%d",
                 wholeSize,
-                MAX_DRAWING_SIZE,
+                    MAX_SIZE_BEFORE_SPLIT,
                 tilesRemainder)
             );
         }
