@@ -50,3 +50,4 @@ TODO
  -Split properly in SquareDrawing (no Deque)/DrawingSpliterator (non-null trySplit)
  -Pic
  -Completable
+ -determiner nbtiles en fonction de x*y
