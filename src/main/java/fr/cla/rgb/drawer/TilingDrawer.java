@@ -16,8 +16,20 @@ import fr.cla.rgb.drawing.Tile;
 import fr.cla.rgb.drawing.WholeDrawing;
 import static java.lang.System.out;
 
-public abstract class TilingDrawer implements Drawer {
-
+public enum TilingDrawer implements Drawer {
+    
+    SEQUENTIAL {
+        @Override protected Stream<Tile> tile(WholeDrawing drawing) {
+            return drawing.orderedSplit();
+        }
+    },
+    PARALLEL_READY {
+        @Override protected Stream<Tile> tile(WholeDrawing drawing) {
+            return drawing.unorderedSplit();
+        }
+    },
+    ;
+    
     @Override public final void draw(WholeDrawing drawing) {
         Path tempTilesPath = createTempTilesPath();
         out.printf("%s/draw/will store tiles in temp directory: %s%n", getClass().getSimpleName(), tempTilesPath);

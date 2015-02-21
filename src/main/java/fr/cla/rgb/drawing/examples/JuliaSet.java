@@ -1,7 +1,7 @@
 package fr.cla.rgb.drawing.examples;
 
 import java.io.IOException;
-import fr.cla.rgb.drawer.SequentialTilingDrawer;
+import fr.cla.rgb.drawer.TilingDrawer;
 import fr.cla.rgb.drawing.WholeDrawing;
 
 public class JuliaSet extends WholeDrawing {
@@ -14,7 +14,7 @@ public class JuliaSet extends WholeDrawing {
         //new SequentialTilingDrawer().draw(new JuliaSet(8192));
         //new SequentialTilingDrawer().draw(new JuliaSet(16384));
         //new SequentialTilingDrawer().draw(new JuliaSet(32768));
-        new SequentialTilingDrawer().draw(new JuliaSet(65536)); //MAX_SIZE_BEFORE_SPLIT = 2048 --> OK
+        TilingDrawer.SEQUENTIAL.draw(new JuliaSet(65536)); //MAX_SIZE_BEFORE_SPLIT = 2048 --> OK
     }
 
     @Override protected int R(int i, int j, int size) {
