@@ -65,6 +65,7 @@ public class DrawingSplitTest {
     @Test public void drawM_tile() {new TilingDrawer().draw(new FirstTry(2048));}
 
     @Test public void drawXs_tileAndMerge() {
-            new TilingDrawer().draw(new FirstTry(128));
+            new TilingDrawer().draw(new FirstTry(2048));
         }
+
 }
