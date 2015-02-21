@@ -1,7 +1,8 @@
 package fr.cla.rgb.drawing;
 
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -26,48 +27,53 @@ public abstract class WholeDrawing extends Drawing {
         return StreamSupport.stream(new ParallelReadyDrawingSpliterator(this), true);
     }
 
-    public Deque<Tile> tileSequentially() {
-        int nbOfTiles = nbOfTiles();
-        int lines = nbOfTiles;
-
+    /**
+     * @return Split into lines: 
+     * width of tiles (X) unchanged, 
+     * height of tiles (Y) is whole height / nbOfLines()
+     * @throws BadTilingException if size() % nbOfLines() != 0
+     */
+    public List<Tile> tileSequentially() {
         int size = size();
+        int lines = nbOfLines();
+        
         int tileXSize = size;
-        int tileYSize = size/nbOfTiles;
-        int tileYSizeRemainder = size()%nbOfTiles;
-        if(tileYSizeRemainder!=0) throw new UnsupportedOperationException(String.format(
-                "nbOfTiles=%d is not a multiple of size=%d, remainder=%d",
-                nbOfTiles,
+        int tileYSize = size / lines;
+        int tileYSizeRemainder = size() % lines;
+        if(tileYSizeRemainder!=0) throw new BadTilingException(String.format(
+                "size=%d is not a multiple of lines=%d, remainder=%d",
                 size,
+                lines,
                 tileYSizeRemainder
         ));
 
-        System.out.println("nbOfTiles: " + nbOfTiles);
-        Deque<Tile> tiles = new LinkedList<>();
-
-        for(int line = 0; line < nbOfTiles; line++) {
-            tiles.add(
-                Tile.of(this)
+        return IntStream.range(0, lines)
+                .mapToObj(line -> Tile.of(this)
                         .sized(tileXSize, tileYSize)
-                        .offset(0, line*tileYSize)
+                        .offset(0, line * tileYSize)
                         .build()
-            );
-        }
-
-        return tiles;
+                )
+                .collect(Collectors.toList());
     }
+    
     //private static final int MAX_DRAWING_SIZE = 1024;
     public static final int MAX_DRAWING_SIZE = 64;
-    private int nbOfTiles() {
-        int drawingSize = this.size();
-        int tilesQuotient = drawingSize / MAX_DRAWING_SIZE;
-        int tilesRemainder = drawingSize % MAX_DRAWING_SIZE;
+    
+    /**
+     * @return this.size() / MAX_DRAWING_SIZE
+     * @throws BadTilingException if size()%MAX_DRAWING_SIZE!=0 && size()/MAX_DRAWING_SIZE!=0
+     */
+    int nbOfLines() {
+        int wholeSize = this.size();
+        int tilesQuotient = wholeSize / MAX_DRAWING_SIZE;
+        int tilesRemainder = wholeSize % MAX_DRAWING_SIZE;
 
         if(tilesQuotient==0) return 1;
 
         if(tilesQuotient!=0 && tilesRemainder !=0) {
-            throw new UnsupportedOperationException(String.format(
+            throw new BadTilingException(String.format(
                 "drawingSize=%d is not a multiple of MAX_DRAWING_SIZE=%d: remainder=%d",
-                drawingSize,
+                wholeSize,
                 MAX_DRAWING_SIZE,
                 tilesRemainder)
             );

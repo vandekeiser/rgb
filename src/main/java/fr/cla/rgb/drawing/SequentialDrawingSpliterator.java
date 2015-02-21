@@ -1,20 +1,15 @@
 package fr.cla.rgb.drawing;
 
-import java.util.Deque;
+import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
 public class SequentialDrawingSpliterator implements Spliterator<Tile> {
 
-    private final Deque<Tile> tiles;
+    private final List<Tile> tiles;
 
     public SequentialDrawingSpliterator(WholeDrawing drawing) {
         this.tiles = drawing.tileSequentially();
-        //TODO get stream <tile>
-        //!!! TilingDrawer.stitchTilesTogether attend un stream ordonne via drawing.split,
-        //  donc pe faire un autre split?
-        //Si ts les fichiers sont generes, peu importe pour les recoller ds quel ordre ils ont ete generes
-        // donc on peut en utiliser un autre
     }
 
     @Override public boolean tryAdvance(Consumer<? super Tile> action) {
@@ -22,15 +17,13 @@ public class SequentialDrawingSpliterator implements Spliterator<Tile> {
         boolean hasMoreElements = !tiles.isEmpty();
         if(!hasMoreElements) return false;
 
-        Tile next = tiles.removeFirst();
+        Tile next = tiles.remove(0);
         action.accept(next);
         return hasMoreElements;
     }
 
     @Override public Spliterator<Tile> trySplit() {
-        /*if(drawing.isSmallEnough())*/ return null;
-
-        //Pair<PngDrawing> split = drawing.splitIntoTwo();
+        return null; //Not attempting parallelism here
     }
 
     @Override public long estimateSize() {
@@ -38,6 +31,12 @@ public class SequentialDrawingSpliterator implements Spliterator<Tile> {
     }
 
     @Override public int characteristics() {
-        return 0;
+        return    SIZED      //TODO...
+                + SUBSIZED
+                + DISTINCT
+                //+ CONCURRENT
+                + NONNULL
+                //+ IMMUTABLE
+                ;
     }
 }

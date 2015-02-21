@@ -38,7 +38,7 @@ public class DrawingSplitTest {
         assertEquals(4, tiles.size());
     }
 
-    @Test(expectedExceptions = UnsupportedOperationException.class)
+    @Test(expectedExceptions = BadTilingException.class)
     public void illegalSplit() {
         WholeDrawing smallDrawing = new FirstTry(WholeDrawing.MAX_DRAWING_SIZE * 4 + 1);
         smallDrawing.orderedSplit();

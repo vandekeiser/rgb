@@ -1,30 +1,33 @@
 package fr.cla.rgb.drawing;
 
-import java.util.Deque;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
 public class ParallelReadyDrawingSpliterator implements Spliterator<Tile> {
 
-    private final Deque<Tile> tiles;
+    private final WholeDrawing whole;
+    private final int nbOfTiles;
 
-    public ParallelReadyDrawingSpliterator(WholeDrawing drawing) {
-        this.tiles = drawing.tileSequentially();
+    public ParallelReadyDrawingSpliterator(WholeDrawing whole) {
+        this.whole = whole;
         //TODO get stream <tile>
         //!!! TilingDrawer.stitchTilesTogether attend un stream ordonne via drawing.split,
         //  donc pe faire un autre split?
         //Si ts les fichiers sont generes, peu importe pour les recoller ds quel ordre ils ont ete generes
         // donc on peut en utiliser un autre
+        this.nbOfTiles = whole.nbOfLines();
     }
 
     @Override public boolean tryAdvance(Consumer<? super Tile> action) {
-        if(action==null) throw new NullPointerException();
-        boolean hasMoreElements = !tiles.isEmpty();
-        if(!hasMoreElements) return false;
-
-        Tile next = tiles.removeFirst();
-        action.accept(next);
-        return hasMoreElements;
+//        if(action==null) throw new NullPointerException();
+//        boolean hasMoreElements = !tiles.isEmpty();
+//        if(!hasMoreElements) return false;
+//
+//        Tile next = tiles.removeFirst();
+//        action.accept(next);
+//        return hasMoreElements;
+        
+        return false;
     }
 
     @Override public Spliterator<Tile> trySplit() {
@@ -34,10 +37,16 @@ public class ParallelReadyDrawingSpliterator implements Spliterator<Tile> {
     }
 
     @Override public long estimateSize() {
-        return tiles.size();
+        return this.nbOfTiles;
     }
 
     @Override public int characteristics() {
-        return 0;
+        return    SIZED      //TODO...
+                + SUBSIZED 
+                + DISTINCT 
+                + CONCURRENT 
+                + NONNULL 
+                + IMMUTABLE
+                ;
     }
 }
