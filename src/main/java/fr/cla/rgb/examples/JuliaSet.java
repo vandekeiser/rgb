@@ -11,25 +11,8 @@ public class JuliaSet extends SquareDrawing {
     }
 
     public static void main(String[] args) throws IOException {
-        //new BasicDrawer().draw(new JuliaSet());
-        new TilingDrawer().draw(new JuliaSet(2048));     //16384: OOME
+        new TilingDrawer().draw(new JuliaSet(16384));
     }
-//    Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
-//    	at java.awt.image.DataBufferInt.<init>(DataBufferInt.java:75)
-//    	at java.awt.image.Raster.createPackedRaster(Raster.java:467)
-//    	at java.awt.image.DirectColorModel.createCompatibleWritableRaster(DirectColorModel.java:1032)
-//    	at java.awt.image.BufferedImage.<init>(BufferedImage.java:331)
-//    	at fr.cla.rgb.RgbDrawing.draw(RgbDrawing.java:50)
-//    	at fr.cla.rgb.examples.JuliaSet.main(JuliaSet.java:9)
-//    	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-//    	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-//    	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-//    	at java.lang.reflect.Method.invoke(Method.java:483)
-//    	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:134)
-
-//    JAI
-//    Libraries are not on Maven Central
-//    Last stable release in 2006
 
     @Override protected int R(int i, int j, int size) {
         float x=D(i, size),y=D(j, size),X,Y,n=0;

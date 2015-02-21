@@ -49,7 +49,7 @@ public class DrawingSplitTest {
         smallDrawing.split();
     }
 
-    @Test public void drawX_basic() { new BasicDrawer().draw(new FirstTry(128)); }
+    @Test public void drawXS_basic() { new BasicDrawer().draw(new FirstTry(128)); }
     @Test public void drawS_basic() { new BasicDrawer().draw(new FirstTry(1024)); }
     @Test public void drawM_basic() { new BasicDrawer().draw(new FirstTry(2048)); }
 
@@ -66,7 +66,7 @@ public class DrawingSplitTest {
     }
     @AfterMethod public void after(ITestResult result) {
         System.out.printf(
-            "%s took: %s%n",
+            "TEST %s took: %s%n",
             result.getMethod().getMethodName(),
             Duration.between(whenTestMethodStarted, Instant.now())
         );

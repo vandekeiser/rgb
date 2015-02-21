@@ -43,7 +43,12 @@ public abstract class SquareDrawing extends Drawing {
         Deque<Tile> tiles = new LinkedList<>();
 
         for(int line = 0; line < nbOfTiles; line++) {
-            tiles.add(new Tile(this, tileXSize, tileYSize, 0, line*tileYSize));
+            tiles.add(
+                Tile.of(this)
+                        .sized(tileXSize, tileYSize)
+                        .offset(0, line*tileYSize)
+                        .build()
+            );
         }
 
         return tiles;

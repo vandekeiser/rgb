@@ -15,6 +15,11 @@ Goals:
 Times are measured on an old 2-cores machine
 
 
+//    JAI
+//    Libraries are not on Maven Central
+//    Last stable release in 2006
+
+
   public Stream<Point> points() {
 //        //DiagonalSierpinsky(8192): Rendering took: PT6.194S
 //        //JuliaSet(8192): Rendering took: PT4M19.659S
@@ -43,3 +48,5 @@ Times are measured on an old 2-cores machine
 TODO
  -Add finally for closes in PngjSamples
  -Split properly in SquareDrawing (no Deque)/DrawingSpliterator (non-null trySplit)
+ -Pic
+ -Completable
