@@ -44,7 +44,7 @@ public class DrawingSplitTest {
         smallDrawing.split();
     }
 
-    @Test public void drawXs_basic() {
+    @Test public void drawX_basic() {
         new BasicDrawer().draw(new FirstTry(128));
     }
     @Test public void drawS_basic() {
@@ -54,7 +54,7 @@ public class DrawingSplitTest {
         new BasicDrawer().draw(new FirstTry(2048));
     }
 
-    @Test public void drawXs_tile() {
+    @Test public void drawX_tile() {
         new TilingDrawer().draw(new FirstTry(128));
     }
     @Test public void drawS_tile() {
@@ -62,8 +62,12 @@ public class DrawingSplitTest {
     }
     @Test public void drawM_tile() {new TilingDrawer().draw(new FirstTry(2048));}
 
-    @Test public void drawXs_tileAndMerge() {
+    @Test public void drawS_tileAndMerge() {
+            new TilingDrawer().draw(new FirstTry(1024));
+        }
+    @Test public void drawM_tileAndMerge() {
             new TilingDrawer().draw(new FirstTry(2048));
         }
+    //@Test public void drawL_tileAndMerge() { new TilingDrawer().draw(new FirstTry(16384)); }
 
 }

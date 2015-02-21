@@ -16,7 +16,7 @@ public abstract class SquareDrawing extends Drawing {
     public final int size() {return xsize();}
     public final int wholeDrawingSize() {return size();}
     @Override protected String name() {
-        return getClass().getSimpleName()+Drawing.IMG_TYPE;
+        return getClass().getSimpleName() + "." + Drawing.IMG_TYPE;
     }
 
     @Override public String toString() {
@@ -52,6 +52,7 @@ public abstract class SquareDrawing extends Drawing {
         return tiles;
     }
     private static final int MAX_DRAWING_SIZE = 1024;
+    //private static final int MAX_DRAWING_SIZE = 64;
     private int nbOfTiles() {
         int drawingSize = this.size();
         int tilesQuotient = drawingSize / MAX_DRAWING_SIZE;

@@ -15,7 +15,13 @@ public class Tile extends Drawing {
     }
     public final int wholeDrawingSize() {return whole.size();}
     @Override protected String name() {
-        return whole.getClass().getSimpleName()+"_"+xoffset+"_"+yoffset+Drawing.IMG_TYPE;
+        return whole.getClass().getSimpleName()
+                + "_"
+                + xoffset
+                + "_"
+                + yoffset
+                + "."
+                + Drawing.IMG_TYPE;
     }
 
     @Override protected int r(int x, int y, int wholeDrawingSize) {
