@@ -27,13 +27,21 @@ public class ParallelReadyDrawingSpliterator implements Spliterator<Tile> {
 //        action.accept(next);
 //        return hasMoreElements;
         
-        return false;
+        //???
+        //TJRS RETOURNER FALSE (sauf 1 fois?) car les tiles sont grosses
+        // (ca serait pas pareil si on retournait un stream <point> mais on peut pas)
+        Tile next = null;
+        action.accept(next);
+        return false; 
     }
 
     @Override public Spliterator<Tile> trySplit() {
-        /*if(drawing.isSmallEnough())*/ return null;
-
+        /*if(drawing.isSmallEnough())*/
         //Pair<PngDrawing> split = drawing.splitIntoTwo();
+        
+        //s'inspirer du code tileSequentially
+        
+        return null;
     }
 
     @Override public long estimateSize() {
