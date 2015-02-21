@@ -2,7 +2,6 @@ package fr.cla.rgb;
 
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Spliterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -19,9 +18,12 @@ public abstract class SquareDrawing extends Drawing {
         return getClass().getSimpleName() + "." + Drawing.IMG_TYPE;
     }
 
-    public Stream<Tile> split() {
-        Spliterator<Tile> thisSpliterator = new SequentialDrawingSpliterator(this);
-        return StreamSupport.stream(thisSpliterator, false);
+    public Stream<Tile> orderedSplit() {
+        return StreamSupport.stream(new SequentialDrawingSpliterator(this), false);
+    }
+    
+    public Stream<Tile> unorderedSplit() {
+        return StreamSupport.stream(new ParallelReadyDrawingSpliterator(this), true);
     }
 
     public Deque<Tile> tileSequentially() {

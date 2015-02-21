@@ -51,3 +51,4 @@ TODO
  -Pic
  -Completable
  -determiner nbtiles en fonction de x*y
+ -!!stream(Spliterator<T> spliterator, boolean ____parallel____) {

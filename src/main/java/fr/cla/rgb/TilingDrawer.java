@@ -48,7 +48,7 @@ public class TilingDrawer {
 
     private String[] computeTempTilesPaths(SquareDrawing drawing, Path tempTilesPath) {
         return drawing
-                .split()
+                .orderedSplit()
                 .map(Drawing::name)
                 .map(t -> toPath(t, tempTilesPath))
                 .collect(Collectors.toList())
@@ -56,7 +56,7 @@ public class TilingDrawer {
     }
 
     private void writeTiles(SquareDrawing drawing, Path tempTilesPath) {
-        drawing.split()
+        drawing.orderedSplit()
                 .map(Drawing::render)
                 .forEach(t -> {
                     try (OutputStream out = outputStreamFor(t, tempTilesPath)) {

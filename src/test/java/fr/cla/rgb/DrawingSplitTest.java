@@ -17,28 +17,28 @@ public class DrawingSplitTest {
 	@Test
     public void neutralSplit() {
         SquareDrawing smallDrawing = new FirstTry(SquareDrawing.MAX_DRAWING_SIZE / 2);
-        Stream<Tile> smallDrawingSplit = smallDrawing.split();
+        Stream<Tile> smallDrawingSplit = smallDrawing.orderedSplit();
         Set<Drawing> tiles = smallDrawingSplit.collect(toSet());
         assertEquals(1, tiles.size());
 	}
 
     @Test public void neutralSplitLimit() {
         SquareDrawing smallDrawing = new FirstTry(SquareDrawing.MAX_DRAWING_SIZE);
-        Stream<Tile> smallDrawingSplit = smallDrawing.split();
+        Stream<Tile> smallDrawingSplit = smallDrawing.orderedSplit();
         Set<Drawing> tiles = smallDrawingSplit.collect(toSet());
         assertEquals(1, tiles.size());
     }
 
     @Test public void twoWaySplit() {
         SquareDrawing smallDrawing = new FirstTry(SquareDrawing.MAX_DRAWING_SIZE * 2);
-        Stream<Tile> smallDrawingSplit = smallDrawing.split();
+        Stream<Tile> smallDrawingSplit = smallDrawing.orderedSplit();
         Set<Drawing> tiles = smallDrawingSplit.collect(toSet());
         assertEquals(2, tiles.size());
     }
 
     @Test public void fourWaySplit() {
         SquareDrawing smallDrawing = new FirstTry(SquareDrawing.MAX_DRAWING_SIZE * 4);
-        Stream<Tile> smallDrawingSplit = smallDrawing.split();
+        Stream<Tile> smallDrawingSplit = smallDrawing.orderedSplit();
         Set<Drawing> tiles = smallDrawingSplit.collect(toSet());
         assertEquals(4, tiles.size());
     }
@@ -46,7 +46,7 @@ public class DrawingSplitTest {
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void illegalSplit() {
         SquareDrawing smallDrawing = new FirstTry(SquareDrawing.MAX_DRAWING_SIZE * 4 + 1);
-        smallDrawing.split();
+        smallDrawing.orderedSplit();
     }
 
     @Test public void drawXS_basic() { new BasicDrawer().draw(new FirstTry(128)); }
@@ -56,7 +56,7 @@ public class DrawingSplitTest {
     @Test public void drawS_tiling() { new TilingDrawer().draw(new FirstTry(1024)); }
     @Test public void drawM_tiling() { new TilingDrawer().draw(new FirstTry(2048)); }
     @Test public void drawL_tiling() { new TilingDrawer().draw(new FirstTry(8192)); }
-    @Test public void drawXL_tiling() { new TilingDrawer().draw(new FirstTry(16384)); }
+    //@Test public void drawXL_tiling() { new TilingDrawer().draw(new FirstTry(16384)); }
 
 
     //---------Test setup stuff VVVVVVVVVVV
