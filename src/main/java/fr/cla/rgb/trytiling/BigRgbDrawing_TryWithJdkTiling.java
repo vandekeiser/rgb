@@ -1,19 +1,17 @@
 package fr.cla.rgb.trytiling;
 
-import fr.cla.rgb.examples.AllBlue;
-import fr.cla.rgb.examples.AllRed;
-
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Locale;
-
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
+import fr.cla.rgb.examples.AllBlue;
+import fr.cla.rgb.examples.AllRed;
 import static java.lang.System.out;
 
 /**

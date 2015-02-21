@@ -1,11 +1,10 @@
 package fr.cla.rgb.examples;
 
-import fr.cla.rgb.BasicDrawer;
-import fr.cla.rgb.Drawing;
-
 import java.io.IOException;
+import fr.cla.rgb.BasicDrawer;
+import fr.cla.rgb.SquareDrawing;
 
-public class AllBlue extends Drawing {
+public class AllBlue extends SquareDrawing {
 
     public AllBlue(int size) {
         super(size);

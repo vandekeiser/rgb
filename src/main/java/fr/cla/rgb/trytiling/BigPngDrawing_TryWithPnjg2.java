@@ -1,12 +1,5 @@
 package fr.cla.rgb.trytiling;
 
-import fr.cla.rgb.BasicDrawer;
-import fr.cla.rgb.Drawing;
-import fr.cla.rgb.PngjSamples;
-import fr.cla.rgb.examples.AllBlue;
-import fr.cla.rgb.examples.AllRed;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
@@ -14,7 +7,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.imageio.ImageIO;
+import fr.cla.rgb.BasicDrawer;
+import fr.cla.rgb.Drawing;
+import fr.cla.rgb.PngjSamples;
+import fr.cla.rgb.examples.AllBlue;
+import fr.cla.rgb.examples.AllRed;
 import static fr.cla.rgb.Drawing.IMG_TYPE;
 import static java.lang.System.out;
 

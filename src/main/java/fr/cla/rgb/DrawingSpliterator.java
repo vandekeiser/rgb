@@ -1,8 +1,6 @@
 package fr.cla.rgb;
 
 import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
@@ -10,7 +8,7 @@ public class DrawingSpliterator implements Spliterator<Tile> {
 
     private final Deque<Tile> tiles;
 
-    public DrawingSpliterator(Drawing drawing) {
+    public DrawingSpliterator(SquareDrawing drawing) {
         this.tiles = drawing.tile();
     }
 

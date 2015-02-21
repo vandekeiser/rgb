@@ -1,11 +1,10 @@
 package fr.cla.rgb;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.time.Duration;
 import java.time.Instant;
-
+import javax.imageio.ImageIO;
 import static java.lang.System.out;
 
 public class BasicDrawer {
@@ -14,7 +13,7 @@ public class BasicDrawer {
         return drawing.getClass().getSimpleName() + "." + Drawing.IMG_TYPE;
     }
 
-    public final void draw(Drawing drawing) {
+    public final void draw(SquareDrawing drawing) {
         try {
             doDraw(drawing);
         } catch (IOException e) {
@@ -22,7 +21,7 @@ public class BasicDrawer {
         }
     }
 
-    private void doDraw(Drawing drawing) throws IOException {
+    private void doDraw(SquareDrawing drawing) throws IOException {
         //1. Rendering
         out.println("Rendering...");
         Instant beforeRendering = Instant.now();

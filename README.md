@@ -13,3 +13,30 @@ Goals:
 * Test parallel streams speedups in various cases
  
 Times are measured on an old 2-cores machine
+
+
+
+  public Stream<Point> points() {
+//        //DiagonalSierpinsky(8192): Rendering took: PT6.194S
+//        //JuliaSet(8192): Rendering took: PT4M19.659S
+//        return IntStream.range(0, size()).mapToObj(
+//                x -> IntStream.range(0, size()).mapToObj(
+//                        y -> new Point(x, y)
+//                )
+//        ).flatMap(identity()); //Workaround: IntStream.flatMapToObj doesn't exist
+
+        //DiagonalSierpinsky(8192): Rendering took: PT8.551S
+        //JuliaSet(8192): Rendering took: PT2M29.091S
+        return IntStream.range(0, xsize).mapToObj(
+                x -> IntStream.range(0, ysize).mapToObj(
+                        y -> new Point(x, y)
+                )
+        ).flatMap(identity()); //Workaround: IntStream.flatMapToObj doesn't exist
+
+        //OOME
+//        return IntStream.range(0, size()).mapToObj(
+//                x -> IntStream.range(0, size()).mapToObj(
+//                        y -> new Point(x, y)
+//                )
+//        ).flatMap(identity()).collect(toList()).stream(); //Workaround: IntStream.flatMapToObj doesn't exist
+    }

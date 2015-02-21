@@ -1,11 +1,10 @@
 package fr.cla.rgb.examples;
 
-import fr.cla.rgb.Drawing;
+import java.io.IOException;
+import fr.cla.rgb.SquareDrawing;
 import fr.cla.rgb.TilingDrawer;
 
-import java.io.IOException;
-
-public class JuliaSet extends Drawing {
+public class JuliaSet extends SquareDrawing {
 
     public JuliaSet(int size) {
         super(size);

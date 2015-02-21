@@ -1,14 +1,12 @@
 package fr.cla.rgb.examples;
 
-import fr.cla.rgb.BasicDrawer;
-import fr.cla.rgb.Drawing;
-import fr.cla.rgb.U;
-
 import java.io.IOException;
-
+import fr.cla.rgb.BasicDrawer;
+import fr.cla.rgb.SquareDrawing;
+import fr.cla.rgb.U;
 import static java.lang.Math.sqrt;
 
-public class ParabolicVisor extends Drawing {
+public class ParabolicVisor extends SquareDrawing {
 
     public ParabolicVisor(int size) {
         super(size);

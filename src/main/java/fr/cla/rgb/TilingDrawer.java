@@ -1,26 +1,18 @@
 package fr.cla.rgb;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.*;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.imageio.ImageIO;
-import static java.lang.System.out;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 public class TilingDrawer {
 
-    public static String imageFileName(Drawing drawing) {
+    public static String imageFileName(SquareDrawing drawing) {
         return drawing.getClass().getSimpleName() + "." + Drawing.IMG_TYPE;
     }
 
-    public final void draw(Drawing drawing) {
-        //out.println("Rendering...");
-        //Instant beforeRendering = Instant.now();
+    public final void draw(SquareDrawing drawing) {
         List<NamedImage> collectedNamedImages = drawing.split()
                 .map(Tile::renderTile)
                 .collect(toList());

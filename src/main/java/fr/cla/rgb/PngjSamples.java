@@ -1,14 +1,13 @@
 package fr.cla.rgb;
 
+import java.io.File;
+import java.util.Arrays;
 import ar.com.hjg.pngj.ImageInfo;
 import ar.com.hjg.pngj.ImageLineInt;
 import ar.com.hjg.pngj.PngReader;
 import ar.com.hjg.pngj.PngWriter;
 import ar.com.hjg.pngj.chunks.ChunkCopyBehaviour;
 import ar.com.hjg.pngj.chunks.ChunkLoadBehaviour;
-
-import java.io.File;
-import java.util.Arrays;
 
 public class PngjSamples {
 

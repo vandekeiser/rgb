@@ -1,16 +1,14 @@
 package fr.cla.rgb.trytiling;
 
-import fr.cla.rgb.PngjSamples;
-import fr.cla.rgb.examples.AllBlue;
-import fr.cla.rgb.examples.AllRed;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
+import javax.imageio.ImageIO;
+import fr.cla.rgb.PngjSamples;
+import fr.cla.rgb.examples.AllBlue;
+import fr.cla.rgb.examples.AllRed;
 import static java.lang.System.out;
 
 /**

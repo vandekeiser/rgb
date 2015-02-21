@@ -1,14 +1,12 @@
 package fr.cla.rgb.examples;
 
-import fr.cla.rgb.BasicDrawer;
-import fr.cla.rgb.Drawing;
-import fr.cla.rgb.U;
-
 import java.io.IOException;
-
+import fr.cla.rgb.BasicDrawer;
+import fr.cla.rgb.SquareDrawing;
+import fr.cla.rgb.U;
 import static java.lang.Math.sin;
 
-public class WavySheet extends Drawing {
+public class WavySheet extends SquareDrawing {
 
     public WavySheet(int size) {
         super(size);

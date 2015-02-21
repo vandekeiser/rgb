@@ -1,11 +1,10 @@
 package fr.cla.rgb.examples;
 
-import fr.cla.rgb.BasicDrawer;
-import fr.cla.rgb.Drawing;
-
 import java.io.IOException;
+import fr.cla.rgb.BasicDrawer;
+import fr.cla.rgb.SquareDrawing;
 
-public class FirstTry extends Drawing {
+public class FirstTry extends SquareDrawing {
 
     public FirstTry(int size) {
         super(size);

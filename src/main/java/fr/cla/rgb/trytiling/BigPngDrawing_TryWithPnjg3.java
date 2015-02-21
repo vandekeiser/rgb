@@ -1,16 +1,14 @@
 package fr.cla.rgb.trytiling;
 
-import fr.cla.rgb.BasicDrawer;
-import fr.cla.rgb.Drawing;
-import fr.cla.rgb.PngjSamples;
-import fr.cla.rgb.examples.FirstTry;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.List;
 import java.util.stream.IntStream;
-
+import javax.imageio.ImageIO;
+import fr.cla.rgb.BasicDrawer;
+import fr.cla.rgb.PngjSamples;
+import fr.cla.rgb.SquareDrawing;
+import fr.cla.rgb.examples.FirstTry;
 import static fr.cla.rgb.Drawing.IMG_TYPE;
 import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
@@ -19,10 +17,10 @@ import static java.util.stream.Collectors.toList;
  */
 public class BigPngDrawing_TryWithPnjg3 {
 
-    private final Drawing big;
+    private final SquareDrawing big;
     private final String imageFileName;
 
-    public BigPngDrawing_TryWithPnjg3(Drawing big) {
+    public BigPngDrawing_TryWithPnjg3(SquareDrawing big) {
         this.big = big;
         this.imageFileName = BasicDrawer.imageFileName(this.big);
     }
