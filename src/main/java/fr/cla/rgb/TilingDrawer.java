@@ -50,6 +50,7 @@ public class TilingDrawer {
                     Paths.get(System.getProperty("java.io.tmpdir")),
                     "tiles_"
             );
+            System.out.println("TilingDrawer using temp: " + temp);
             return temp;
         } catch (IOException e) {
             throw new UncheckedIOException(e);

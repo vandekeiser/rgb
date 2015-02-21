@@ -51,8 +51,8 @@ public abstract class SquareDrawing extends Drawing {
 
         return tiles;
     }
-    private static final int MAX_DRAWING_SIZE = 1024;
-    //private static final int MAX_DRAWING_SIZE = 64;
+    //private static final int MAX_DRAWING_SIZE = 1024;
+    public static final int MAX_DRAWING_SIZE = 64;
     private int nbOfTiles() {
         int drawingSize = this.size();
         int tilesQuotient = drawingSize / MAX_DRAWING_SIZE;
