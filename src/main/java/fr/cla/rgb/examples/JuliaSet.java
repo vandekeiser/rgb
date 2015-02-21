@@ -1,8 +1,8 @@
 package fr.cla.rgb.examples;
 
 import java.io.IOException;
+import fr.cla.rgb.SequentialTilingDrawer;
 import fr.cla.rgb.SquareDrawing;
-import fr.cla.rgb.TilingDrawer;
 
 public class JuliaSet extends SquareDrawing {
 
@@ -13,7 +13,7 @@ public class JuliaSet extends SquareDrawing {
     public static void main(String[] args) throws IOException {
 //        TilingDrawer/draw/done rendering 64 tiles, it took PT1M11.424S
 //        TilingDrawer/draw/done stitching 64 tiles, it took PT25.971S
-        new TilingDrawer().draw(new JuliaSet(4096));
+        new SequentialTilingDrawer().draw(new JuliaSet(4096));
     }
 
     @Override protected int R(int i, int j, int size) {

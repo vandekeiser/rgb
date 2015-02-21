@@ -53,9 +53,9 @@ public class DrawingSplitTest {
     @Test public void drawS_basic() { new BasicDrawer().draw(new FirstTry(1024)); }
     @Test public void drawM_basic() { new BasicDrawer().draw(new FirstTry(2048)); }
 
-    @Test public void drawS_tiling() { new TilingDrawer().draw(new FirstTry(1024)); }
-    @Test public void drawM_tiling() { new TilingDrawer().draw(new FirstTry(2048)); }
-    @Test public void drawL_tiling() { new TilingDrawer().draw(new FirstTry(8192)); }
+    @Test public void drawS_tiling() { new SequentialTilingDrawer().draw(new FirstTry(1024)); }
+    @Test public void drawM_tiling() { new SequentialTilingDrawer().draw(new FirstTry(2048)); }
+    @Test public void drawL_tiling() { new SequentialTilingDrawer().draw(new FirstTry(8192)); }
     //@Test public void drawXL_tiling() { new TilingDrawer().draw(new FirstTry(16384)); }
 
 
