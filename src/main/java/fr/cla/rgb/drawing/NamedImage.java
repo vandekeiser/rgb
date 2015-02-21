@@ -1,10 +1,10 @@
-package fr.cla.rgb;
+package fr.cla.rgb.drawing;
 
 import java.awt.image.BufferedImage;
 
-class NamedImage {
-    final String name;
-    final BufferedImage image;
+public class NamedImage {
+    public final String name;
+    public final BufferedImage image;
 
     NamedImage(BufferedImage image, String name) {
         this.image = image;

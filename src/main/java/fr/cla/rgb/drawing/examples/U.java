@@ -1,4 +1,4 @@
-package fr.cla.rgb;
+package fr.cla.rgb.drawing.examples;
 
 public enum U {
     ;

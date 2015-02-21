@@ -1,4 +1,4 @@
-package fr.cla.rgb;
+package fr.cla.rgb.drawer;
 
 import java.io.File;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ import ar.com.hjg.pngj.chunks.ChunkLoadBehaviour;
  *
  * TODO add finally for closes
  */
-public class PngjSamples {
+public class PNGJ {
 
     public static void doTiling(String tiles[], String dest, int nTilesX) {
         int ntiles = tiles.length;

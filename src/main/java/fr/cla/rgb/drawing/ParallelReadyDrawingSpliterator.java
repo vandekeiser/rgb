@@ -1,14 +1,14 @@
-package fr.cla.rgb;
+package fr.cla.rgb.drawing;
 
 import java.util.Deque;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-public class SequentialDrawingSpliterator implements Spliterator<Tile> {
+public class ParallelReadyDrawingSpliterator implements Spliterator<Tile> {
 
     private final Deque<Tile> tiles;
 
-    public SequentialDrawingSpliterator(SquareDrawing drawing) {
+    public ParallelReadyDrawingSpliterator(WholeDrawing drawing) {
         this.tiles = drawing.tileSequentially();
         //TODO get stream <tile>
         //!!! TilingDrawer.stitchTilesTogether attend un stream ordonne via drawing.split,

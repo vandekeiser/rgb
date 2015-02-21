@@ -1,25 +1,25 @@
-package fr.cla.rgb;
+package fr.cla.rgb.drawing;
 
 public class Tile extends Drawing {
 
-    private final SquareDrawing whole;
+    private final WholeDrawing whole;
     private final int xoffset, yoffset;
 
-    private Tile(SquareDrawing whole, int xsize, int ysize, int xoffset, int yoffset) {
+    private Tile(WholeDrawing whole, int xsize, int ysize, int xoffset, int yoffset) {
         super(xsize, ysize);
         this.whole = whole;
         this.xoffset = xoffset;
         this.yoffset = yoffset;
     }
 
-    @Override protected String name() {
+    @Override public String name() {
         return whole.getClass().getSimpleName()
                 + "_"
                 + xoffset
                 + "_"
                 + yoffset
                 + "."
-                + Drawing.IMG_TYPE;
+                + IMG_TYPE;
     }
 
     @Override protected int R(int x, int y, int wholeDrawingSize) {
@@ -33,15 +33,15 @@ public class Tile extends Drawing {
     }
     public final int wholeDrawingSize() {return whole.size();}
 
-    public static Builder of(SquareDrawing whole) {
+    public static Builder of(WholeDrawing whole) {
         return new Builder(whole);
     }
 
     public static class Builder {
-        private final SquareDrawing whole;
+        private final WholeDrawing whole;
         private int xsize, ysize, xoffset, yoffset;
 
-        Builder(SquareDrawing whole) {
+        Builder(WholeDrawing whole) {
             this.whole = whole;
         }
 

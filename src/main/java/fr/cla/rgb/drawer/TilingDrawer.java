@@ -1,4 +1,4 @@
-package fr.cla.rgb;
+package fr.cla.rgb.drawer;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -9,11 +9,15 @@ import java.time.Instant;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
+import fr.cla.rgb.drawing.Drawing;
+import fr.cla.rgb.drawing.NamedImage;
+import fr.cla.rgb.drawing.Tile;
+import fr.cla.rgb.drawing.WholeDrawing;
 import static java.lang.System.out;
 
-public abstract class TilingDrawer {
+public abstract class TilingDrawer implements Drawer {
 
-    public final void draw(SquareDrawing drawing) {
+    @Override public final void draw(WholeDrawing drawing) {
         Path tempTilesPath = createTempTilesPath();
         out.printf("ParallelReadyTilingDrawer/draw/will store tiles in temp directory: %s%n", tempTilesPath);
 
@@ -47,7 +51,7 @@ public abstract class TilingDrawer {
         );
     }
     
-    private String[] computeTempTilesPaths(SquareDrawing drawing, Path tempTilesPath) {
+    private String[] computeTempTilesPaths(WholeDrawing drawing, Path tempTilesPath) {
         return drawing
                 .orderedSplit() //We'll have to stitch tiles together from first line to last line
                 .map(Drawing::name)
@@ -56,7 +60,7 @@ public abstract class TilingDrawer {
                 .toArray(new String[0]);
     }
 
-    private void writeTiles(SquareDrawing drawing, Path tempTilesPath) {
+    private void writeTiles(WholeDrawing drawing, Path tempTilesPath) {
         tile(drawing)
                 .map(Drawing::render)
                 .forEach(t -> {
@@ -72,14 +76,14 @@ public abstract class TilingDrawer {
      * @param drawing The drawing to split
      * @return An ordered Stream in sequential case, and an unordered Stream in the parallel-ready case
      */
-    protected abstract Stream<Tile> tile(SquareDrawing drawing);
+    protected abstract Stream<Tile> tile(WholeDrawing drawing);
 
     private void stitchTilesTogether(String[] imagesPaths, String wholeImageName) {
-        PngjSamples.doTiling (
-                    imagesPaths,
-                    wholeImageName,
-                    1 //Image is split into lines, so 1 image per row
-                );
+        PNGJ.doTiling(
+                imagesPaths,
+                wholeImageName,
+                1 //Image is split into lines, so 1 image per row
+        );
     }
 
     private String toPath(String tileName, Path tempTilesPath) {

@@ -1,4 +1,4 @@
-package fr.cla.rgb;
+package fr.cla.rgb.drawing;
 
 import java.awt.image.BufferedImage;
 import java.util.stream.IntStream;
@@ -17,7 +17,7 @@ public abstract class Drawing {
     public final int xsize() { return xsize; }
     public final int ysize() { return ysize; }
 
-    final NamedImage render() {
+    public final NamedImage render() {
         BufferedImage img = new BufferedImage(xsize, ysize, BufferedImage.TYPE_INT_RGB);
 
         //__Should__ be threadsafe since we write to different pixels, so could use parallel()
@@ -47,7 +47,7 @@ public abstract class Drawing {
     /**
      * @return The future file's name
      */
-    protected abstract String name();
+    public abstract String name();
 
     private int RGB(Point p, int wholeDrawingsize) {
         int x = p.x, y = p.y, s = wholeDrawingsize;

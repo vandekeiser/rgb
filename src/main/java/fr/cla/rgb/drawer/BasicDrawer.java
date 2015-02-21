@@ -1,15 +1,17 @@
-package fr.cla.rgb;
+package fr.cla.rgb.drawer;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.time.Duration;
 import java.time.Instant;
 import javax.imageio.ImageIO;
+import fr.cla.rgb.drawing.Drawing;
+import fr.cla.rgb.drawing.WholeDrawing;
 import static java.lang.System.out;
 
-public class BasicDrawer {
+public class BasicDrawer implements Drawer {
 
-    public final void draw(SquareDrawing drawing) {
+    @Override public final void draw(WholeDrawing drawing) {
         try {
             doDraw(drawing);
         } catch (IOException e) {
@@ -17,7 +19,7 @@ public class BasicDrawer {
         }
     }
 
-    private void doDraw(SquareDrawing drawing) throws IOException {
+    private void doDraw(WholeDrawing drawing) throws IOException {
         //1. Rendering
         out.println("Rendering...");
         Instant beforeRendering = Instant.now();

@@ -1,4 +1,4 @@
-package fr.cla.rgb;
+package fr.cla.rgb.drawing;
 
 public class Point {
 

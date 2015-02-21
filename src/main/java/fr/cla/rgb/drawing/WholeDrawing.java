@@ -1,21 +1,21 @@
-package fr.cla.rgb;
+package fr.cla.rgb.drawing;
 
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public abstract class SquareDrawing extends Drawing {
+public abstract class WholeDrawing extends Drawing {
 
-    protected SquareDrawing(int size) {
+    protected WholeDrawing(int size) {
         super(size, size);
     }
 
     final int size() {return xsize();}
     protected final int wholeDrawingSize() {return size();}
 
-    @Override protected final String name() {
-        return getClass().getSimpleName() + "." + Drawing.IMG_TYPE;
+    @Override public final String name() {
+        return getClass().getSimpleName() + "." + IMG_TYPE;
     }
 
     public Stream<Tile> orderedSplit() {
