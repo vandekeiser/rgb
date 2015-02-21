@@ -26,15 +26,19 @@ public abstract class Drawing {
     }
 
     public NamedImage render() {
-        int wholeDrawingSize = wholeDrawingSize();
         BufferedImage img = new BufferedImage(xsize, ysize, BufferedImage.TYPE_INT_RGB);
 
         //__Should__ be threadsafe since we write to different pixels, so could use parallel()
         //The size of the whole drawing is used in calculating the RGB values of each pixel
-        points().forEach(p -> img.setRGB(p.x, p.y, rgb(p, wholeDrawingSize)));
+        points().forEach(p ->
+                img.setRGB(
+                        p.x,
+                        p.y,
+                        rgb(p, wholeDrawingSize())
+                )
+        );
 
-        String name = name();
-        return new NamedImage(img, name);
+        return new NamedImage(img, name());
     }
     protected abstract String name();
 
@@ -45,6 +49,12 @@ public abstract class Drawing {
     protected abstract int r(int x, int y, int wholeDrawingsize);
     protected abstract int g(int x, int y, int wholeDrawingsize);
     protected abstract int b(int x, int y, int wholeDrawingsize);
+
+    /**
+     * Used by some drawings, in addition to the (x, y) pixel coordinate,
+     * to compute the pixel's RGB.
+     * @return
+     */
     protected abstract int wholeDrawingSize();
 
 }

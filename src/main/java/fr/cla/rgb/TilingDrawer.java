@@ -13,11 +13,16 @@ public class TilingDrawer {
 
     public final void draw(SquareDrawing drawing) {
         Path tempTilesPath = createTempTilesPath();
-        List<NamedImage> collectedNamedImages = drawing.split()
-                .map(Drawing::render)
-                .collect(toList());
 
-        collectedNamedImages.stream().forEach(t -> {
+        //1. Get paths of temp tiles
+        String[] collectedImagesPaths = drawing.split()
+                .map(Drawing::name)
+                .map(t -> toPath(t, tempTilesPath))
+                .collect(Collectors.toList())
+                .toArray(new String[0]);
+
+        //2. Write temp tiles without holding on to any BufferedImage
+        drawing.split().map(Drawing::render).forEach(t -> {
             try (OutputStream out = outputStreamFor(t, tempTilesPath)) {
                 ImageIO.write(t.getImage(), Drawing.IMG_TYPE, out);
             } catch (IOException e) {
@@ -25,14 +30,9 @@ public class TilingDrawer {
             }
         });
 
-        String[] collectedImagesNames = collectedNamedImages.stream()
-                .map(NamedImage::getName)
-                .map(t -> toPath(t, tempTilesPath))
-                .collect(Collectors.toList())
-                .toArray(new String[collectedNamedImages.size()]);
-
+        //3. Use PNGJ (https://code.google.com/p/pngj/wiki/Snippets) to stick the tiles together
         PngjSamples.doTiling (
-            collectedImagesNames,
+            collectedImagesPaths,
             drawing.name(),
             1 //Image is split into lines, so 1 image per row
         );
