@@ -1,6 +1,7 @@
 package fr.cla.rgb;
 
 import java.io.*;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -45,7 +46,10 @@ public class TilingDrawer {
 
     private Path createTempTilesPath() {
         try {
-            Path temp = Files.createTempDirectory(Paths.get("."), "tiles_");
+            Path temp = Files.createTempDirectory(
+                    Paths.get(System.getProperty("java.io.tmpdir")),
+                    "tiles_"
+            );
             return temp;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
