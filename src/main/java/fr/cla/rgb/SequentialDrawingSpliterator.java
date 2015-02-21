@@ -4,12 +4,17 @@ import java.util.Deque;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-public class DrawingSpliterator implements Spliterator<Tile> {
+public class SequentialDrawingSpliterator implements Spliterator<Tile> {
 
     private final Deque<Tile> tiles;
 
-    public DrawingSpliterator(SquareDrawing drawing) {
-        this.tiles = drawing.tile();
+    public SequentialDrawingSpliterator(SquareDrawing drawing) {
+        this.tiles = drawing.tileSequentially();
+        //TODO get stream <tile>
+        //!!! TilingDrawer.stitchTilesTogether attend un stream ordonne via drawing.split,
+        //  donc pe faire un autre split?
+        //Si ts les fichiers sont generes, peu importe pour les recoller ds quel ordre ils ont ete generes
+        // donc on peut en utiliser un autre
     }
 
     @Override public boolean tryAdvance(Consumer<? super Tile> action) {

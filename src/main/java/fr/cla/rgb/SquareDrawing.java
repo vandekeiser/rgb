@@ -20,11 +20,11 @@ public abstract class SquareDrawing extends Drawing {
     }
 
     public Stream<Tile> split() {
-        Spliterator<Tile> thisSpliterator = new DrawingSpliterator(this);
+        Spliterator<Tile> thisSpliterator = new SequentialDrawingSpliterator(this);
         return StreamSupport.stream(thisSpliterator, false);
     }
 
-    public Deque<Tile> tile() {
+    public Deque<Tile> tileSequentially() {
         int nbOfTiles = nbOfTiles();
         int lines = nbOfTiles;
 
