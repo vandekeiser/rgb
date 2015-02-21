@@ -1,7 +1,5 @@
 package fr.cla.rgb;
 
-import java.awt.image.BufferedImage;
-
 public class Tile extends Drawing {
 
     private final SquareDrawing whole;
