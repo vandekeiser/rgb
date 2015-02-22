@@ -1,51 +1,44 @@
 package fr.cla.rgb.drawing;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
 public class ParallelReadyDrawingSpliterator implements Spliterator<Tile> {
 
-    private final WholeDrawing whole;
-    private final int nbOfTiles;
+    private final List<Tile> tiles;
 
     public ParallelReadyDrawingSpliterator(WholeDrawing whole) {
-        this.whole = whole;
-        //TODO get stream <tile>
         //!!! TilingDrawer.stitchTilesTogether attend un stream ordonne via drawing.split,
-        //  donc pe faire un autre split?
         //Si ts les fichiers sont generes, peu importe pour les recoller ds quel ordre ils ont ete generes
         // donc on peut en utiliser un autre
-        this.nbOfTiles = whole.nbOfLines();
+        this(whole.tileSequentially());
+    }
+    
+    private ParallelReadyDrawingSpliterator(List<Tile> tiles) {
+        this.tiles = tiles;
     }
 
     @Override public boolean tryAdvance(Consumer<? super Tile> action) {
-//        if(action==null) throw new NullPointerException();
-//        boolean hasMoreElements = !tiles.isEmpty();
-//        if(!hasMoreElements) return false;
-//
-//        Tile next = tiles.removeFirst();
-//        action.accept(next);
-//        return hasMoreElements;
-        
-        //???
-        //TJRS RETOURNER FALSE (sauf 1 fois?) car les tiles sont grosses
-        // (ca serait pas pareil si on retournait un stream <point> mais on peut pas)
-        Tile next = null;
+        if(tiles.size()!=1) throw new IllegalStateException("nbOfTiles!=1");
+        Tile next = tiles.get(0);
         action.accept(next);
         return false; 
     }
 
     @Override public Spliterator<Tile> trySplit() {
-        /*if(drawing.isSmallEnough())*/
-        //Pair<PngDrawing> split = drawing.splitIntoTwo();
-        
-        //s'inspirer du code tileSequentially
-        
-        return null;
+        //subList is a view so need to prevent ConcurrentModificationException from removeAll
+//        System.out.println("nbOfTiles: " + tiles.size());
+//        System.out.println("tiles: " + tiles);
+        List<Tile> top = new ArrayList<>(tiles.subList(0, tiles.size() / 2));
+
+        this.tiles.removeAll(top);
+        return new ParallelReadyDrawingSpliterator(top);
     }
 
     @Override public long estimateSize() {
-        return this.nbOfTiles;
+        return this.tiles.size();
     }
 
     @Override public int characteristics() {
