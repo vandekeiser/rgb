@@ -11,7 +11,7 @@ public class AllBlue extends WholeDrawing {
     }
 
     public static void main(String[] args) throws IOException {
-        new BasicDrawer().draw(new AllBlue(128));
+        BasicDrawer.INSTANCE.draw(new AllBlue(128));
     }
 
     @Override protected int R(int x, int y, int size) {

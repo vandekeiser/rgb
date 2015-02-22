@@ -20,11 +20,11 @@ public abstract class WholeDrawing extends Drawing {
     }
 
     public Stream<Tile> orderedSplit() {
-        return StreamSupport.stream(new SequentialDrawingSpliterator(this), false);
+        return StreamSupport.stream(new SequentialSpliterator(this), false);
     }
     
     public Stream<Tile> unorderedSplit() {
-        return StreamSupport.stream(new ParallelReadyDrawingSpliterator(this), true);
+        return StreamSupport.stream(new ParallelSpliterator(this), true);
     }
 
     /**

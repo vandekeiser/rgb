@@ -16,19 +16,7 @@ import fr.cla.rgb.drawing.Tile;
 import fr.cla.rgb.drawing.WholeDrawing;
 import static java.lang.System.out;
 
-public enum TilingDrawer implements Drawer {
-    
-    SEQUENTIAL {
-        @Override protected Stream<Tile> tile(WholeDrawing drawing) {
-            return drawing.orderedSplit();
-        }
-    },
-    PARALLEL_READY {
-        @Override protected Stream<Tile> tile(WholeDrawing drawing) {
-            return drawing.unorderedSplit();
-        }
-    },
-    ;
+public abstract class TilingDrawer implements Drawer {
     
     @Override public final void draw(WholeDrawing drawing) {
         Path tempTilesPath = createTempTilesPath();

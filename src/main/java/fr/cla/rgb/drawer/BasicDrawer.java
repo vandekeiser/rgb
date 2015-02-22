@@ -11,6 +11,9 @@ import static java.lang.System.out;
 
 public class BasicDrawer implements Drawer {
 
+    public static final BasicDrawer INSTANCE = new BasicDrawer();
+    private BasicDrawer() {}
+    
     @Override public final void draw(WholeDrawing drawing) {
         try {
             doDraw(drawing);

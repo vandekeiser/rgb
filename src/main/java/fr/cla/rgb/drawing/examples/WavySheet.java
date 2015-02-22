@@ -12,7 +12,7 @@ public class WavySheet extends WholeDrawing {
     }
 
     public static void main(String[] args) throws IOException {
-        new BasicDrawer().draw(new WavySheet(1024));
+        BasicDrawer.INSTANCE.draw(new WavySheet(1024));
     }
 
     @Override protected int R(int i, int j, int size) {

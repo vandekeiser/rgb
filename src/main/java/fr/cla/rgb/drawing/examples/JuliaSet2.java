@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import fr.cla.rgb.drawer.ParallelTilingDrawer;
 import fr.cla.rgb.drawer.TilingDrawer;
 import fr.cla.rgb.drawing.Point;
 import fr.cla.rgb.drawing.WholeDrawing;
@@ -60,7 +61,7 @@ public class JuliaSet2 extends WholeDrawing {
         //new SequentialTilingDrawer().draw(new JuliaSet(8192));
         //new SequentialTilingDrawer().draw(new JuliaSet(16384));
         //new SequentialTilingDrawer().draw(new JuliaSet(32768));
-        TilingDrawer.SEQUENTIAL.draw(new JuliaSet2(4096));
+        ParallelTilingDrawer.INSTANCE.draw(new JuliaSet2(4096));
         System.out.println("maxIterations: " + maxIterations);
     }
 

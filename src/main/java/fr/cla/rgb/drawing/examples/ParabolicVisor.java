@@ -12,7 +12,7 @@ public class ParabolicVisor extends WholeDrawing {
     }
 
     public static void main(String[] args) throws IOException {
-        new BasicDrawer().draw(new ParabolicVisor(1024));
+        BasicDrawer.INSTANCE.draw(new ParabolicVisor(1024));
     }
 
     @Override protected int R(int i, int j, int size) {

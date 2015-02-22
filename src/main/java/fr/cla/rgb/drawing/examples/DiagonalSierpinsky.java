@@ -11,7 +11,7 @@ public class DiagonalSierpinsky extends WholeDrawing {
     }
 
     public static void main(String[] args) throws IOException {
-        new BasicDrawer().draw(new DiagonalSierpinsky(128));
+        BasicDrawer.INSTANCE.draw(new DiagonalSierpinsky(128));
     }
 
     @Override protected int R(int i, int j, int size) {

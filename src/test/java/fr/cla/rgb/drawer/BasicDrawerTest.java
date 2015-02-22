@@ -7,11 +7,11 @@ public class BasicDrawerTest extends AbstractDrawerTest {
 
     @Test public void drawXS_basic() { drawer().draw(new FirstTry(128)); }
     
-    @Test public void drawS_basic() { new BasicDrawer().draw(new FirstTry(1024)); }
+    @Test public void drawS_basic() { BasicDrawer.INSTANCE.draw(new FirstTry(1024)); }
     
-    @Test public void drawM_basic() { new BasicDrawer().draw(new FirstTry(2048)); }
+    @Test public void drawM_basic() { BasicDrawer.INSTANCE.draw(new FirstTry(2048)); }
 
     @Override protected Drawer createDrawer() {
-        return new BasicDrawer();
+        return BasicDrawer.INSTANCE;
     }
 }
