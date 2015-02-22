@@ -22,6 +22,11 @@ public class Tile extends Drawing {
                 + IMG_TYPE;
     }
 
+    //Necessary for the whole drawing to be able to override RGB and not only R, G, and B
+    @Override protected int RGB(Point p, int wholeDrawingsize) {
+        return whole.RGB(p, wholeDrawingsize);
+    }
+    
     @Override protected int R(int x, int y, int wholeDrawingSize) {
         return whole.R(x + xoffset, y + yoffset, wholeDrawingSize);
     }

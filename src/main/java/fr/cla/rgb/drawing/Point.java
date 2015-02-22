@@ -2,7 +2,8 @@ package fr.cla.rgb.drawing;
 
 public class Point {
 
-    final int x, y;
+    public final int x;
+    public final int y;
 
     Point(int x, int y) {this.x = x; this.y = y;}
 

@@ -49,7 +49,7 @@ public abstract class Drawing {
      */
     public abstract String name();
 
-    private int RGB(Point p, int wholeDrawingsize) {
+    protected int RGB(Point p, int wholeDrawingsize) {
         int x = p.x, y = p.y, s = wholeDrawingsize;
         return (R(x, y, s) << 8 | G(x, y, s)) << 8 | B(x, y, s);
     }
