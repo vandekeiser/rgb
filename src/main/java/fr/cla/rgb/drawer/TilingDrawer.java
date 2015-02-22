@@ -29,24 +29,24 @@ public abstract class TilingDrawer implements Drawer {
 
         //2. Write temp tiles without holding on to any BufferedImage
         out.printf("%s/draw/start writing %d tiles%n", getClass().getSimpleName(), nbOfLines);
-        Instant beforeWriteTiles = Instant.now();
+        Instant beforeWrites = Instant.now();
         writeTiles(drawing, tempTilesPath);
-        Instant afterWriteTiles = Instant.now();
+        Instant afterWrites = Instant.now();
         out.printf("%s/draw/done writing %d tiles, it took %s%n",
                 getClass().getSimpleName(),
                 nbOfLines,
-                Duration.between(beforeWriteTiles, afterWriteTiles)
+                Duration.between(beforeWrites, afterWrites)
         );
 
         //3. Use PNGJ (https://code.google.com/p/pngj/wiki/Snippets) to stitch the tiles together
         out.printf("%s/draw/stitching tiles together%n", getClass().getSimpleName());
-        Instant beforeStitchTilesTogether = Instant.now();
+        Instant beforeStitch = Instant.now();
         stitchTilesTogether(imagesPaths, drawing.name());
-        Instant afterStitchTilesTogether = Instant.now();
+        Instant afterStitch = Instant.now();
         out.printf("%s/draw/done stitching %d tiles, it took %s%n",
                 getClass().getSimpleName(),
                 nbOfLines,
-                Duration.between(beforeStitchTilesTogether, afterStitchTilesTogether)
+                Duration.between(beforeStitch, afterStitch)
         );
     }
     

@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import static java.lang.System.out;
+import static java.util.stream.Collectors.*;
 
 public abstract class WholeDrawing extends Drawing {
 
@@ -47,12 +48,11 @@ public abstract class WholeDrawing extends Drawing {
      * @throws BadTilingException if size() % nbOfLines() != 0
      */
     public List<Tile> tileSequentially() {
-        int size = size();
-        int lines = nbOfLines();
-        
-        int tileXSize = size;
-        int tileYSize = size / lines;
-        int tileYSizeRemainder = size() % lines;
+        int size = size(),
+            lines = nbOfLines(),
+            tileXSize = size,
+            tileYSize = size / lines,
+            tileYSizeRemainder = size() % lines;
         if(tileYSizeRemainder!=0) throw new BadTilingException(String.format(
                 "size=%d is not a multiple of lines=%d, remainder=%d",
                 size,
@@ -60,17 +60,14 @@ public abstract class WholeDrawing extends Drawing {
                 tileYSizeRemainder
         ));
 
-        return IntStream.range(0, lines)
-                .mapToObj(line -> Tile.of(this)
+        return IntStream.range(0, lines).mapToObj(line -> Tile.of(this)
                         .sized(tileXSize, tileYSize)
                         .offset(0, line * tileYSize)
                         .build()
-                )
-                .collect(Collectors.toList());
+        ).collect(toList());
     }
     
-    //public static final int MAX_SIZE_BEFORE_SPLIT = 2048;
-    public static final int MAX_SIZE_BEFORE_SPLIT = 8;
+    public static final int MAX_SIZE_BEFORE_SPLIT = 1024;
     static { out.println("MAX_SIZE_BEFORE_SPLIT: " + MAX_SIZE_BEFORE_SPLIT); }
 
     /**
@@ -78,11 +75,9 @@ public abstract class WholeDrawing extends Drawing {
      * @throws BadTilingException if size()%MAX_SIZE_BEFORE_SPLIT!=0 && size()/MAX_SIZE_BEFORE_SPLIT!=0
      */
     public final int nbOfLines() {
-        int wholeSize = this.size();
-        int tilesQuotient = wholeSize / MAX_SIZE_BEFORE_SPLIT;
-        int tilesRemainder = wholeSize % MAX_SIZE_BEFORE_SPLIT;
-
-        if(tilesQuotient==0) return 1;
+        int wholeSize = this.size(),
+            tilesQuotient = wholeSize / MAX_SIZE_BEFORE_SPLIT,
+            tilesRemainder = wholeSize % MAX_SIZE_BEFORE_SPLIT;
 
         if(tilesQuotient!=0 && tilesRemainder !=0) {
             throw new BadTilingException(String.format(
@@ -93,7 +88,7 @@ public abstract class WholeDrawing extends Drawing {
             );
         }
 
-        return tilesQuotient;
+        return tilesQuotient==0 ? 1 :tilesQuotient;
     }
 
 }

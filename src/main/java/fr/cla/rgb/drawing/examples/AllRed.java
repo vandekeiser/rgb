@@ -10,7 +10,7 @@ public class AllRed extends WholeDrawing {
         super(size);
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String... args) throws IOException {
         BasicDrawer.INSTANCE.draw(new AllRed(128));
     }
 

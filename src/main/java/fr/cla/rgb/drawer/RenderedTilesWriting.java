@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -31,25 +32,22 @@ public interface RenderedTilesWriting {
             }
         },
         ASYNC {
-            private final Executor ioExecutor = createIoExecutor();
-            private Executor createIoExecutor() {
-                return Executors.newCachedThreadPool();//Infinite pool for IO
-            }
-            
             @Override
             public void write(int nbOfTiles, Path tempTilesPath, Stream<NamedImage> renderedImages) {
                 AtomicInteger currentTile = new AtomicInteger(0);
+                
+                //Infinite pool for IO (doesn't change much.. maybe with more cores?)
+                ExecutorService ioExecutor = Executors.newCachedThreadPool();
+                try {
+                    CompletableFuture<?>[] writes = renderedImages.map(renderedImage ->
+                        runAsync(() -> {
+                            debug(ASYNC, currentTile.incrementAndGet(), nbOfTiles);
+                            writeOne(renderedImage, tempTilesPath);
+                        }, ioExecutor)
+                    ).toArray(i-> new CompletableFuture<?>[i]);
 
-                //1. L'IO est en 2e donc ca va pe pas servir a gd chose.. chainer autrement?
-                //3. NB: Methods that do not take an Executor as an argument but end with ...Async
-                //       will use ForkJoinPool.commonPool
-                CompletableFuture<?>[] writes = renderedImages.map(renderedImage ->
-                    runAsync(() -> {
-                        debug(ASYNC, currentTile.incrementAndGet(), nbOfTiles);
-                        writeOne(renderedImage, tempTilesPath);
-                    }, ioExecutor)
-                ).toArray(i-> new CompletableFuture<?>[i]);
-                CompletableFuture.allOf(writes).join();
+                    CompletableFuture.allOf(writes).join();
+                } finally {ioExecutor.shutdownNow();}//Otherwise doesn't exit immediately
             }
         },
         ;

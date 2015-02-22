@@ -52,7 +52,7 @@ public class JuliaSet2 extends WholeDrawing {
 //        colors[iterations -1 - i] = (R<< 8 | G) << 8 | B;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String... args) throws IOException {
         //new SequentialTilingDrawer().draw(new JuliaSet(8192));
         //new SequentialTilingDrawer().draw(new JuliaSet(16384));
         //new SequentialTilingDrawer().draw(new JuliaSet(32768));

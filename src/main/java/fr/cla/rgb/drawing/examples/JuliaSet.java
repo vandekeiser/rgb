@@ -10,7 +10,7 @@ public class JuliaSet extends WholeDrawing {
         super(size);
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String... args) throws IOException {
         //ParallelTilingDrawer.INSTANCE.draw(new JuliaSet(8192));
         //ParallelTilingDrawer.INSTANCE.draw(new JuliaSet(32768));
         //ParallelTilingDrawer.INSTANCE.draw(new JuliaSet(65536)); //MAX_SIZE_BEFORE_SPLIT = 2048 --> OK
@@ -21,7 +21,9 @@ public class JuliaSet extends WholeDrawing {
         //avec runAsync(cachedThreadPool):
         //ParallelAsyncTilingDrawer.INSTANCE.draw(new JuliaSet(16384)); //8 tiles, it took PT10M1.04
         //ParallelAsyncTilingDrawer.INSTANCE.draw(new JuliaSet(16384)); //128 tiles, it took PT9M55.406S
-        ParallelAsyncTilingDrawer.INSTANCE.draw(new JuliaSet(16384)); //2048 tiles, it took PT10M30.518S
+        //ParallelAsyncTilingDrawer.INSTANCE.draw(new JuliaSet(16384)); //2048 tiles, it took PT10M30.518S
+        
+        ParallelAsyncTilingDrawer.INSTANCE.draw(new JuliaSet(1024));
 
     }
 

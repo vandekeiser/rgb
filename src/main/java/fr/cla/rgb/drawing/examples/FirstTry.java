@@ -18,7 +18,7 @@ public class FirstTry extends WholeDrawing {
     }
     @Override protected int B(int x, int y, int size) { return x * y; }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String... args) throws IOException {
         BasicDrawer.INSTANCE.draw(new FirstTry(1024));
     }
 }
