@@ -27,7 +27,7 @@ public class JuliaSet2 extends WholeDrawing {
         //new SequentialTilingDrawer().draw(new JuliaSet(8192));
         //new SequentialTilingDrawer().draw(new JuliaSet(16384));
         //new SequentialTilingDrawer().draw(new JuliaSet(32768));
-        TilingDrawer.SEQUENTIAL.draw(new JuliaSet2(1024)); //MAX_SIZE_BEFORE_SPLIT = 2048 --> OK
+        TilingDrawer.SEQUENTIAL.draw(new JuliaSet2(8192)); //MAX_SIZE_BEFORE_SPLIT = 2048 --> OK
     }
 
     static int[] colors;
