@@ -19,12 +19,24 @@ public abstract class WholeDrawing extends Drawing {
         return getClass().getSimpleName() + "." + IMG_TYPE;
     }
 
-    public Stream<Tile> orderedSplit() {
-        return StreamSupport.stream(new SequentialSpliterator(this), false);
+    /**
+     * @return A sequential Stream (that can't be made parallel)
+     */
+    public Stream<Tile> sequentialSplit() {
+        return StreamSupport.stream(
+            new SequentialSpliterator(this),
+            false //"parallel" necessarily false
+        );
     }
     
-    public Stream<Tile> unorderedSplit() {
-        return StreamSupport.stream(new ParallelSpliterator(this), true);
+    /**
+     * @return A sequential Stream (that can be made parallel with stream.parallel())
+     */
+    public Stream<Tile> divideAndConquerSplit() {
+        return StreamSupport.stream(
+            new DivideAndConquerSpliterator(this),
+            false //"parallel" false, let the user of this API decide on parallelism
+        );
     }
 
     /**

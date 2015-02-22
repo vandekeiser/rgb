@@ -1,23 +1,24 @@
 package fr.cla.rgb.drawer;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.imageio.ImageIO;
 import fr.cla.rgb.drawing.Drawing;
-import fr.cla.rgb.drawing.NamedImage;
-import fr.cla.rgb.drawing.Tile;
 import fr.cla.rgb.drawing.WholeDrawing;
+import static fr.cla.rgb.drawer.RenderedTilesWriting.RenderedTilesWritings.toPath;
 import static java.lang.System.out;
 
 public abstract class TilingDrawer implements Drawer {
     
+    protected abstract Tiling tiling();
+    protected abstract Parallelism parallelism();
+    protected abstract RenderedTilesWriting renderedTilesWriting();
+
     @Override public final void draw(WholeDrawing drawing) {
         Path tempTilesPath = createTempTilesPath();
         out.printf("%s/draw/will store tiles in temp directory: %s%n", getClass().getSimpleName(), tempTilesPath);
@@ -51,7 +52,7 @@ public abstract class TilingDrawer implements Drawer {
     
     protected String[] computeTempTilesPaths(WholeDrawing drawing, Path tempTilesPath) {
         return drawing
-                .orderedSplit() //We'll have to stitch tiles together from first line to last line
+                .sequentialSplit() //We'll have to stitch tiles together from first line to last line
                 .map(Drawing::name)
                 .map(t -> toPath(t, tempTilesPath))
                 .collect(Collectors.toList())
@@ -60,28 +61,15 @@ public abstract class TilingDrawer implements Drawer {
 
     protected void writeTiles(WholeDrawing drawing, Path tempTilesPath) {
         int nbOfLines = drawing.nbOfLines();
-        AtomicInteger currentTile = new AtomicInteger(0);
-        
-        tile(drawing)
-                .parallel()
-                .map(Drawing::render)
-                .forEach(t -> {
-                    System.out.printf("%s/writeTiles/writing tile %d of %d%n", 
-                            getClass().getSimpleName(), currentTile.incrementAndGet(), nbOfLines
-                    );
-                    try (OutputStream out = outputStreamFor(t, tempTilesPath)) {
-                        ImageIO.write(t.image, Drawing.IMG_TYPE, out);
-                    } catch (IOException e) {
-                        throw new UncheckedIOException(e);//Stop all processing if one tile fails
-                    }
-                });
-    }
 
-    /**
-     * @param drawing The drawing to split
-     * @return An ordered Stream in sequential case, and an unordered Stream in the parallel-ready case
-     */
-    protected abstract Stream<Tile> tile(WholeDrawing drawing);
+        renderedTilesWriting().write(nbOfLines, tempTilesPath,
+                parallelism().makeSingleThreadedOrParallel(
+                        tiling().tile(drawing)
+                ).map(
+                        Drawing::render
+                )
+        );
+    }
 
     protected void stitchTilesTogether(String[] imagesPaths, String wholeImageName) {
         PNGJ.doTiling(
@@ -89,10 +77,6 @@ public abstract class TilingDrawer implements Drawer {
                 wholeImageName,
                 1 //Image is only split into lines, so 1 image per row
         );
-    }
-
-    private String toPath(String tileName, Path tempTilesPath) {
-        return tempTilesPath.resolve(tileName).toString();
     }
 
     private Path createTempTilesPath() {
@@ -104,12 +88,6 @@ public abstract class TilingDrawer implements Drawer {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
-    }
-
-    protected final OutputStream outputStreamFor(NamedImage t, Path tempTilesPath) throws IOException {
-        return new BufferedOutputStream(new FileOutputStream(
-                toPath(t.name, tempTilesPath))
-        );
     }
 
 }

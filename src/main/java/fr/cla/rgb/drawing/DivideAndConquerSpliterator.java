@@ -6,11 +6,11 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import static java.lang.System.out;
 
-public class ParallelSpliterator implements Spliterator<Tile> {
+public class DivideAndConquerSpliterator implements Spliterator<Tile> {
 
     private final List<Tile> tiles;
 
-    public ParallelSpliterator(WholeDrawing whole) {
+    public DivideAndConquerSpliterator(WholeDrawing whole) {
         //Fetching the tile sequentially doesn't matter a lot,
         // because tiles are just definitions so producing them is cheap
         //What matters is that they are rendered in parallel, 
@@ -18,7 +18,7 @@ public class ParallelSpliterator implements Spliterator<Tile> {
         this(whole.tileSequentially());
     }
     
-    private ParallelSpliterator(List<Tile> tiles) {
+    private DivideAndConquerSpliterator(List<Tile> tiles) {
         this.tiles = tiles;
         debug("new");
     }
@@ -37,7 +37,7 @@ public class ParallelSpliterator implements Spliterator<Tile> {
 
         this.tiles.removeAll(top);
         debug("trySplit/END");
-        return new ParallelSpliterator(top);
+        return new DivideAndConquerSpliterator(top);
     }
 
     @Override public long estimateSize() {
