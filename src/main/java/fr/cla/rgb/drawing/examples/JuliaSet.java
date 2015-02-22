@@ -11,10 +11,11 @@ public class JuliaSet extends WholeDrawing {
     }
 
     public static void main(String[] args) throws IOException {
-        //new SequentialTilingDrawer().draw(new JuliaSet(8192));
-        //new SequentialTilingDrawer().draw(new JuliaSet(16384));
-        //new SequentialTilingDrawer().draw(new JuliaSet(32768));
-        TilingDrawer.SEQUENTIAL.draw(new JuliaSet(65536)); //MAX_SIZE_BEFORE_SPLIT = 2048 --> OK
+        //TilingDrawer.PARALLEL_READY.draw(new JuliaSet(8192));
+        TilingDrawer.PARALLEL_READY.draw(new JuliaSet(16384)); //IllegalStateException: nbOfTiles!=1
+        //TilingDrawer.PARALLEL_READY.draw(new JuliaSet(32768));
+        //TilingDrawer.PARALLEL_READY.draw(new JuliaSet(65536)); //MAX_SIZE_BEFORE_SPLIT = 2048 --> OK
+        
     }
 
     @Override protected int R(int i, int j, int size) {

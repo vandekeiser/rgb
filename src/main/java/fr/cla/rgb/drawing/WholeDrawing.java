@@ -62,7 +62,7 @@ public abstract class WholeDrawing extends Drawing {
      * @return this.size() / MAX_SIZE_BEFORE_SPLIT
      * @throws BadTilingException if size()%MAX_SIZE_BEFORE_SPLIT!=0 && size()/MAX_SIZE_BEFORE_SPLIT!=0
      */
-    int nbOfLines() {
+    public final int nbOfLines() {
         int wholeSize = this.size();
         int tilesQuotient = wholeSize / MAX_SIZE_BEFORE_SPLIT;
         int tilesRemainder = wholeSize % MAX_SIZE_BEFORE_SPLIT;

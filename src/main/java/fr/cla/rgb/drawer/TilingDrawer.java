@@ -35,23 +35,17 @@ public enum TilingDrawer implements Drawer {
         out.printf("%s/draw/will store tiles in temp directory: %s%n", getClass().getSimpleName(), tempTilesPath);
 
         //1. Get paths of temp tiles
-        Instant beforeComputeTempTilesPaths = Instant.now();
         String[] imagesPaths = computeTempTilesPaths(drawing, tempTilesPath);
-        Instant afterComputeTempTilesPaths = Instant.now();
-        out.printf("%s/draw/there will be %d tiles, computeTempTilesPaths took %s%n",
-                getClass().getSimpleName(),
-                imagesPaths.length,
-                Duration.between(beforeComputeTempTilesPaths, afterComputeTempTilesPaths)
-        );
+        int nbOfLines = imagesPaths.length;
 
         //2. Write temp tiles without holding on to any BufferedImage
-        out.printf("%s/draw/start rendering %d tiles%n", getClass().getSimpleName(), imagesPaths.length);
+        out.printf("%s/draw/start rendering %d tiles%n", getClass().getSimpleName(), nbOfLines);
         Instant beforeWriteTiles = Instant.now();
         writeTiles(drawing, tempTilesPath);
         Instant afterWriteTiles = Instant.now();
         out.printf("%s/draw/done rendering %d tiles, it took %s%n",
                 getClass().getSimpleName(),
-                imagesPaths.length,
+                nbOfLines,
                 Duration.between(beforeWriteTiles, afterWriteTiles)
         );
 
@@ -62,7 +56,7 @@ public enum TilingDrawer implements Drawer {
         Instant afterStitchTilesTogether = Instant.now();
         out.printf("%s/draw/done stitching %d tiles, it took %s%n",
                 getClass().getSimpleName(),
-                imagesPaths.length,
+                nbOfLines,
                 Duration.between(beforeStitchTilesTogether, afterStitchTilesTogether)
         );
     }
@@ -73,19 +67,24 @@ public enum TilingDrawer implements Drawer {
                 .map(Drawing::name)
                 .map(t -> toPath(t, tempTilesPath))
                 .collect(Collectors.toList())
-                .toArray(new String[0]);
+                .toArray(new String[drawing.nbOfLines()]);
     }
 
     private void writeTiles(WholeDrawing drawing, Path tempTilesPath) {
-        AtomicInteger tilenb = new AtomicInteger(0);
+        int nbOfLines = drawing.nbOfLines();
+        AtomicInteger currentTile = new AtomicInteger(0);
+        
         tile(drawing)
+                .parallel()
                 .map(Drawing::render)
                 .forEach(t -> {
-                    System.out.printf("%s/writeTiles/tilenb: %d%n", getClass().getSimpleName(), tilenb.incrementAndGet());
+                    System.out.printf("%s/writeTiles/writing tile %d of %d%n", 
+                            getClass().getSimpleName(), currentTile.incrementAndGet(), nbOfLines
+                    );
                     try (OutputStream out = outputStreamFor(t, tempTilesPath)) {
                         ImageIO.write(t.image, Drawing.IMG_TYPE, out);
                     } catch (IOException e) {
-                        throw new UncheckedIOException(e);
+                        throw new UncheckedIOException(e);//Stop all processing if one tile fails
                     }
                 });
     }
@@ -100,7 +99,7 @@ public enum TilingDrawer implements Drawer {
         PNGJ.doTiling(
                 imagesPaths,
                 wholeImageName,
-                1 //Image is split into lines, so 1 image per row
+                1 //Image is only split into lines, so 1 image per row
         );
     }
 
