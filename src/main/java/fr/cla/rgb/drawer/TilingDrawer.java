@@ -49,7 +49,7 @@ public abstract class TilingDrawer implements Drawer {
         );
     }
     
-    private String[] computeTempTilesPaths(WholeDrawing drawing, Path tempTilesPath) {
+    protected String[] computeTempTilesPaths(WholeDrawing drawing, Path tempTilesPath) {
         return drawing
                 .orderedSplit() //We'll have to stitch tiles together from first line to last line
                 .map(Drawing::name)
@@ -58,7 +58,7 @@ public abstract class TilingDrawer implements Drawer {
                 .toArray(new String[drawing.nbOfLines()]);
     }
 
-    private void writeTiles(WholeDrawing drawing, Path tempTilesPath) {
+    protected void writeTiles(WholeDrawing drawing, Path tempTilesPath) {
         int nbOfLines = drawing.nbOfLines();
         AtomicInteger currentTile = new AtomicInteger(0);
         
@@ -83,7 +83,7 @@ public abstract class TilingDrawer implements Drawer {
      */
     protected abstract Stream<Tile> tile(WholeDrawing drawing);
 
-    private void stitchTilesTogether(String[] imagesPaths, String wholeImageName) {
+    protected void stitchTilesTogether(String[] imagesPaths, String wholeImageName) {
         PNGJ.doTiling(
                 imagesPaths,
                 wholeImageName,
@@ -106,7 +106,7 @@ public abstract class TilingDrawer implements Drawer {
         }
     }
 
-    private OutputStream outputStreamFor(NamedImage t, Path tempTilesPath) throws IOException {
+    protected final OutputStream outputStreamFor(NamedImage t, Path tempTilesPath) throws IOException {
         return new BufferedOutputStream(new FileOutputStream(
                 toPath(t.name, tempTilesPath))
         );

@@ -1,6 +1,6 @@
 package fr.cla.rgb.drawer;
 
-public class ParallelReadyTilingDrawerTest extends TilingDrawerTest {
+public class ParallelTilingDrawerTest extends TilingDrawerTest {
 
     @Override protected Drawer createDrawer() {
         return ParallelTilingDrawer.INSTANCE;

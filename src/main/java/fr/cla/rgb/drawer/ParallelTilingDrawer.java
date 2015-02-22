@@ -8,7 +8,7 @@ public class ParallelTilingDrawer extends TilingDrawer {
     
     public static final ParallelTilingDrawer INSTANCE = new ParallelTilingDrawer();
 
-    private ParallelTilingDrawer() {}
+    protected ParallelTilingDrawer() {}
     
     @Override protected Stream<Tile> tile(WholeDrawing drawing) {
         return drawing.unorderedSplit();
