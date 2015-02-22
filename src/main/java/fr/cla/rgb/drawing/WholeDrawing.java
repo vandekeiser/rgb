@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import static java.lang.System.out;
 
 public abstract class WholeDrawing extends Drawing {
 
@@ -68,7 +69,9 @@ public abstract class WholeDrawing extends Drawing {
                 .collect(Collectors.toList());
     }
     
-    public static final int MAX_SIZE_BEFORE_SPLIT = 2048;
+    //public static final int MAX_SIZE_BEFORE_SPLIT = 2048;
+    public static final int MAX_SIZE_BEFORE_SPLIT = 8;
+    static { out.println("MAX_SIZE_BEFORE_SPLIT: " + MAX_SIZE_BEFORE_SPLIT); }
 
     /**
      * @return this.size() / MAX_SIZE_BEFORE_SPLIT
