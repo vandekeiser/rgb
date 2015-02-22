@@ -1,5 +1,10 @@
 package fr.cla.rgb.drawer;
 
+import static fr.cla.rgb.drawer.Parallelism.Parallelisms.PARALLEL;
+import static fr.cla.rgb.drawer.RenderedTilesWriting.*;
+import static fr.cla.rgb.drawer.RenderedTilesWriting.RenderedTilesWritings.*;
+import static fr.cla.rgb.drawer.Tiling.Tilings.DIVIDE_AND_CONQUER;
+
 public class ParallelBlockingTilingDrawer extends TilingDrawer {
     
     public static final ParallelBlockingTilingDrawer INSTANCE = new ParallelBlockingTilingDrawer();
@@ -7,14 +12,14 @@ public class ParallelBlockingTilingDrawer extends TilingDrawer {
     protected ParallelBlockingTilingDrawer() {}
 
     @Override protected Tiling tiling() {
-        return Tiling.Tilings.DIVIDE_AND_CONQUER;
+        return DIVIDE_AND_CONQUER;
     }
 
     @Override protected Parallelism parallelism() {
-        return Parallelism.Parallelisms.PARALLEL;
+        return PARALLEL;
     }
 
     @Override protected RenderedTilesWriting renderedTilesWriting() {
-        return RenderedTilesWriting.RenderedTilesWritings.BLOCKING;
+        return BLOCKING;
     }
 }
