@@ -1,18 +1,28 @@
 package fr.cla.rgb.drawing.examples;
 
+import java.awt.*;
 import java.io.IOException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import fr.cla.rgb.drawer.TilingDrawer;
 import fr.cla.rgb.drawing.Point;
 import fr.cla.rgb.drawing.WholeDrawing;
 
 public class JuliaSet2 extends WholeDrawing {
 
-    private final double cx, cy;
-    private double x1 = -1.5, y1 = -1.5, x2 = 1.5, y2 = 1.5;
-    private double dx, dy;
+    private final double cx, cy; //starting complex
+    private final double x1 = -1.5, y1 = -1.5, x2 = 1.5, y2 = 1.5; //complex plane bounds
+    private final double dx, dy; //step
+    
+    private final int iterations; //iteratons for each point
+    private static int maxIterations; //iteratons for each point
+    private final int[] colors;  //color scale for how fast iterations diverge
 
     public JuliaSet2(int size) {
-        this(size,  - 1, 0);
+        //this(size,  -1, 0);
+        //this(size,  -1.3, 0.3);
+        this(size,  0.03515, -0.7467);
     }
     
     public JuliaSet2(int size, double cx, double cy) {
@@ -21,24 +31,39 @@ public class JuliaSet2 extends WholeDrawing {
         this.cy = cy;
         dx = (x2 - x1)*1D / size;
         dy = (y2 - y1)*1D / size;
+        
+        iterations = 1024;
+        //iterations = 91;
+        colors = new int[iterations];
+        for (int i = 0; i < colors.length; i++) {
+            colorScale(i, colors);
+        }
+//        colors = IntStream.range(0, iterations)
+//                .mapToDouble(i->(double) i / (double) iterations)
+//                .mapToObj(d->Color.getHSBColor((float) d, 0.85f, 1.0f))
+//                .mapToInt(color->color.getRGB())
+//                .toArray();
+    }
+
+    private void colorScale(int i, int[] colors) {
+        //colors[63 - i] = (i * 4 << 16) + (i * 4 << 8) + i * 4; // grayscale
+        colors[iterations -1 - i] = (i*4) ^ ((i * 3)<<6) ^ ((i * 7)<<13); // crazy technicolor
+        
+        //(R<< 8 | G) << 8 | B
+//        int R = (int)(Math.log(i)*256);
+//        int G = (int)(Math.log(i)*128);
+//        int B = (int)(Math.log(i)*128);
+//        colors[iterations -1 - i] = (R<< 8 | G) << 8 | B;
     }
 
     public static void main(String[] args) throws IOException {
         //new SequentialTilingDrawer().draw(new JuliaSet(8192));
         //new SequentialTilingDrawer().draw(new JuliaSet(16384));
         //new SequentialTilingDrawer().draw(new JuliaSet(32768));
-        TilingDrawer.SEQUENTIAL.draw(new JuliaSet2(8192)); //MAX_SIZE_BEFORE_SPLIT = 2048 --> OK
+        TilingDrawer.SEQUENTIAL.draw(new JuliaSet2(4096));
+        System.out.println("maxIterations: " + maxIterations);
     }
 
-    static int[] colors;
-    static { // Static initializer for the colors[] array.
-        colors = new int[64];
-        for (int i = 0; i < colors.length; i++) {
-            //colors[63 - i] = (i * 4 << 16) + (i * 4 << 8) + i * 4; // grayscale
-            colors[63 - i] = (i*4) ^ ((i * 3)<<6) ^ ((i * 7)<<13); // crazy technicolor
-        }
-    }
-    
     @Override protected int RGB(Point p, int wholeDrawingsize) {
         double x = x1 + dx * p.x, y = y1 + dy * p.y;
         double zx = x, zy = y;
@@ -50,8 +75,11 @@ public class JuliaSet2 extends WholeDrawing {
           zx = newx;
           zy = newy;
           // Check magnitude of z and return iteration number
-          if (zx * zx + zy * zy > 4)
-            return colors[i];
+          if (zx * zx + zy * zy > 4) {
+              maxIterations = Math.max(maxIterations, i);
+              return colors[i];
+          }
+
         }
         return colors[colors.length - 1];
     }
