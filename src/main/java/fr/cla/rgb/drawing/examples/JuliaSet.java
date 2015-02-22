@@ -2,6 +2,7 @@ package fr.cla.rgb.drawing.examples;
 
 import java.io.IOException;
 import fr.cla.rgb.drawer.ParallelAsyncTilingDrawer;
+import fr.cla.rgb.drawer.SingleThreadedTilingDrawer;
 import fr.cla.rgb.drawing.WholeDrawing;
 
 public class JuliaSet extends WholeDrawing {
@@ -15,8 +16,11 @@ public class JuliaSet extends WholeDrawing {
         //ParallelTilingDrawer.INSTANCE.draw(new JuliaSet(32768));
         //ParallelTilingDrawer.INSTANCE.draw(new JuliaSet(65536)); //MAX_SIZE_BEFORE_SPLIT = 2048 --> OK
         
-        //ParallelTilingDrawer.INSTANCE.draw(new JuliaSet(16384)); //draw/done rendering 8 tiles, it took PT9M49.664S
-        ParallelAsyncTilingDrawer.INSTANCE.draw(new JuliaSet(16384)); //
+        //SingleThreadedTilingDrawer.INSTANCE.draw(new JuliaSet(16384)); //8 tiles, it took PT18M11.291S
+        //ParallelTilingDrawer.INSTANCE.draw(new JuliaSet(16384)); //8 tiles, it took PT9M49.664S
+        //ParallelAsyncTilingDrawer.INSTANCE.draw(new JuliaSet(16384)); //8 tiles, it took PT9M39.954S
+        //avec runAsync(cachedThreadPool):
+        ParallelAsyncTilingDrawer.INSTANCE.draw(new JuliaSet(16384)); //8 tiles, it took PT10M1.04 
     }
 
     @Override protected int R(int i, int j, int size) {

@@ -28,11 +28,11 @@ public abstract class TilingDrawer implements Drawer {
         int nbOfLines = imagesPaths.length;
 
         //2. Write temp tiles without holding on to any BufferedImage
-        out.printf("%s/draw/start rendering %d tiles%n", getClass().getSimpleName(), nbOfLines);
+        out.printf("%s/draw/start writing %d tiles%n", getClass().getSimpleName(), nbOfLines);
         Instant beforeWriteTiles = Instant.now();
         writeTiles(drawing, tempTilesPath);
         Instant afterWriteTiles = Instant.now();
-        out.printf("%s/draw/done rendering %d tiles, it took %s%n",
+        out.printf("%s/draw/done writing %d tiles, it took %s%n",
                 getClass().getSimpleName(),
                 nbOfLines,
                 Duration.between(beforeWriteTiles, afterWriteTiles)
@@ -62,12 +62,14 @@ public abstract class TilingDrawer implements Drawer {
     protected void writeTiles(WholeDrawing drawing, Path tempTilesPath) {
         int nbOfLines = drawing.nbOfLines();
 
-        renderedTilesWriting().write(nbOfLines, tempTilesPath,
-                parallelism().makeSingleThreadedOrParallel(
-                        tiling().tile(drawing)
-                ).map(
-                        Drawing::render
-                )
+        renderedTilesWriting().write(
+            nbOfLines, 
+            tempTilesPath,
+            parallelism().maybeParallel(
+                tiling().tile(drawing)
+            ).map(
+                Drawing::render
+            )
         );
     }
 
