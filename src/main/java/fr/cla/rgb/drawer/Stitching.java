@@ -38,6 +38,14 @@ public interface Stitching {
                 );
             }
         },
+        WITH_PNGJ5 {
+            @Override public void stitch(String[] imagesPaths, String wholeImageName) {
+                PNGJ5.doTiling(
+                        imagesPaths,
+                        wholeImageName
+                );
+            }
+        },
         ;
     }
     
