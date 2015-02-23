@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import fr.cla.rgb.drawing.Drawing;
 import fr.cla.rgb.drawing.NamedImage;
 import static java.util.concurrent.CompletableFuture.runAsync;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static java.util.stream.Collectors.*;
 
 public interface RenderedTilesWriting {
@@ -22,27 +23,26 @@ public interface RenderedTilesWriting {
     
     public enum RenderedTilesWritings implements RenderedTilesWriting {
         BLOCKING {
-            @Override public void write(int nbOfTiles, Path tempTilesPath, Stream<NamedImage> renderedImages) {
+            @Override public void write(int nbTiles, Path temp, Stream<NamedImage> rendered) {
                 AtomicInteger currentTile = new AtomicInteger(0);
 
-                renderedImages.forEach(renderedImage -> {
-                    debug(BLOCKING, currentTile.incrementAndGet(), nbOfTiles);
-                    writeOne(renderedImage, tempTilesPath);
+                rendered.forEach(renderedImage -> {
+                    debug(BLOCKING, currentTile.incrementAndGet(), nbTiles);
+                    writeOne(renderedImage, temp);
                 });
             }
         },
         ASYNC {
-            @Override
-            public void write(int nbOfTiles, Path tempTilesPath, Stream<NamedImage> renderedImages) {
+            @Override public void write(int nbTiles, Path temp, Stream<NamedImage> rendered) {
                 AtomicInteger currentTile = new AtomicInteger(0);
                 
                 //Infinite pool for IO (doesn't change much.. maybe with more cores?)
                 ExecutorService ioExecutor = Executors.newCachedThreadPool();
                 try {
-                    CompletableFuture<?>[] writes = renderedImages.map(renderedImage ->
+                    CompletableFuture<?>[] writes = rendered.map(renderedImage ->
                         runAsync(() -> {
-                            debug(ASYNC, currentTile.incrementAndGet(), nbOfTiles);
-                            writeOne(renderedImage, tempTilesPath);
+                            debug(ASYNC, currentTile.incrementAndGet(), nbTiles);
+                            writeOne(renderedImage, temp);
                         }, ioExecutor)
                     ).toArray(i-> new CompletableFuture<?>[i]);
 
@@ -50,11 +50,30 @@ public interface RenderedTilesWriting {
                 } finally {ioExecutor.shutdownNow();}//Otherwise doesn't exit immediately
             }
         },
+        ASYNC2 {
+            @Override public void write(int nbTiles, Path temp, Stream<NamedImage> rendered) {
+                AtomicInteger currentTile = new AtomicInteger(0);
+                ExecutorService ioExecutor = Executors.newCachedThreadPool();
+                try {
+                    Stream<CompletableFuture<WrittenImage>> written = rendered.map(renderedImage ->
+                        supplyAsync(() -> {
+                            debug(ASYNC, currentTile.incrementAndGet(), nbTiles);
+                            return writeOne(renderedImage, temp);
+                        }, ioExecutor)
+                    );
+                    
+                    //???.........
+                    //written.map(writeFuture->writeFuture.thenAccept(pngj2));
+                    //Utiliser RxJava?
+                } finally {ioExecutor.shutdownNow();}//Otherwise doesn't exit immediately
+            }
+        },
         ;
 
-        private static void writeOne(NamedImage image, Path tempTilesPath) {
+        private static WrittenImage writeOne(NamedImage image, Path tempTilesPath) {
             try (OutputStream out = outputStreamFor(image, tempTilesPath)) {
                 ImageIO.write(image.image, Drawing.IMG_TYPE, out);
+                return new WrittenImage(image);
             } catch (IOException e) {
                 throw new UncheckedIOException(e);//Stop all processing if one tile fails
             }

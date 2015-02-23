@@ -6,7 +6,7 @@ public class NamedImage {
     public final String name;
     public final BufferedImage image;
 
-    NamedImage(BufferedImage image, String name) {
+    protected NamedImage(BufferedImage image, String name) {
         this.image = image;
         this.name = name;
     }
