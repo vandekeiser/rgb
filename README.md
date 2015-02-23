@@ -12,7 +12,7 @@ Goals:
 * Make it work transparently for big images
 * Test parallel streams speedups in various cases
  
-Times are measured on an old 2-cores machine
+Times are measured on an old 2-cores machine, mx1G
 
 
 //    JAI

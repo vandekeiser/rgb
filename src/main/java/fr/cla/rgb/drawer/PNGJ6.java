@@ -10,7 +10,7 @@ import ar.com.hjg.pngj.chunks.ChunkCopyBehaviour;
 import ar.com.hjg.pngj.chunks.ChunkLoadBehaviour;
 
 /**
- *
+ * ImageLineInt ds la boucle
  */
 public class PNGJ6 {
 
@@ -25,12 +25,9 @@ public class PNGJ6 {
         catch(Throwable initFailed) {throw new RuntimeException(initFailed);}
         finally {pngr.end(); /*close, we'll reopen it again soon*/}
 
-        ImageLineInt line2 = new ImageLineInt(info.imi2);
         int row2 = 0;
-        
         for (int ty = 0; ty < ntiles; ty++) {
-            Arrays.fill(line2.getScanline(), 0); //utile??
-            
+            ImageLineInt line2 = new ImageLineInt(info.imi2);
             PngReader reader = new PngReader(new File(tiles[ty]));
             try {
                 reader.setChunkLoadBehaviour(ChunkLoadBehaviour.LOAD_CHUNK_NEVER);
