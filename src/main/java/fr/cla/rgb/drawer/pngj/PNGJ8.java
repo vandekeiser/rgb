@@ -9,20 +9,13 @@ import ar.com.hjg.pngj.chunks.ChunkCopyBehaviour;
 import ar.com.hjg.pngj.chunks.ChunkLoadBehaviour;
 
 /**
- *
+ * info2 prend directement le path de tile0
  */
 public class PNGJ8 {
 
     public static void doTiling(String tiles[], String dest) {
         int ntiles = tiles.length;
-        PngwImi1Imi2 info = null;
-        
-        PngReader pngr = new PngReader(new File(tiles[0]));
-        try {
-            info = info(pngr, ntiles, dest);
-        }
-        catch(Throwable initFailed) {throw new RuntimeException(initFailed);}
-        finally {pngr.end(); /*close, we'll reopen it again soon*/}
+        PngwImi1Imi2 info = info2(tiles[0], tiles.length, dest);
 
         for (int ty = 0; ty < ntiles; ty++) {
             PngReader reader = new PngReader(new File(tiles[ty]));
@@ -31,7 +24,7 @@ public class PNGJ8 {
                 reader.setChunkLoadBehaviour(ChunkLoadBehaviour.LOAD_CHUNK_NEVER);
                 if (!reader.imgInfo.equals(info.imi1)) throw new RuntimeException("different tile ? " + reader.imgInfo);
 
-                for (int row1 = 0; row1 < info.imi1.rows; row1++) { 
+                for (int row1 = 0; row1 < info.imi1.rows; row1++) {
                     int row2 = ty * info.imi1.rows + row1;
                     ImageLineInt line1 = (ImageLineInt) reader.readRow(row1); // read line
                     System.arraycopy(line1.getScanline(), 0, line2.getScanline(), 0, line1.getScanline().length);
@@ -40,6 +33,15 @@ public class PNGJ8 {
             } finally { reader.end(); }
         }
         info.pngw.end(); // close writer
+    }
+
+    private static PngwImi1Imi2 info2(String tile0, int nbTiles, String dest) {
+        PngReader pngr = new PngReader(new File(tile0));
+        try {
+            return info(pngr, nbTiles, dest);
+        }
+        catch(Throwable initFailed) {throw new RuntimeException(initFailed);}
+        finally {pngr.end(); /*close, we'll reopen it again soon*/}
     }
 
     private static PngwImi1Imi2 info(PngReader pngr, int ntiles, String dest) {
@@ -53,7 +55,6 @@ public class PNGJ8 {
         return new PngwImi1Imi2(pngw, imi1, imi2);
     }
 
-    
     static class PngwImi1Imi2 {
         final PngWriter pngw; 
         final ImageInfo imi1, imi2;
