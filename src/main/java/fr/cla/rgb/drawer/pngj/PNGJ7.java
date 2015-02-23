@@ -9,7 +9,7 @@ import ar.com.hjg.pngj.chunks.ChunkCopyBehaviour;
 import ar.com.hjg.pngj.chunks.ChunkLoadBehaviour;
 
 /**
- * ImageLineInt ds la boucle
+ * suppr row2
  */
 public class PNGJ7 {
 
@@ -24,16 +24,15 @@ public class PNGJ7 {
         catch(Throwable initFailed) {throw new RuntimeException(initFailed);}
         finally {pngr.end(); /*close, we'll reopen it again soon*/}
 
-        int row2 = 0;
         for (int ty = 0; ty < ntiles; ty++) {
-            ImageLineInt line2 = new ImageLineInt(info.imi2);
             PngReader reader = new PngReader(new File(tiles[ty]));
             try {
+                ImageLineInt line2 = new ImageLineInt(info.imi2);
                 reader.setChunkLoadBehaviour(ChunkLoadBehaviour.LOAD_CHUNK_NEVER);
-                if (!reader.imgInfo.equals(info.imi1))
-                    throw new RuntimeException("different tile ? " + reader.imgInfo);
+                if (!reader.imgInfo.equals(info.imi1)) throw new RuntimeException("different tile ? " + reader.imgInfo);
 
-                for (int row1 = 0; row1 < info.imi1.rows; row1++, row2++) {
+                for (int row1 = 0; row1 < info.imi1.rows; row1++) { 
+                    int row2 = ty * info.imi1.rows + row1;
                     ImageLineInt line1 = (ImageLineInt) reader.readRow(row1); // read line
                     System.arraycopy(line1.getScanline(), 0, line2.getScanline(), 0, line1.getScanline().length);
                     info.pngw.writeRow(line2, row2); // write to full image
