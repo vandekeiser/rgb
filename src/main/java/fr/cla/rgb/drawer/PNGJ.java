@@ -22,19 +22,23 @@ public class PNGJ {
     public static void doTiling(String tiles[], String dest, int nTilesX) {
         int ntiles = tiles.length;
         int nTilesY = (ntiles + nTilesX - 1) / nTilesX; // integer ceil
-        ImageInfo imi1, imi2; // 1:small tile   2:big image
-        
-        PngReader pngr = new PngReader(new File(tiles[0]));
-        imi1 = pngr.imgInfo;
-        
+        ImageInfo imi1 = null, imi2 = null; // 1:small tile   2:big image
         PngReader[] readers = new PngReader[nTilesX];
-        imi2 = new ImageInfo(imi1.cols * nTilesX, imi1.rows * nTilesY, imi1.bitDepth, imi1.alpha, imi1.greyscale, imi1.indexed);
-        
-        PngWriter pngw = new PngWriter(new File(dest), imi2, true);
-        // copy palette and transparency if necessary (more chunks?)
-        pngw.copyChunksFrom(pngr.getChunksList(), ChunkCopyBehaviour.COPY_PALETTE | ChunkCopyBehaviour.COPY_TRANSPARENCY);
-        pngr.readSkippingAllRows(); // reads only metadata
-        pngr.end(); // close, we'll reopen it again soon
+
+        PngWriter pngw = null;
+        PngReader pngr = new PngReader(new File(tiles[0]));
+        try {
+            imi1 = pngr.imgInfo;
+            imi2 = new ImageInfo(imi1.cols * nTilesX, imi1.rows * nTilesY, imi1.bitDepth, imi1.alpha, imi1.greyscale, imi1.indexed);
+
+            pngw = new PngWriter(new File(dest), imi2, true);
+            // copy palette and transparency if necessary (more chunks?)
+            pngw.copyChunksFrom(pngr.getChunksList(), ChunkCopyBehaviour.COPY_PALETTE | ChunkCopyBehaviour.COPY_TRANSPARENCY);
+            pngr.readSkippingAllRows(); // reads only metadata
+        }
+        catch(Throwable initFailed) {throw new RuntimeException(initFailed);}
+        finally {pngr.end(); /*close, we'll reopen it again soon*/}
+
         
         ImageLineInt line2 = new ImageLineInt(imi2);
         int row2 = 0;
