@@ -18,6 +18,7 @@ public abstract class TilingDrawer implements Drawer {
     protected abstract Tiling tiling();
     protected abstract Parallelism parallelism();
     protected abstract RenderedTilesWriting renderedTilesWriting();
+    protected abstract Stitching stitching();
 
     @Override public final void draw(WholeDrawing drawing) {
         Path tempTilesPath = createTempTilesPath();
@@ -41,7 +42,7 @@ public abstract class TilingDrawer implements Drawer {
         //3. Use PNGJ (https://code.google.com/p/pngj/wiki/Snippets) to stitch the tiles together
         out.printf("%s/draw/stitching tiles together%n", getClass().getSimpleName());
         Instant beforeStitch = Instant.now();
-        stitchTilesTogether(imagesPaths, drawing.name());
+        stitching().stitch(imagesPaths, drawing.name());
         Instant afterStitch = Instant.now();
         out.printf("%s/draw/done stitching %d tiles, it took %s%n",
                 getClass().getSimpleName(),
@@ -70,14 +71,6 @@ public abstract class TilingDrawer implements Drawer {
             ).map(
                 Drawing::render
             )
-        );
-    }
-
-    protected void stitchTilesTogether(String[] imagesPaths, String wholeImageName) {
-        PNGJ.doTiling(
-                imagesPaths,
-                wholeImageName,
-                1 //Image is only split into lines, so 1 image per row
         );
     }
 

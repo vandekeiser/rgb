@@ -67,10 +67,10 @@ public abstract class WholeDrawing extends Drawing {
         ).collect(toList());
     }
     
-    public static final int MAX_SIZE_BEFORE_SPLIT = 128;
+    public static final int MAX_SIZE_BEFORE_SPLIT = 512;
     static { out.printf("MAX_SIZE_BEFORE_SPLIT=%d, availableProcessors=%d%n",
             MAX_SIZE_BEFORE_SPLIT, Runtime.getRuntime().availableProcessors()
-    );}
+    ); }
 
     /**
      * @return this.size() / MAX_SIZE_BEFORE_SPLIT

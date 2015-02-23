@@ -2,6 +2,7 @@ package fr.cla.rgb.drawer;
 
 import static fr.cla.rgb.drawer.Parallelism.Parallelisms.SINGLE_THREADED;
 import static fr.cla.rgb.drawer.RenderedTilesWriting.RenderedTilesWritings.BLOCKING;
+import static fr.cla.rgb.drawer.Stitching.Stitchings.WITH_PNGJ;
 import static fr.cla.rgb.drawer.Tiling.Tilings.SEQUENTIAL;
 
 public class SingleThreadedTilingDrawer extends TilingDrawer {
@@ -20,4 +21,6 @@ public class SingleThreadedTilingDrawer extends TilingDrawer {
     @Override protected RenderedTilesWriting renderedTilesWriting() {
         return BLOCKING;
     }
+
+    @Override protected Stitching stitching() { return WITH_PNGJ; }
 }
