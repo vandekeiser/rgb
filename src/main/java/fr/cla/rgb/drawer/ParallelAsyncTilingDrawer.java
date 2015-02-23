@@ -2,9 +2,7 @@ package fr.cla.rgb.drawer;
 
 import static fr.cla.rgb.drawer.Parallelism.Parallelisms.PARALLEL;
 import static fr.cla.rgb.drawer.RenderedTilesWriting.RenderedTilesWritings.ASYNC;
-import static fr.cla.rgb.drawer.Stitching.Stitchings.WITH_PNGJ;
-import static fr.cla.rgb.drawer.Stitching.Stitchings.WITH_PNGJ2;
-import static fr.cla.rgb.drawer.Stitching.Stitchings.WITH_PNGJ3;
+import static fr.cla.rgb.drawer.Stitching.Stitchings.WITH_PNGJ4;
 import static fr.cla.rgb.drawer.Tiling.Tilings.DIVIDE_AND_CONQUER;
 
 public class ParallelAsyncTilingDrawer extends TilingDrawer {
@@ -25,6 +23,6 @@ public class ParallelAsyncTilingDrawer extends TilingDrawer {
         return ASYNC;
     }
     
-    @Override protected Stitching stitching() { return WITH_PNGJ3; }
+    @Override protected Stitching stitching() { return WITH_PNGJ4; }
     
 }

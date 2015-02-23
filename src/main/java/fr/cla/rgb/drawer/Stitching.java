@@ -30,6 +30,14 @@ public interface Stitching {
                 );
             }
         },
+        WITH_PNGJ4 {
+            @Override public void stitch(String[] imagesPaths, String wholeImageName) {
+                PNGJ4.doTiling(
+                        imagesPaths,
+                        wholeImageName
+                );
+            }
+        },
         ;
     }
     
