@@ -10,12 +10,7 @@ import ar.com.hjg.pngj.chunks.ChunkCopyBehaviour;
 import ar.com.hjg.pngj.chunks.ChunkLoadBehaviour;
 
 /**
- * As seen there: https://code.google.com/p/pngj/wiki/Snippets
- *
- * TODO: 
- *  -add finally for closes (finally = end,)
- *  -serait pe streamable? (on 'ecrit pas les mm rows)
- *  -new pngr: shouldCloseStream=true
+ * try/finally,  Debut simplification: pas de x (une seule colonne)
  */
 public class PNGJ2 {
 
