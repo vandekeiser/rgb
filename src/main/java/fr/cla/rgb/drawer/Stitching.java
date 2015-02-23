@@ -1,5 +1,7 @@
 package fr.cla.rgb.drawer;
 
+import fr.cla.rgb.drawer.pngj.*;
+
 public interface Stitching {
 
     void stitch(String[] imagesPaths, String wholeImageName);

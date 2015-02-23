@@ -1,4 +1,4 @@
-package fr.cla.rgb.drawer;
+package fr.cla.rgb.drawer.pngj;
 
 import java.io.File;
 import java.util.Arrays;
