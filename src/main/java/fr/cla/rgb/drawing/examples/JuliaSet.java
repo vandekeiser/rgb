@@ -37,7 +37,7 @@ public class JuliaSet extends WholeDrawing {
 //        ParallelAsyncTilingDrawer/draw/done stitching 256 tiles, it took PT10M26.605S
 //        ParallelAsyncTilingDrawer.INSTANCE.draw(new JuliaSet(32768));
         
-        ParallelAsyncTilingDrawer.INSTANCE.draw(new JuliaSet(1024));
+        ParallelAsyncTilingDrawer.INSTANCE.draw(new JuliaSet(2048));
 
 
     }
