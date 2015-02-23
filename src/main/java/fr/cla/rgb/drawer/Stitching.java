@@ -56,6 +56,14 @@ public interface Stitching {
                 );
             }
         },
+        WITH_PNGJ7 {
+            @Override public void stitch(String[] imagesPaths, String wholeImageName) {
+                PNGJ7.doTiling(
+                        imagesPaths,
+                        wholeImageName
+                );
+            }
+        },
         ;
     }
     
