@@ -32,24 +32,24 @@ public class PNGJ4 {
         catch(Throwable initFailed) {throw new RuntimeException(initFailed);}
         finally {pngr.end(); /*close, we'll reopen it again soon*/}
 
-        
         ImageLineInt line2 = new ImageLineInt(imi2);
         int row2 = 0;
+        //NEED PNGW
         for (int ty = 0; ty < ntiles; ty++) {
             Arrays.fill(line2.getScanline(), 0); //utile??
             
             PngReader reader = new PngReader(new File(tiles[ty]));
-            reader.setChunkLoadBehaviour(ChunkLoadBehaviour.LOAD_CHUNK_NEVER);
-            if (!reader.imgInfo.equals(imi1))
-                throw new RuntimeException("different tile ? " + reader.imgInfo);
+            try {
+                reader.setChunkLoadBehaviour(ChunkLoadBehaviour.LOAD_CHUNK_NEVER);
+                if (!reader.imgInfo.equals(imi1))
+                    throw new RuntimeException("different tile ? " + reader.imgInfo);
 
-            for (int row1 = 0; row1 < imi1.rows; row1++, row2++) {
-                ImageLineInt line1 = (ImageLineInt) reader.readRow(row1); // read line
-                System.arraycopy(line1.getScanline(), 0, line2.getScanline(), 0, line1.getScanline().length);
-                pngw.writeRow(line2, row2); // write to full image
-            }
-            
-            reader.end(); // close readers
+                for (int row1 = 0; row1 < imi1.rows; row1++, row2++) {
+                    ImageLineInt line1 = (ImageLineInt) reader.readRow(row1); // read line
+                    System.arraycopy(line1.getScanline(), 0, line2.getScanline(), 0, line1.getScanline().length);
+                    pngw.writeRow(line2, row2); // write to full image
+                }
+            } finally { reader.end(); }
         }
         pngw.end(); // close writer
     }
