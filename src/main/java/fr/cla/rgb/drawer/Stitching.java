@@ -72,6 +72,19 @@ public interface Stitching {
                 );
             }
         },
+        WITH_PNGJ9 {
+            @Override public void stitch(String[] imagesPaths, String wholeImageName) {
+                int ntiles = 0; //need to add param
+                String tile0 = null; //need to write tile0first
+
+                PNGJ9.PngwImi1Imi2 info = PNGJ9.info2(tile0, ntiles, wholeImageName);
+                PNGJ9.doTiling(
+                        info, 
+                        ntiles,
+                        imagesPaths
+                );
+            }
+        },
         ;
     }
     
