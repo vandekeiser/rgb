@@ -14,6 +14,8 @@ import fr.cla.rgb.drawing.Drawing;
 import fr.cla.rgb.drawing.NamedImage;
 import fr.cla.rgb.drawing.Tile;
 import fr.cla.rgb.drawing.WholeDrawing;
+import static fr.cla.rgb.drawer.Parallelism.*;
+import static fr.cla.rgb.drawer.Parallelism.Parallelisms.*;
 import static fr.cla.rgb.drawer.RenderedTilesWriting.RenderedTilesWritings.toPath;
 import static java.lang.System.out;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
@@ -40,17 +42,15 @@ public class AsyncDrawer implements Drawer {
     }
 
     protected String[] computeTempTilesPaths(WholeDrawing drawing, Path tempTilesPath) {
-        return drawing
-                .sequentialSplit() //We'll have to stitch tiles together from first line to last line
-                .map(Drawing::name)
-                .map(t -> toPath(t, tempTilesPath))
-                .collect(Collectors.toList())
-                .toArray(new String[drawing.nbOfLines()]);
+        return drawing.sequentialSplit() //We'll have to stitch tiles together from first line to last line
+            .map(Drawing::name)
+            .map(t -> toPath(t, tempTilesPath))
+            .collect(Collectors.toList())
+            .toArray(new String[drawing.nbOfLines()]);
     }
 
     protected Stream<NamedImage> renderTiles(Stream<Tile> tiles) {
-        Stream<Tile> parallelTiles = Parallelism.Parallelisms.PARALLEL.maybeParallel(tiles);
-        return parallelTiles.map(Drawing::render);
+        return PARALLEL.maybeParallel(tiles).map(Drawing::render);
     }
     
     protected Stream<CompletableFuture<WrittenImage>> writeTilesAsync(Stream<NamedImage> tiles, Path tempTilesPath) {
@@ -74,15 +74,15 @@ public class AsyncDrawer implements Drawer {
     
     private static OutputStream outputStreamFor(NamedImage t, Path tempTilesPath) throws IOException {
         return new BufferedOutputStream(new FileOutputStream(
-                toPath(t.name, tempTilesPath))
+            toPath(t.name, tempTilesPath))
         );
     }
     
     private Path createTempTilesPath() {
         try {
             return Files.createTempDirectory(
-                    Paths.get(System.getProperty("java.io.tmpdir")),
-                    "tiles_"
+                Paths.get(System.getProperty("java.io.tmpdir")),
+                "tiles_"
             );
         } catch (IOException e) {
             throw new UncheckedIOException(e);
