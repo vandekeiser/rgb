@@ -56,11 +56,10 @@ public class AsyncDrawer implements Drawer {
     protected Stream<CompletableFuture<WrittenImage>> writeTilesAsync(Stream<NamedImage> tiles, Path tempTilesPath) {
         ExecutorService ioExecutor = Executors.newCachedThreadPool();
         try {
-            return tiles.map(renderedImage ->
-                supplyAsync(() -> {
-                    return writeOne(renderedImage, tempTilesPath);
-                }, ioExecutor)
-            );
+            return tiles.map(renderedImage ->  supplyAsync(
+                () -> writeOne(renderedImage, tempTilesPath),
+                ioExecutor
+            ));
         } finally {ioExecutor.shutdownNow();}//Otherwise doesn't exit immediately
     }
 
