@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
+import fr.cla.rgb.drawer.pngj.PNGJ9;
 import fr.cla.rgb.drawing.Drawing;
 import fr.cla.rgb.drawing.NamedImage;
 import fr.cla.rgb.drawing.Tile;
@@ -31,7 +32,17 @@ public class AsyncDrawer implements Drawer {
         
         Stream<CompletableFuture<WrittenImage>> writtenTiles = asyncWrittenImages(drawing, tempTilesPath);
         Stream<CompletableFuture<WrittenImage>> writtenTilesExample = asyncWrittenImages(drawing, tempTilesPath).limit(1);
+        
         //stitching().stitch(imagesPaths, drawing.name());
+        int ntiles = drawing.nbOfLines(); //need to add param
+        String tile0 = null; //need to write tile0first
+
+        PNGJ9.PngwImi1Imi2 info = PNGJ9.info2(tile0, ntiles, drawing.name());
+        PNGJ9.doTiling(
+                info,
+                ntiles,
+                imagesPaths
+        );
     }
 
     protected Stream<CompletableFuture<WrittenImage>> asyncWrittenImages(WholeDrawing drawing, Path tempTilesPath) {
