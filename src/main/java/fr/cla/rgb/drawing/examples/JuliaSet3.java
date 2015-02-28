@@ -15,7 +15,7 @@ public class JuliaSet3 extends WholeDrawing {
     }
 
     public static void main(String... args) throws Exception {
-        JuliaSet3 js = new JuliaSet3(16384);
+        JuliaSet3 js = new JuliaSet3(1024);
 
         System.out.println("Computing color scale..");
         IntSummaryStatistics divergingIterationStats = js.points().parallel().mapToInt(
@@ -57,38 +57,31 @@ public class JuliaSet3 extends WholeDrawing {
         if(divergingIteration > MAX_IT) return Double.NaN; //black if no divergence detected
 
         double purple = 380.0, red = 780.0, range = red - purple;
-        //double red = 540.0, purple = 600.0, range = purple - red;
-        //double red = 490.0, purple = 510.0, range = purple - red;
-        //double red = 470.0, purple = 500.0, range = purple - red;
 
-        double x = divergingIteration*1.0/maxDivergingIteration; // E [0, 1]
+        double x = divergingIteration *1.0 /maxDivergingIteration; // E [0, 1]
         
         return purple + range * (1.0 - exp(-TAU*x))/(1.0 - exp(-TAU));
     }
-    private static int MAX_IT = 512;
+    private static int MAX_IT = 2048;
     //"time constant" of the exponential used to get more detail toward reds
-    private static double TAU = 20.0;
+    private static double TAU = 10;
     
     private static int divergingIteration(int i, int j, int size) {
         double x = D(i, size),
               y = D(j, size),
               X, Y; //values before iteration
 
-        //double xadd = 0.36237, yadd = 0.32;     //interessant
-        //double xadd = 0, yadd = 0;              //cercle
-        //double xadd = 0.03515, yadd = -0.07467; //queud
-        //double xadd = -0.672, yadd = 0.435;       //interessant
-//        Some of the more famous Julia sets are:
-//            C = (-1,0)
-//            C = (0,-1) -- the Dendrite
-//            C = (1/2, 0)
-//            C = (-0.1, 0.8) -- the Rabbit
-//            C = (.36, .1) -- the Dragon
-        //double xadd = -1.0, yadd = 0.0; //semi-interessant
-        //double xadd = 0.0, yadd = -1.0; //"the Dendrite" interessant
-        //double xadd = 0.5, yadd = 0.0; //semi-interessant
-        //double xadd = -0.1, yadd = 0.8; //"the Rabbit" interessant
-        double xadd = 0.36, yadd = 0.1; //"the Dragon" interessant
+//Some of the more famous Julia sets are:
+        //double xadd = 0, yadd = 0;           //cercle
+        //double xadd = 0.5, yadd = 0.0;       //semi-interessant
+        //double xadd = -1.0, yadd = 0.0;      //semi-interessant
+        //double xadd = 0.0, yadd = -1.0;      //"the Dendrite"
+        //double xadd = -0.1, yadd = 0.8;      //"the Rabbit"
+        //double xadd = -0.672, yadd = 0.435;  //"spirales jumelles"
+        //double xadd = 0.36237, yadd = 0.32;  //"spirales imbriquees"
+        double xadd = -0.7, yadd = 0.27015;  //"spirales sur spirales", 2018/10
+
+        //double xadd = 0.36, yadd = 0.1;      //"the Dragon"
 
         int n = 0;
         while(n++<MAX_IT && (x*x+y*y)<4.0) {//certain divergence outside of the circle of radius 2
