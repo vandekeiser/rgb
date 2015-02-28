@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
+import fr.cla.rgb.drawer.pngj.PNGJ10;
 import fr.cla.rgb.drawer.pngj.PNGJ9;
 import fr.cla.rgb.drawing.Drawing;
 import fr.cla.rgb.drawing.NamedImage;
@@ -32,8 +33,7 @@ public class AsyncDrawer implements Drawer {
         out.printf("%s/draw/will store tiles in temp directory: %s%n", getClass().getSimpleName(), tempTilesPath);
 
         String[] imagesPaths = computeTempTilesPaths(drawing, tempTilesPath);
-        //et nbTiles necessaire?
-        
+
         Stream<CompletableFuture<WrittenImage>> writtenTiles = asyncWrittenImages(drawing, tempTilesPath);
         Stream<CompletableFuture<WrittenImage>> writtenTilesExample = asyncWrittenImages(drawing, tempTilesPath).limit(1);
         
@@ -48,8 +48,8 @@ public class AsyncDrawer implements Drawer {
         WrittenImage writtenTilesExample0001 = writtenTilesExample001.findFirst().get();
         String tile0 = toPath(writtenTilesExample0001.name, tempTilesPath);
         
-        PNGJ9.PngwImi1Imi2 info = PNGJ9.info2(tile0, ntiles, drawing.name());
-        PNGJ9.doTiling(
+        PNGJ10.PngwImi1Imi2 info = PNGJ10.info2(tile0, ntiles, drawing.name());
+        PNGJ10.doTiling(
                 info,
                 ntiles,
                 imagesPaths
