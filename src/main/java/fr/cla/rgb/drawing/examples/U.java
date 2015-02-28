@@ -20,7 +20,6 @@ public enum U {
     
     static private double Gamma = 0.80;
     static private double IntensityMax = 255;
-
     /** Taken from Earl F. Glynn's web page:
     * <a href="http://www.efg2.com/Lab/ScienceAndEngineering/Spectra.htm">Spectra Lab Report</a>
     * */
@@ -29,43 +28,41 @@ public enum U {
         
         double factor;
         double Red,Green,Blue;
-
-        if((wavelength >= 379) && (wavelength<440)){
-            Red = -(wavelength - 440) / (440 - 380);
+        if((wavelength >= 379.0) && (wavelength<440.0)){
+            Red = -(wavelength - 440.0) / (440.0 - 380.0);
             Green = 0.0;
             Blue = 1.0;
-        }else if((wavelength >= 440) && (wavelength<490)){
+        }else if((wavelength >= 440.0) && (wavelength<490.0)){
             Red = 0.0;
-            Green = (wavelength - 440) / (490 - 440);
+            Green = (wavelength - 440.0) / (490.0 - 440.0);
             Blue = 1.0;
-        }else if((wavelength >= 490) && (wavelength<510)){
+        }else if((wavelength >= 490.0) && (wavelength<510.0)){
             Red = 0.0;
             Green = 1.0;
-            Blue = -(wavelength - 510) / (510 - 490);
-        }else if((wavelength >= 510) && (wavelength<580)){
-            Red = (wavelength - 510) / (580 - 510);
+            Blue = -(wavelength - 510.0) / (510.0 - 490.0);
+        }else if((wavelength >= 510.0) && (wavelength<580.0)){
+            Red = (wavelength - 510.0) / (580.0 - 510.0);
             Green = 1.0;
             Blue = 0.0;
-        }else if((wavelength >= 580) && (wavelength<645)){
+        }else if((wavelength >= 580.0) && (wavelength<645.0)){
             Red = 1.0;
-            Green = -(wavelength - 645) / (645 - 580);
+            Green = -(wavelength - 645.0) / (645.0 - 580.0);
             Blue = 0.0;
-        }else if((wavelength >= 645) && (wavelength<781)){
+        }else if((wavelength >= 645.0) && (wavelength<=780.1)){
             Red = 1.0;
             Green = 0.0;
             Blue = 0.0;
         }else{
-            throw new AssertionError();
+            throw new AssertionError("bad wavelength: " + wavelength);
         };
 
         // Let the intensity fall off near the vision limits
-
-        if((wavelength >= 380) && (wavelength<420)){
-            factor = 0.3 + 0.7*(wavelength - 380) / (420 - 380);
-        }else if((wavelength >= 420) && (wavelength<701)){
+        if((wavelength >= 380.0) && (wavelength<420.0)){
+            factor = 0.3 + 0.7*(wavelength - 380.0) / (420.0 - 380.0);
+        }else if((wavelength >= 420.0) && (wavelength<701.0)){
             factor = 1.0;
-        }else if((wavelength >= 701) && (wavelength<781)){
-            factor = 0.3 + 0.7*(780 - wavelength) / (780 - 700);
+        }else if((wavelength >= 701.0) && (wavelength<781.0)){
+            factor = 0.3 + 0.7*(780.0 - wavelength) / (780.0 - 700.0);
         }else{
             factor = 0.0;
         };
