@@ -42,18 +42,17 @@ public class JuliaSet3 extends WholeDrawing {
         //AsyncDrawer.INSTANCE.draw(new JuliaSet(2048));
         JuliaSet3 js = new JuliaSet3(1024);
         System.out.println("Computing color scale..");
-        IntSummaryStatistics stats = js.points().parallel().mapToInt(p -> JuliaSet3.n(p.x, p.y, js.wholeDrawingSize())).summaryStatistics();
+        IntSummaryStatistics stats = js.points().parallel().mapToInt(p -> js.n(p.x, p.y, js.wholeDrawingSize())).summaryStatistics();
         js.maxn = stats.getMax();
         System.out.println("Color scale: stats="+stats);
         
-
         ParallelAsyncTilingDrawer.INSTANCE.draw(js);
     }
 
     @Override protected int R(int i, int j, int size) {
         //int n = n(i, j, size);
         float x=D(i, size),y=D(j, size),X,Y; int n=0;
-        while(n++<200&&(X=x*x)+(Y=y*y)<4){x=X-Y+0.36237F;y=2*x*y+0.32F;}
+        while(n++<600&&(x*x+y*y)<4){X=x;Y=y;x=X*X-Y*Y+0.36237F;y=2*X*Y+0.32F;}
         
         double lambda = lambda(n);
         int[] rgb = U.waveLengthToRGB(lambda);
@@ -61,16 +60,14 @@ public class JuliaSet3 extends WholeDrawing {
     }
 
     @Override protected int G(int i, int j, int size) {
-        //int n = n(i, j, size);
         float x=D(i, size),y=D(j, size),X,Y; int n=0;
-        while(n++<200&&(x*x+y*y)<4){X=x;Y=y;x=X*X-Y*Y+-0.7F;y=2*X*Y+0.27015F;}
+        while(n++<600&&(x*x+y*y)<4){X=x;Y=y;x=X*X-Y*Y+0.36237F;y=2*X*Y+0.32F;}
         
         double lambda = lambda(n);
         int[] rgb = U.waveLengthToRGB(lambda);
         return rgb[1];
     }
     @Override protected int B(int i, int j, int size) {
-        //int n = n(i, j, size);
         float x=D(i, size),y=D(j, size),X,Y; int n=0;
         while(n++<600&&(x*x+y*y)<4){X=x;Y=y;x=X*X-Y*Y+0.36237F;y=2*X*Y+0.32F;}
         
@@ -80,9 +77,9 @@ public class JuliaSet3 extends WholeDrawing {
     }
 
     private double lambda(int n) {
-        //double red = 380.0, purple = 780.0, range = purple - red;    //voit rien
+        double red = 380.0, purple = 780.0, range = purple - red;    //voit rien
         //double red = 490.0, purple = 510.0, range = purple - red;   //voit qetchos
-        double red = 470.0, purple = 500.0, range = purple - red;
+        //double red = 470.0, purple = 500.0, range = purple - red;
         return red + (range/maxn) * n;
     }
     
@@ -91,74 +88,9 @@ public class JuliaSet3 extends WholeDrawing {
     }
     
     private static int n(int i, int j, int size) {
-        float x=D(i, size), y=D(j, size), X, Y;
-        int n=0;
-        while(n++<1024&&(X=x*x)+(Y=y*y)<4){x=X-Y+0.36237F;y=2*x*y+0.32F;}
+        float x=D(i, size),y=D(j, size),X,Y; int n=0;
+                while(n++<600&&(x*x+y*y)<4){X=x;Y=y;x=X*X-Y*Y+0.36237F;y=2*X*Y+0.32F;}
         return n;
-        //return (int)(Math.log(n));
     }
     
-    int as0xff(double d01) {
-        return (int) (d01 * 0xff);
-    }
-    
-//    double red01(double w) {
-//        if (w >= 379.0 && w < 440.0) return (w - 440.0) / (440.0 - 380.0);
-//        if (w >= 440.0 && w < 490.0) return 0.0;
-//        if (w >= 490.0 && w < 510.0) return 0.0;
-//        if (w >= 510.0 && w < 580.0) return (w - 510.0) / (580.0 - 510.0);
-//        if (w >= 580.0 && w < 645.0) return 1.0;
-//        if (w >= 645.0 && w < 781.0) return 1.0;
-//        throw new AssertionError();
-//    }
-//    double green01(double w) {
-//        if (w >= 379.0 && w < 440.0) return 0.0;
-//        if (w >= 440.0 && w < 490.0) return (w - 440.0) / (490 - 440);
-//        if (w >= 490.0 && w < 510.0) return 1.0;
-//        if (w >= 510.0 && w < 580.0) return 1.0;
-//        if (w >= 580.0 && w < 645.0) return (w - 645.0) / (645 - 580);
-//        if (w >= 645.0 && w < 781.0) return 0.0;
-//        throw new AssertionError();
-//    }
-//    double blue01(double w) {
-//        if (w >= 379.0 && w < 440.0) return 1.0;
-//        if (w >= 440.0 && w < 490.0) return 1.0;
-//        if (w >= 490.0 && w < 510.0) return (int) ((w - 510.0) / (510.0 - 490.0));
-//        if (w >= 510.0 && w < 580.0) return 0.0;
-//        if (w >= 580.0 && w < 645.0) return 0.0;
-//        if (w >= 645.0 && w <= 781.0) return 0.0;
-//        throw new AssertionError();
-//    }
-//
-////    void xxx(int wavelength) {
-////        if w >= 380 and w < 440:
-////            R = -(w - 440.) / (440. - 380.)
-////            G = 0.0
-////            B = 1.0
-////        elif w >= 440 and w < 490:
-////            R = 0.0
-////            G = (w - 440.) / (490. - 440.)
-////            B = 1.0
-////        elif w >= 490 and w < 510:
-////            R = 0.0
-////            G = 1.0
-////            B = -(w - 510.) / (510. - 490.)
-////        elif w >= 510 and w < 580:
-////            R = (w - 510.) / (580. - 510.)
-////            G = 1.0
-////            B = 0.0
-////        elif w >= 580 and w < 645:
-////            R = 1.0
-////            G = -(w - 645.) / (645. - 580.)
-////            B = 0.0
-////        elif w >= 645 and w <= 780:
-////            R = 1.0
-////            G = 0.0
-////            B = 0.0
-////        else:
-////            R = 0.0
-////            G = 0.0
-////            B = 0.0
-////
-////    }
 }
