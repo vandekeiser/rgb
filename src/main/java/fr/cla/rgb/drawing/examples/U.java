@@ -8,7 +8,7 @@ import static java.lang.Math.round;
 public enum U {
     ;
     private static final int[] ZERO = {0, 0, 0};
-    public static final double PURPLE_WAVELENGTH = 390.0, RED_WAVELENGTH = 700.0;
+    public static final double PURPLE_WAVELENGTH = 380.0, RED_WAVELENGTH = 780.0;
 
     public static double sq (double x) {
         return pow(x, 2.0);
@@ -31,7 +31,8 @@ public enum U {
         float maxHue = 280F, maxHueFactor = maxHue/360F; //avoid periodicity if < 1
         float hue =(float)(maxHueFactor*(1.0-((wavelength-PURPLE_WAVELENGTH)/(RED_WAVELENGTH-PURPLE_WAVELENGTH)))),
               saturation = 1.0F,
-              brightness = 1.0F;
+              //brightness = 1.0F;
+              brightness = (float)intensityFactor(wavelength);
         return Color.HSBtoRGB(hue, saturation, brightness);
     }
     
@@ -47,7 +48,6 @@ public enum U {
             return ZERO;
         } 
 
-        double factor;
         double Red,Green,Blue;
         if((wavelength >= 379.0) && (wavelength<440.0)){
             Red = -(wavelength - 440.0) / (440.0 - 380.0);
@@ -77,17 +77,7 @@ public enum U {
             throw new AssertionError("bad wavelength: " + wavelength);
         };
 
-        // Let the intensity fall off near the vision limits
-        if((wavelength >= 380.0) && (wavelength<420.0)){
-            factor = 0.3 + 0.7*(wavelength - 380.0) / (420.0 - 380.0);
-        }else if((wavelength >= 420.0) && (wavelength<701.0)){
-            factor = 1.0;
-        }else if((wavelength >= 701.0) && (wavelength<781.0)){
-            factor = 0.3 + 0.7*(780.0 - wavelength) / (780.0 - 700.0);
-        }else{
-            factor = 0.0;
-        };
-
+        double factor = intensityFactor(wavelength);
 
         int[] rgb = new int[3];
         // Don't want 0^x = 1 for x <> 0
@@ -95,6 +85,20 @@ public enum U {
         rgb[1] = Green==0.0 ? 0 : (int) round(IntensityMax * pow(Green * factor, Gamma));
         rgb[2] = Blue==0.0 ? 0 : (int) round(IntensityMax * pow(Blue * factor, Gamma));
         return rgb;
+    }
+
+    private static double intensityFactor(double wavelength) {
+        double see = /*0.3*/0.9, maybeSee = 1.0 - see;
+        // Let the intensity fall off near the vision limits
+        if((wavelength >= PURPLE_WAVELENGTH) && (wavelength<420.0)){
+            return see + maybeSee*(wavelength - PURPLE_WAVELENGTH) / (420.0 - PURPLE_WAVELENGTH);
+        }else if((wavelength >= 420.0) && (wavelength<701.0)){
+            return 1.0;
+        }else if((wavelength >= 701.0) && (wavelength<=RED_WAVELENGTH)){
+            return see + maybeSee*(RED_WAVELENGTH - wavelength) / (RED_WAVELENGTH - 700.0);
+        }else{
+            return 0.0;
+        }
     }
 
     public static int[] waveLengthToRGB(BigDecimal lambda) {

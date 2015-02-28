@@ -16,7 +16,9 @@ public class JuliaSet3 extends WholeDrawing {
 
     public static void main(String... args) throws Exception {
         JuliaSet3 js = new JuliaSet3(SIZE);
-        System.out.printf("Drawing Julia set %s, size %d %n", JULIA_SET, SIZE);
+        System.out.printf(
+                "Drawing Julia set %s(SIZE=%d, MAX_ITERATIONS=%d, COLOR_SCALE=%s, TAU=%.2f, WAVELENGTH_TO_RGB=%s)%n",
+                JULIA_SET, SIZE, MAX_ITERATIONS, COLOR_SCALE, TAU, WAVELENGTH_TO_RGB);
         
         System.out.println("Computing diverging iteration stats..");
         IntSummaryStatistics divergingIterationStats = js.points().parallel().mapToInt(
@@ -55,10 +57,10 @@ public class JuliaSet3 extends WholeDrawing {
         return WAVELENGTH_TO_RGB.toRgb(wavelength);
     }
 
-    private static final int SIZE = 1024;
+    private static final int SIZE = 16384;
     private static final int MAX_ITERATIONS = 512;
     //"time constant" of the exponential used to get more detail toward reds
-    private static final double TAU = 20;
+    private static final double TAU = 20.0;
     private static final ColorScale COLOR_SCALE = ColorScale.Interpolating.EXPONENTIALLY;
     private static final WavelengthToRgb WAVELENGTH_TO_RGB = WavelengthToRgb.THROUGH.HSV;
     private static final JuliaSet JULIA_SET = JuliaSet.DRAGON;
