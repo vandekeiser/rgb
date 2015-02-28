@@ -49,6 +49,7 @@ public class JuliaSet3 extends WholeDrawing {
                 * (divergingIteration-minDivergingIteration)
                 /  (maxDivergingIteration-minDivergingIteration);
         
+        // E [PURPLE, RED]
         double lambda = colorScale.wavelength(relativeDivergingIteration);
         
         int[] rgb = U.waveLengthToRGB(lambda);
@@ -121,7 +122,7 @@ public class JuliaSet3 extends WholeDrawing {
     }
     
     interface ColorScale {
-        double purple = 380.0, red = 780.0, range = red - purple;
+        double PURPLE = 380.0, RED = 780.0, RANGE = RED - PURPLE;
 
         /**
          * *
@@ -133,12 +134,12 @@ public class JuliaSet3 extends WholeDrawing {
         enum ColorScales implements ColorScale {
             LINEAR {
                 @Override public double wavelength(double x) {
-                    return purple + range * x;
+                    return PURPLE + RANGE * x;
                 }
             },
             EXPONENTIAL {
                 @Override public double wavelength(double x) {
-                    return purple + range * (1.0 - exp(-TAU * x))/(1.0 - exp(-TAU));
+                    return PURPLE + RANGE * (1.0 - exp(-TAU * x))/(1.0 - exp(-TAU));
                 }
             },
             ;
