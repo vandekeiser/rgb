@@ -4,18 +4,19 @@ import java.util.IntSummaryStatistics;
 import fr.cla.rgb.drawer.ParallelAsyncTilingDrawer;
 import fr.cla.rgb.drawing.Point;
 import fr.cla.rgb.drawing.WholeDrawing;
+import org.apache.commons.math3.complex.Complex;
 import static java.lang.Math.exp;
 
-public class JuliaSetXXXNewton5 extends WholeDrawing {
+public class JuliaSet3ComplexXNewton extends WholeDrawing {
 
     private int minDivergingIteration, maxDivergingIteration;
 
-    public JuliaSetXXXNewton5(int size) {
+    public JuliaSet3ComplexXNewton(int size) {
         super(size);
     }
 
     public static void main(String... args) throws Exception {
-        JuliaSetXXXNewton5 js = new JuliaSetXXXNewton5(1024);
+        JuliaSet3ComplexXNewton js = new JuliaSet3ComplexXNewton(1024);
 
         System.out.println("Computing color scale..");
         IntSummaryStatistics divergingIterationStats = js.points().parallel().mapToInt(
@@ -68,10 +69,6 @@ public class JuliaSetXXXNewton5 extends WholeDrawing {
     private static double TAU = 100;
     
     private static int divergingIteration(int i, int j, int size) {
-        double x = D(i, size),
-              y = D(j, size),
-              X, Y; //values before iteration
-
 //Some of the more famous Julia sets are:
         //double xadd = 0, yadd = 0;           //cercle
         //double xadd = 0.5, yadd = 0.0;       //semi-interessant
@@ -82,17 +79,13 @@ public class JuliaSetXXXNewton5 extends WholeDrawing {
         //double xadd = 0.36237, yadd = 0.32;  //"spirales imbriquees"
         //double xadd = -0.7, yadd = 0.27015;  //"spirales sur spirales", 2018/10
 
-        double xadd = 0.36, yadd = 0.1;      //"the Dragon"
+        Complex dragon = new Complex(0.36, 0.1);
+        Complex z = new Complex(D(i, size), D(j, size)), Z;
 
         int n = 0;
-        while(n++<MAX_IT && (x*x+y*y)<4.0) {//certain divergence outside of the circle of radius 2
-            X = x;
-            Y = y;
+        while(n++<MAX_IT && z.abs()<4.0) {//certain divergence outside of the circle of radius 2
             //f(z)=z^2+c
-            //c=xadd + i*yadd
-            //z=x+iy -> z^2=x^2-y^2 + 2i*x*y
-            x = X*X - Y*Y + xadd;
-            y = 2*X*Y     + yadd;
+            z  = z.multiply(z).multiply(z).multiply(z).multiply(z).add(-1.0);
         }
         return n;
     }
