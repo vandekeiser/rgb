@@ -4,3 +4,4 @@ target/*
 *.iml
 *.png*
 ignore/*
+processing-2.2.1/*
