@@ -23,7 +23,7 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 public class AsyncDrawer implements Drawer {
     
-    @Override public final void draw(WholeDrawing drawing) {
+    @Override public final void draw(WholeDrawing drawing) throws Exception {
         Path tempTilesPath = createTempTilesPath();
         out.printf("%s/draw/will store tiles in temp directory: %s%n", getClass().getSimpleName(), tempTilesPath);
 
@@ -35,8 +35,15 @@ public class AsyncDrawer implements Drawer {
         
         //stitching().stitch(imagesPaths, drawing.name());
         int ntiles = drawing.nbOfLines(); //need to add param
-        String tile0 = null; //need to write tile0first
 
+        Stream<CompletableFuture<WrittenImage>> writtenTilesExample01 = writtenTilesExample.limit(1);
+        Stream<WrittenImage> writtenTilesExample001 = writtenTilesExample01.map(it-> {
+            try {return it.get();}
+            catch (Exception e) {throw new RuntimeException(e);}
+        });
+        WrittenImage writtenTilesExample0001 = writtenTilesExample001.findFirst().get();
+        String tile0 = toPath(writtenTilesExample0001.name, tempTilesPath);
+        
         PNGJ9.PngwImi1Imi2 info = PNGJ9.info2(tile0, ntiles, drawing.name());
         PNGJ9.doTiling(
                 info,

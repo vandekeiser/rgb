@@ -87,7 +87,7 @@ public interface RenderedTilesWriting {
 
         private static OutputStream outputStreamFor(NamedImage t, Path tempTilesPath) throws IOException {
             return new BufferedOutputStream(new FileOutputStream(
-                    toPath(t.name, tempTilesPath))
+                toPath(t.name, tempTilesPath))
             );
         }
 
