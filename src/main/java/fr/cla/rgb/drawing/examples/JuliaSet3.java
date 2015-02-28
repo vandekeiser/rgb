@@ -12,9 +12,9 @@ public class JuliaSet3 extends WholeDrawing {
     public JuliaSet3(int size) {
         super(size);
     }
-
+                                              //JuliaSet3_16384_MAXIT32.png
     public static void main(String... args) throws Exception {
-        JuliaSet3 js = new JuliaSet3(1024);
+        JuliaSet3 js = new JuliaSet3(16384);
         System.out.println("Computing color scale..");
         IntSummaryStatistics divergingIterationStats = js.points().parallel().mapToInt(
                 p -> js.divergingIteration(p.x, p.y, js.wholeDrawingSize())
@@ -36,8 +36,8 @@ public class JuliaSet3 extends WholeDrawing {
     }
 
     private double wavelength(int n) {
-        //double red = 380.0, purple = 780.0, range = purple - red;
-        double red = 540.0, purple = 600.0, range = purple - red;
+        double red = 380.0, purple = 780.0, range = purple - red;
+        //double red = 540.0, purple = 600.0, range = purple - red;
         //double red = 490.0, purple = 510.0, range = purple - red;
         //double red = 470.0, purple = 500.0, range = purple - red;
         
@@ -49,10 +49,18 @@ public class JuliaSet3 extends WholeDrawing {
         double x = D(i, size),
               y = D(j, size),
               X, Y; //values before iteration
-        int n = 0, MAX_IT = 1024;
         
-        double xadd = 0.36237,
-               yadd = 0.32;
+        //bizarrement structure plus jolie qd petit, 
+        // plus gros ecrase les couleurs
+        //mais trop petit (8) pas bon non plus.. 32 OK
+        int n = 0, MAX_IT = 32;
+        
+        //f(z)=z^2+c, c=xadd + iyadd
+        //double xadd = 0.36237, yadd = 0.32;     //interessant
+        //double xadd = 0, yadd = 0;              //cercle
+        //double xadd = 0.03515, yadd = -0.07467; //queud
+        double xadd = -0.672, yadd = 0.435;       //interessant
+
         while(n++<MAX_IT && (x*x+y*y)<4.0) {//certain divergence outside of the circle of radius 2
             X = x;
             Y = y;

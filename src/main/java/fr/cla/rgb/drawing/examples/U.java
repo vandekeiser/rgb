@@ -1,5 +1,6 @@
 package fr.cla.rgb.drawing.examples;
 
+import java.math.BigDecimal;
 import static java.lang.Math.pow;
 import static java.lang.Math.round;
 
@@ -76,5 +77,9 @@ public enum U {
         rgb[1] = Green==0.0 ? 0 : (int) round(IntensityMax * pow(Green * factor, Gamma));
         rgb[2] = Blue==0.0 ? 0 : (int) round(IntensityMax * pow(Blue * factor, Gamma));
         return rgb;
+    }
+
+    public static int[] waveLengthToRGB(BigDecimal lambda) {
+        return waveLengthToRGB(lambda.doubleValue());
     }
 }
