@@ -36,7 +36,7 @@ public abstract class Drawing implements Named {
         return new NamedImage(img, name());
     }
 
-    private Stream<Point> points() {
+    protected Stream<Point> points() {
         return IntStream.range(0, xsize).mapToObj(
                 x -> IntStream.range(0, ysize).mapToObj(
                         y -> new Point(x, y)
