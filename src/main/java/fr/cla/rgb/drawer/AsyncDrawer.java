@@ -1,5 +1,6 @@
 package fr.cla.rgb.drawer;
 
+import java.awt.font.GraphicAttribute;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,7 +23,10 @@ import static java.lang.System.out;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 public class AsyncDrawer implements Drawer {
-    
+
+    public static final AsyncDrawer INSTANCE = new AsyncDrawer();
+    private AsyncDrawer() {}
+
     @Override public final void draw(WholeDrawing drawing) throws Exception {
         Path tempTilesPath = createTempTilesPath();
         out.printf("%s/draw/will store tiles in temp directory: %s%n", getClass().getSimpleName(), tempTilesPath);
@@ -78,7 +82,7 @@ public class AsyncDrawer implements Drawer {
                 () -> writeOne(renderedImage, tempTilesPath),
                 ioExecutor
             ));
-        } finally {ioExecutor.shutdownNow();}//Otherwise doesn't exit immediately
+        } finally {/*ioExecutor.shutdown();*/}
     }
 
     private static WrittenImage writeOne(NamedImage image, Path tempTilesPath) {

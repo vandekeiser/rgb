@@ -1,6 +1,7 @@
 package fr.cla.rgb.drawing.examples;
 
 import java.io.IOException;
+import fr.cla.rgb.drawer.AsyncDrawer;
 import fr.cla.rgb.drawer.ParallelAsyncTilingDrawer;
 import fr.cla.rgb.drawing.WholeDrawing;
 
@@ -10,7 +11,7 @@ public class JuliaSet extends WholeDrawing {
         super(size);
     }
 
-    public static void main(String... args) throws IOException {
+    public static void main(String... args) throws Exception {
         //ParallelTilingDrawer.INSTANCE.draw(new JuliaSet(8192));
         //ParallelTilingDrawer.INSTANCE.draw(new JuliaSet(32768));
         //ParallelTilingDrawer.INSTANCE.draw(new JuliaSet(65536)); //MAX_SIZE_BEFORE_SPLIT = 2048 --> OK
@@ -37,7 +38,7 @@ public class JuliaSet extends WholeDrawing {
 //        ParallelAsyncTilingDrawer/draw/done stitching 256 tiles, it took PT10M26.605S
 //        ParallelAsyncTilingDrawer.INSTANCE.draw(new JuliaSet(32768));
         
-        ParallelAsyncTilingDrawer.INSTANCE.draw(new JuliaSet(2048));
+        AsyncDrawer.INSTANCE.draw(new JuliaSet(2048));
 
 
     }
