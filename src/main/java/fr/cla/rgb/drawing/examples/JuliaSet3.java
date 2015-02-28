@@ -8,7 +8,7 @@ import static java.lang.Math.*;
 
 public class JuliaSet3 extends WholeDrawing {
 
-    private int maxDivergingIteration;
+    private int minDivergingIteration, maxDivergingIteration;
 
     public JuliaSet3(int size) {
         super(size);
@@ -22,6 +22,7 @@ public class JuliaSet3 extends WholeDrawing {
                 p -> js.divergingIteration(p.x, p.y, js.wholeDrawingSize())
         ).summaryStatistics();
         js.maxDivergingIteration = divergingIterationStats.getMax();
+        js.minDivergingIteration = divergingIterationStats.getMin();
         System.out.println("Color scale: stats=" + divergingIterationStats);
         System.out.printf("Color scale: nonlinearWavelength(0)=%.0f%n", js.nonlinearWavelength(0));
         System.out.printf("Color scale: nonlinearWavelength(maxDivergingIteration/2)=%.0f%n", 
@@ -58,13 +59,13 @@ public class JuliaSet3 extends WholeDrawing {
 
         double purple = 380.0, red = 780.0, range = red - purple;
 
-        double x = divergingIteration *1.0 /maxDivergingIteration; // E [0, 1]
-        
+        double x = 1.0*(divergingIteration-minDivergingIteration)/(maxDivergingIteration-minDivergingIteration); // E [0, 1]
+
         return purple + range * (1.0 - exp(-TAU*x))/(1.0 - exp(-TAU));
     }
     private static int MAX_IT = 2048;
     //"time constant" of the exponential used to get more detail toward reds
-    private static double TAU = 10;
+    private static double TAU = 100;
     
     private static int divergingIteration(int i, int j, int size) {
         double x = D(i, size),
@@ -79,9 +80,9 @@ public class JuliaSet3 extends WholeDrawing {
         //double xadd = -0.1, yadd = 0.8;      //"the Rabbit"
         //double xadd = -0.672, yadd = 0.435;  //"spirales jumelles"
         //double xadd = 0.36237, yadd = 0.32;  //"spirales imbriquees"
-        double xadd = -0.7, yadd = 0.27015;  //"spirales sur spirales", 2018/10
+        //double xadd = -0.7, yadd = 0.27015;  //"spirales sur spirales", 2018/10
 
-        //double xadd = 0.36, yadd = 0.1;      //"the Dragon"
+        double xadd = 0.36, yadd = 0.1;      //"the Dragon"
 
         int n = 0;
         while(n++<MAX_IT && (x*x+y*y)<4.0) {//certain divergence outside of the circle of radius 2

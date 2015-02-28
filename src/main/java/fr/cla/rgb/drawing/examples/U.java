@@ -24,8 +24,11 @@ public enum U {
     * <a href="http://www.efg2.com/Lab/ScienceAndEngineering/Spectra.htm">Spectra Lab Report</a>
     * */
     public static int[] waveLengthToRGB(double wavelength){
-        if(Double.isNaN(wavelength)) return ZERO;
-        
+        if(Double.isNaN(wavelength)) {
+            //System.out.println("!!!!!!!!!!!!!!!!!!!!!GOT NaN!!!!!!!!!!!!!!!!!!!!!");
+            return ZERO;
+        } 
+
         double factor;
         double Red,Green,Blue;
         if((wavelength >= 379.0) && (wavelength<440.0)){
