@@ -1,35 +1,50 @@
 package fr.cla.rgb.drawer.pngj;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 import ar.com.hjg.pngj.ImageInfo;
 import ar.com.hjg.pngj.ImageLineInt;
 import ar.com.hjg.pngj.PngReader;
 import ar.com.hjg.pngj.PngWriter;
 import ar.com.hjg.pngj.chunks.ChunkCopyBehaviour;
 import ar.com.hjg.pngj.chunks.ChunkLoadBehaviour;
+import fr.cla.rgb.drawer.WrittenImage;
+import static java.util.concurrent.CompletableFuture.runAsync;
 
 /**
  * info2 prend directement le path de tile0
  */
 public class PNGJ10 {
 
-    public static void doTiling(PngwImi1Imi2 info, int ntiles, String tiles[]) {
-        for (int ty = 0; ty < ntiles; ty++) {
-            PngReader reader = new PngReader(new File(tiles[ty]));
-            try {
-                ImageLineInt line2 = new ImageLineInt(info.imi2);
-                reader.setChunkLoadBehaviour(ChunkLoadBehaviour.LOAD_CHUNK_NEVER);
-                if (!reader.imgInfo.equals(info.imi1)) throw new RuntimeException("different tile ? " + reader.imgInfo);
-
-                for (int row1 = 0; row1 < info.imi1.rows; row1++) {
-                    int row2 = ty * info.imi1.rows + row1;
-                    ImageLineInt line1 = (ImageLineInt) reader.readRow(row1); // read line
-                    System.arraycopy(line1.getScanline(), 0, line2.getScanline(), 0, line1.getScanline().length);
-                    info.pngw.writeRow(line2, row2); // write to full image
-                }
-            } finally { reader.end(); }
-        }
+    public static void doTiling(PngwImi1Imi2 info, Path tempTilesPath, Stream<CompletableFuture<WrittenImage>> tiles) {
+        Stream<CompletableFuture<Void>> fff = tiles.map(
+                cf->cf.thenAccept(wi -> doTileOne(wi, info, tempTilesPath))
+        );
+        CompletableFuture<?>[] ffffff = fff.toArray(i-> new CompletableFuture<?>[i]);
+        CompletableFuture.allOf(ffffff).join();
+        
         info.pngw.end(); // close writer
+    }
+
+    private static void doTileOne(WrittenImage writtenImage, PngwImi1Imi2 info, Path tempTilesPath) {
+        PngReader reader = new PngReader(new File(writtenImage.toPath(tempTilesPath)));  //KO: name->path
+        
+        try {
+            ImageLineInt line2 = new ImageLineInt(info.imi2);
+            reader.setChunkLoadBehaviour(ChunkLoadBehaviour.LOAD_CHUNK_NEVER);
+            if (!reader.imgInfo.equals(info.imi1)) throw new RuntimeException("different tile ? " + reader.imgInfo);
+
+            for (int row1 = 0; row1 < info.imi1.rows; row1++) {
+                int row2 = writtenImage.number * info.imi1.rows + row1;
+                ImageLineInt line1 = (ImageLineInt) reader.readRow(row1); // read line
+                System.arraycopy(line1.getScanline(), 0, line2.getScanline(), 0, line1.getScanline().length);
+                
+                //PngjOutputException: rows must be written in order: expected:34 passed:33
+                info.pngw.writeRow(line2, row2); // write to full image
+            }
+        } finally { reader.end(); }
     }
 
     public static PngwImi1Imi2 info2(String tile0, int nbTiles, String dest) {

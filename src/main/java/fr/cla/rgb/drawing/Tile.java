@@ -1,15 +1,18 @@
 package fr.cla.rgb.drawing;
 
+import java.awt.image.BufferedImage;
+
 public class Tile extends Drawing {
 
     private final WholeDrawing whole;
-    private final int xoffset, yoffset;
+    private final int xoffset, yoffset, number;
 
-    private Tile(WholeDrawing whole, int xsize, int ysize, int xoffset, int yoffset) {
+    private Tile(WholeDrawing whole, int xsize, int ysize, int xoffset, int yoffset, int number) {
         super(xsize, ysize);
         this.whole = whole;
         this.xoffset = xoffset;
         this.yoffset = yoffset;
+        this.number = number;
     }
 
     @Override public String name() {
@@ -20,6 +23,12 @@ public class Tile extends Drawing {
                 + yoffset
                 + "."
                 + IMG_TYPE;
+    }
+    
+    public NamedImage render() {
+        NamedImage base = super.render();
+        base.number(this.number);
+        return base;
     }
 
     //Necessary for the whole drawing to be able to override RGB and not only R, G, and B
@@ -44,7 +53,7 @@ public class Tile extends Drawing {
 
     public static class Builder {
         private final WholeDrawing whole;
-        private int xsize, ysize, xoffset, yoffset;
+        private int xsize, ysize, xoffset, yoffset, number;
 
         Builder(WholeDrawing whole) {
             this.whole = whole;
@@ -61,9 +70,14 @@ public class Tile extends Drawing {
             this.yoffset = yoffset;
             return this;
         }
+        
+        public Builder numbered(int number) {
+            this.number = number;
+            return this;
+        }
 
         public Tile build() {
-            return new Tile(whole, xsize, ysize, xoffset, yoffset);
+            return new Tile(whole, xsize, ysize, xoffset, yoffset, number);
         }
     }
 }

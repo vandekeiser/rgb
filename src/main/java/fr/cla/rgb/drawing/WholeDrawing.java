@@ -60,9 +60,11 @@ public abstract class WholeDrawing extends Drawing {
                 tileYSizeRemainder
         ));
 
-        return IntStream.range(0, lines).mapToObj(line -> Tile.of(this)
+        return IntStream.range(0, lines)
+                        .mapToObj(line -> Tile.of(this)
                         .sized(tileXSize, tileYSize)
                         .offset(0, line * tileYSize)
+                        .numbered(line)
                         .build()
         ).collect(toList());
     }

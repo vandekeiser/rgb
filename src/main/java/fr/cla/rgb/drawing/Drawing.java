@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import static java.util.function.Function.identity;
 
-public abstract class Drawing {
+public abstract class Drawing implements Named {
 
     public static final String IMG_TYPE = "png";
 
@@ -17,7 +17,7 @@ public abstract class Drawing {
     public final int xsize() { return xsize; }
     public final int ysize() { return ysize; }
 
-    public final NamedImage render() {
+    public NamedImage render() {
         BufferedImage img = new BufferedImage(xsize, ysize, BufferedImage.TYPE_INT_RGB);
 
         //__Should__ be threadsafe since we write to different pixels, so could use parallel()
@@ -43,11 +43,6 @@ public abstract class Drawing {
                 )
         ).flatMap(identity()); //Workaround: IntStream.flatMapToObj doesn't exist
     }
-
-    /**
-     * @return The future file's name
-     */
-    public abstract String name();
 
     protected int RGB(Point p, int wholeDrawingsize) {
         int x = p.x, y = p.y, s = wholeDrawingsize;

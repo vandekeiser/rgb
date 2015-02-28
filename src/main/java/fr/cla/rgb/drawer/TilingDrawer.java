@@ -10,7 +10,6 @@ import java.time.Instant;
 import java.util.stream.Collectors;
 import fr.cla.rgb.drawing.Drawing;
 import fr.cla.rgb.drawing.WholeDrawing;
-import static fr.cla.rgb.drawer.RenderedTilesWriting.RenderedTilesWritings.toPath;
 import static java.lang.System.out;
 
 public abstract class TilingDrawer implements Drawer {
@@ -54,8 +53,7 @@ public abstract class TilingDrawer implements Drawer {
     protected String[] computeTempTilesPaths(WholeDrawing drawing, Path tempTilesPath) {
         return drawing
                 .sequentialSplit() //We'll have to stitch tiles together from first line to last line
-                .map(Drawing::name)
-                .map(t -> toPath(t, tempTilesPath))
+                .map(t -> t.toPath(tempTilesPath))
                 .collect(Collectors.toList())
                 .toArray(new String[drawing.nbOfLines()]);
     }
