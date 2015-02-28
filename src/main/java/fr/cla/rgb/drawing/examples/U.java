@@ -1,5 +1,6 @@
 package fr.cla.rgb.drawing.examples;
 
+import java.awt.*;
 import java.math.BigDecimal;
 import static java.lang.Math.pow;
 import static java.lang.Math.round;
@@ -7,6 +8,7 @@ import static java.lang.Math.round;
 public enum U {
     ;
     private static final int[] ZERO = {0, 0, 0};
+    public static final double PURPLE_WAVELENGTH = 390.0, RED_WAVELENGTH = 700.0;
 
     public static double sq (double x) {
         return pow(x, 2.0);
@@ -17,12 +19,28 @@ public enum U {
         // what with all the mixed types computations..
         return x*x;
     }
+
+    public static int waveLengthToRGB2(double wavelength){
+//        The <code>saturation</code> and <code>brightness</code> components
+//       should be floating-point values between zero and one
+//       (numbers in the range 0.0-1.0).  The <code>hue</code> component
+//       can be any floating-point number.  The floor of this number is
+//       subtracted from it to create a fraction between 0 and 1.  This
+//       fractional number is then multiplied by 360 to produce the hue
+//       angle in the HSB color model.
+        float maxHue = 280F, maxHueFactor = maxHue/360F; //avoid periodicity if < 1
+        float hue =(float)(maxHueFactor*(1.0-((wavelength-PURPLE_WAVELENGTH)/(RED_WAVELENGTH-PURPLE_WAVELENGTH)))),
+              saturation = 1.0F,
+              brightness = 1.0F;
+        return Color.HSBtoRGB(hue, saturation, brightness);
+    }
     
     static private double Gamma = 0.80;
     static private double IntensityMax = 255;
     /** Taken from Earl F. Glynn's web page:
     * <a href="http://www.efg2.com/Lab/ScienceAndEngineering/Spectra.htm">Spectra Lab Report</a>
     * */
+//AUTRE POSSIBILITE UTILISER HSV?
     public static int[] waveLengthToRGB(double wavelength){
         if(Double.isNaN(wavelength)) {
             //System.out.println("!!!!!!!!!!!!!!!!!!!!!GOT NaN!!!!!!!!!!!!!!!!!!!!!");
