@@ -8,6 +8,8 @@ import org.opencv.core.Scalar;
 
 class SimpleSample {
 
+  //http://docs.opencv.org/2.4.4-beta/doc/tutorials/introduction/desktop_java/java_dev_intro.html
+    
   //static{ System.loadLibrary("opencv_java248"); }
     //[INFO] Copying opencvjar-runtime-2.4.8-natives-windows-x86_64.jar to g:\projets\
     //blog\rgb\target\lib\opencvjar-runtime-2.4.8-natives-windows-x86_64.jar
