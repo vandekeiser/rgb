@@ -6,3 +6,5 @@ target/*
 ignore/*
 processing-2.2.1/*
 *.jar
+opencv/*
+opencv-full/*
