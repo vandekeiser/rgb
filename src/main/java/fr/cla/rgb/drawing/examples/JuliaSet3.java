@@ -1,5 +1,7 @@
 package fr.cla.rgb.drawing.examples;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.IntSummaryStatistics;
 import fr.cla.rgb.drawer.ParallelAsyncTilingDrawer;
 import fr.cla.rgb.drawing.Point;
@@ -17,16 +19,17 @@ public class JuliaSet3 extends WholeDrawing {
     public static void main(String... args) throws Exception {
         JuliaSet3 js = new JuliaSet3(SIZE);
         System.out.printf(
-                "Drawing Julia set %s(SIZE=%d, MAX_ITERATIONS=%d, COLOR_SCALE=%s, TAU=%.2f, WAVELENGTH_TO_RGB=%s)%n",
+                "Drawing Julia set %s(SIZE=%d, MAX_ITERATIONS=%d, COLOR_SCALE=Interpolating.%s, TAU=%.2f, WAVELENGTH_TO_RGB=THROUGH.%s)%n",
                 JULIA_SET, SIZE, MAX_ITERATIONS, COLOR_SCALE, TAU, WAVELENGTH_TO_RGB);
         
         System.out.println("Computing diverging iteration stats..");
+        Instant beforeStats = Instant.now();
         IntSummaryStatistics divergingIterationStats = js.points().parallel().mapToInt(
                 p -> js.divergingIteration(p.x, p.y, js.wholeDrawingSize())
         ).summaryStatistics();
         js.maxDivergingIteration = divergingIterationStats.getMax();
         js.minDivergingIteration = divergingIterationStats.getMin();
-        System.out.println("Diverging iteration: " + divergingIterationStats);
+        System.out.printf("Diverging iteration stats took %s, results:%s%n", Duration.between(beforeStats, Instant.now()), divergingIterationStats);
         
         System.out.printf("Color scale: COLOR_SCALE.wavelength(0.0)=%.0f%n", COLOR_SCALE.wavelength(0.0));
         System.out.printf("Color scale: COLOR_SCALE.wavelength(0.25)=%.0f%n", COLOR_SCALE.wavelength(0.25));
@@ -53,21 +56,38 @@ public class JuliaSet3 extends WholeDrawing {
         
         // E [PURPLE, RED]
         double wavelength = COLOR_SCALE.wavelength(relativeDivergingIteration);
+        /*
+        Color scale: COLOR_SCALE.wavelength(0.0)=380
+        Color scale: COLOR_SCALE.wavelength(0.25)=777
+        Color scale: COLOR_SCALE.wavelength(0.5)=780
+        Color scale: COLOR_SCALE.wavelength(0.75)=780
+        Color scale: COLOR_SCALE.wavelength(1.0)=780
+        Color scale: COLOR_SCALE.wavelength(1.1)=780
+        -->Jouer sur le brightness pour les distinguer?
+        
+              Color scale: COLOR_SCALE.wavelength(0.0)=380
+              Color scale: COLOR_SCALE.wavelength(0.25)=667
+              Color scale: COLOR_SCALE.wavelength(0.5)=750
+              Color scale: COLOR_SCALE.wavelength(0.75)=773
+              Color scale: COLOR_SCALE.wavelength(1.0)=780
+              Color scale: COLOR_SCALE.wavelength(1.1)=781
+                                                          -->KO?
+        * * * */
         
         return WAVELENGTH_TO_RGB.toRgb(wavelength);
     }
 
-    private static final int SIZE = 16384;
-    private static final int MAX_ITERATIONS = 512;
+    static final int SIZE = 65536; //1024, 2048, 4096, 8192, 16384, 32768(12mn/5mn), 65536
+    static final int MAX_ITERATIONS = 512;
     //"time constant" of the exponential used to get more detail toward reds
-    private static final double TAU = 20.0;
-    private static final ColorScale COLOR_SCALE = ColorScale.Interpolating.EXPONENTIALLY;
-    private static final WavelengthToRgb WAVELENGTH_TO_RGB = WavelengthToRgb.THROUGH.HSV;
-    private static final JuliaSet JULIA_SET = JuliaSet.DRAGON;
+    static final double TAU = 5.0;
+    static final ColorScale COLOR_SCALE = ColorScale.Interpolating.EXPONENTIALLY;
+    static final WavelengthToRgb WAVELENGTH_TO_RGB = WavelengthToRgb.Through.HSV;
+    static final JuliaSet JULIA_SET = JuliaSet.SPIRALS_SIDE;//512/5.0
     
-    private static int divergingIteration(int i, int j, int size) {
-        double x = D(i, size),
-              y = D(j, size),
+    static int divergingIteration(int i, int j, int size) {
+        double x = value(i, size),
+              y = value(j, size),
               X, Y; //values before iteration
 
         int n = 0;
@@ -83,11 +103,11 @@ public class JuliaSet3 extends WholeDrawing {
         return n;
     }
     
-    private static double D(int i, int size) {
+    static double value(int index, int size) {
         //i E [0, size] 
         // --> (i-size/2) E [-size/2, +size/2] 
         // --> ret E [-1, 1]
-        return (i - size/2.0)/(size/2.0);
+        return (index - size/2.0)/(size/2.0);
     }
 
  
@@ -114,8 +134,7 @@ public class JuliaSet3 extends WholeDrawing {
         DRAGON           ( 0.36,      0.1     ),
         ;
         
-        private final double x;
-        private final double y;
+        final double x, y;
         JuliaSet(double x, double y) {
             this.x = x;
             this.y = y;
@@ -133,16 +152,12 @@ public class JuliaSet3 extends WholeDrawing {
         double wavelength(double x);
         
         enum Interpolating implements ColorScale {
-            LINEARLY {
-                @Override public double wavelength(double x) {
-                    return PURPLE + RANGE * x;
-                }
-            },
-            EXPONENTIALLY {
-                @Override public double wavelength(double x) {
-                    return PURPLE + RANGE * (1.0 - exp(-TAU * x))/(1.0 - exp(-TAU));
-                }
-            },
+            LINEARLY { @Override public double wavelength(double x) {
+                return PURPLE + RANGE * x;
+            }},
+            EXPONENTIALLY { @Override public double wavelength(double x) {
+                return PURPLE + RANGE * (1.0 - exp(-TAU * x))/(1.0 - exp(-TAU));
+            }},
             ;
         }
     }
@@ -150,13 +165,13 @@ public class JuliaSet3 extends WholeDrawing {
     interface WavelengthToRgb {
         int toRgb(double wavelength);
         
-        enum THROUGH implements WavelengthToRgb {
+        enum Through implements WavelengthToRgb {
             RGB { @Override public int toRgb(double wavelength) {
-                int[] rgb = U.waveLengthToRGB(wavelength);
+                int[] rgb = U.wavelengthToRgb(wavelength);
                 return (rgb[0] << 8 | rgb[1]) << 8 | rgb[2];
             }},
             HSV { @Override public int toRgb(double wavelength) {
-                return  U.waveLengthToRGB2(wavelength);
+                return U.wavelengthToHsbToRgb(wavelength);
             }},
             ;
         }

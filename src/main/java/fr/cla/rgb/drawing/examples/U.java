@@ -7,8 +7,6 @@ import static java.lang.Math.round;
 
 public enum U {
     ;
-    private static final int[] ZERO = {0, 0, 0};
-    public static final double PURPLE_WAVELENGTH = 380.0, RED_WAVELENGTH = 780.0;
 
     public static double sq (double x) {
         return pow(x, 2.0);
@@ -20,7 +18,9 @@ public enum U {
         return x*x;
     }
 
-    public static int waveLengthToRGB2(double wavelength){
+    public static final double PURPLE_WAVELENGTH = 380.0, RED_WAVELENGTH = 780.0;
+    
+    public static int wavelengthToHsbToRgb(double wavelength){
 //        The <code>saturation</code> and <code>brightness</code> components
 //       should be floating-point values between zero and one
 //       (numbers in the range 0.0-1.0).  The <code>hue</code> component
@@ -36,19 +36,17 @@ public enum U {
         return Color.HSBtoRGB(hue, saturation, brightness);
     }
     
-    static private double Gamma = 0.80;
-    static private double IntensityMax = 255;
+    private static final int[] ZERO = {0, 0, 0};
+    
     /** Taken from Earl F. Glynn's web page:
     * <a href="http://www.efg2.com/Lab/ScienceAndEngineering/Spectra.htm">Spectra Lab Report</a>
     * */
-//AUTRE POSSIBILITE UTILISER HSV?
-    public static int[] waveLengthToRGB(double wavelength){
-        if(Double.isNaN(wavelength)) {
-            //System.out.println("!!!!!!!!!!!!!!!!!!!!!GOT NaN!!!!!!!!!!!!!!!!!!!!!");
-            return ZERO;
-        } 
+    public static int[] wavelengthToRgb(double wavelength){
+        if(Double.isNaN(wavelength)) return ZERO;
 
+        final double GAMMA = 0.80, INTENSITY_MAX = 255;
         double Red,Green,Blue;
+        
         if((wavelength >= 379.0) && (wavelength<440.0)){
             Red = -(wavelength - 440.0) / (440.0 - 380.0);
             Green = 0.0;
@@ -81,9 +79,9 @@ public enum U {
 
         int[] rgb = new int[3];
         // Don't want 0^x = 1 for x <> 0
-        rgb[0] = Red==0.0 ? 0 : (int) round(IntensityMax * pow(Red * factor, Gamma));
-        rgb[1] = Green==0.0 ? 0 : (int) round(IntensityMax * pow(Green * factor, Gamma));
-        rgb[2] = Blue==0.0 ? 0 : (int) round(IntensityMax * pow(Blue * factor, Gamma));
+        rgb[0] = Red==0.0 ? 0 : (int) round(INTENSITY_MAX * pow(Red * factor, GAMMA));
+        rgb[1] = Green==0.0 ? 0 : (int) round(INTENSITY_MAX * pow(Green * factor, GAMMA));
+        rgb[2] = Blue==0.0 ? 0 : (int) round(INTENSITY_MAX * pow(Blue * factor, GAMMA));
         return rgb;
     }
 
@@ -101,7 +99,7 @@ public enum U {
         }
     }
 
-    public static int[] waveLengthToRGB(BigDecimal lambda) {
-        return waveLengthToRGB(lambda.doubleValue());
+    public static int[] wavelengthToRgb(BigDecimal wavelength) {
+        return wavelengthToRgb(wavelength.doubleValue());
     }
 }

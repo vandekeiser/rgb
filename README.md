@@ -52,3 +52,26 @@ TODO
  -Completable
  -determiner nbtiles en fonction de x*y
  -!!stream(Spliterator<T> spliterator, boolean ____parallel____) {
+ 
+ 
+ JuliaSet3_SPIRALSSIDE_65536_IT512_TAU5.png
+ MAX_SIZE_BEFORE_SPLIT=512, availableProcessors=2
+ Drawing Julia set SPIRALS_SIDE(SIZE=65536, MAX_ITERATIONS=512, COLOR_SCALE=Interpolating.EXPONENTIALLY, TAU=5,00, WAVELENGTH_TO_RGB=THROUGH.HSV)
+ Computing diverging iteration stats..
+ Diverging iteration took PT22M19.379S, results:IntSummaryStatistics{count=4294967296, sum=407291695105, min=2, average=94,829988, max=513}
+ Color scale: COLOR_SCALE.wavelength(0.0)=380
+ Color scale: COLOR_SCALE.wavelength(0.25)=667
+ Color scale: COLOR_SCALE.wavelength(0.5)=750
+ Color scale: COLOR_SCALE.wavelength(0.75)=773
+ Color scale: COLOR_SCALE.wavelength(1.0)=780
+ Color scale: COLOR_SCALE.wavelength(1.1)=781
+ ParallelAsyncTilingDrawer/draw/will store tiles in temp directory: C:\Users\User\AppData\Local\Temp\tiles_7910748554651067801
+ ParallelAsyncTilingDrawer/draw/start writing 128 tiles
+ ParallelAsyncTilingDrawer/draw/done writing 128 tiles, it took PT39M32.877S
+ ParallelAsyncTilingDrawer/draw/stitching tiles together
+ ParallelAsyncTilingDrawer/draw/done stitching 128 tiles, it took PT6H51M45.248S
+ -->snapshot-1425198534491-cpu-calltree.png
+
+https://www.mail-archive.com/core-libs-dev@openjdk.java.net/msg00131.html
+http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6399199
+flusher pngw periodiquement?

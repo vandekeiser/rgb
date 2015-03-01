@@ -31,7 +31,7 @@ public class BigDecimalJuliaSet4 extends WholeDrawing {
         
         int n = divergingIteration(x, y, s);
         BigDecimal lambda = wavelength(n);
-        int[] rgb = U.waveLengthToRGB(lambda);
+        int[] rgb = U.wavelengthToRgb(lambda);
         
         return (rgb[0] << 8 | rgb[1]) << 8 | rgb[2];
     }
