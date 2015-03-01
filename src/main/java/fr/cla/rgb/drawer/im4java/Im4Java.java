@@ -1,4 +1,4 @@
-package fr.cla.rgb.drawer.pngj;
+package fr.cla.rgb.drawer.im4java;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

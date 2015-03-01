@@ -2,6 +2,7 @@
 out/*
 target/*
 *.iml
-*.png*
+*.png
 ignore/*
 processing-2.2.1/*
+*.jar

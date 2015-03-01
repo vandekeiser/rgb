@@ -1,5 +1,7 @@
 package fr.cla.rgb.drawer;
 
+import fr.cla.rgb.drawer.im4java.Im4Java;
+import fr.cla.rgb.drawer.jdk.JdkImageIo;
 import fr.cla.rgb.drawer.pngj.*;
 
 public interface Stitching {
@@ -95,7 +97,7 @@ public interface Stitching {
         },
         WITH_PngjImageio {
             @Override public void stitch(String[] imagesPaths, String wholeImageName) {
-                PngjImageio.doTiling(
+                JdkImageIo.doTiling(
                         imagesPaths,
                         wholeImageName
                 );

@@ -1,4 +1,4 @@
-package fr.cla.rgb.drawer.pngj;
+package fr.cla.rgb.drawer.jdk;
 
 import java.awt.*;
 import java.awt.image.*;

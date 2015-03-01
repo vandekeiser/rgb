@@ -1,8 +1,8 @@
 package fr.cla.rgb.drawer;
 
-public class FullAsyncTilingDrawerTest extends TilingDrawerTest {
+public class FullAsyncTilingDrawerTest /*extends TilingDrawerTest*/ {
 
-    @Override protected Drawer createDrawer() {
+    /*@Override*/ protected Drawer createDrawer() {
         return AsyncDrawer.INSTANCE;
     }
     

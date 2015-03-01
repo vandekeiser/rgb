@@ -1,4 +1,4 @@
-package fr.cla.rgb.drawer.pngj;
+package fr.cla.rgb.drawer.jdk;
 
 import java.awt.image.RenderedImage;
 import java.io.BufferedOutputStream;
@@ -16,7 +16,7 @@ import fr.cla.rgb.drawing.Drawing;
 
 /**
  */
-public class PngjImageio {
+public class JdkImageIo {
 
     public static void doTiling(String tiles[], String dest) {
 //        Drawing drawing;
