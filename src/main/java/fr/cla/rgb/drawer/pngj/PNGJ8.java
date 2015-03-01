@@ -16,11 +16,12 @@ public class PNGJ8 {
     public static void doTiling(String tiles[], String dest) {
         int ntiles = tiles.length;
         PngwImi1Imi2 info = info2(tiles[0], tiles.length, dest);
-
+        ImageLineInt line2 = new ImageLineInt(info.imi2);
+        
         for (int ty = 0; ty < ntiles; ty++) {
+            System.out.printf("PNGJ8/doTiling/tile %d of %d%n", ty, ntiles);
             PngReader reader = new PngReader(new File(tiles[ty]));
             try {
-                ImageLineInt line2 = new ImageLineInt(info.imi2);
                 reader.setChunkLoadBehaviour(ChunkLoadBehaviour.LOAD_CHUNK_NEVER);
                 if (!reader.imgInfo.equals(info.imi1)) throw new RuntimeException("different tile ? " + reader.imgInfo);
 
@@ -28,7 +29,9 @@ public class PNGJ8 {
                     int row2 = ty * info.imi1.rows + row1;
                     ImageLineInt line1 = (ImageLineInt) reader.readRow(row1); // read line
                     System.arraycopy(line1.getScanline(), 0, line2.getScanline(), 0, line1.getScanline().length);
+                    //System.out.printf("PNGJ8/doTiling/writing row %d of %d%n", row1, info.imi1.rows-1);
                     info.pngw.writeRow(line2, row2); // write to full image
+                    //System.out.printf("PNGJ8/doTiling/written row %d of %d%n", row1, info.imi1.rows-1);
                 }
             } finally { reader.end(); }
         }

@@ -21,6 +21,7 @@ public enum U {
     public static final double PURPLE_WAVELENGTH = 380.0, RED_WAVELENGTH = 780.0;
     
     public static int wavelengthToHsbToRgb(double wavelength){
+        if(Double.isNaN(wavelength)) return 0;
 //        The <code>saturation</code> and <code>brightness</code> components
 //       should be floating-point values between zero and one
 //       (numbers in the range 0.0-1.0).  The <code>hue</code> component

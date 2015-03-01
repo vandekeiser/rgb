@@ -19,7 +19,7 @@ public class JuliaSet3 extends WholeDrawing {
     public static void main(String... args) throws Exception {
         JuliaSet3 js = new JuliaSet3(SIZE);
         System.out.printf(
-                "Drawing Julia set %s(SIZE=%d, MAX_ITERATIONS=%d, COLOR_SCALE=Interpolating.%s, TAU=%.2f, WAVELENGTH_TO_RGB=THROUGH.%s)%n",
+                "Drawing Julia set %s(SIZE=%d, MAX_ITERATIONS=%d, COLOR_SCALE=%s, TAU=%.2f, WAVELENGTH_TO_RGB=%s)%n",
                 JULIA_SET, SIZE, MAX_ITERATIONS, COLOR_SCALE, TAU, WAVELENGTH_TO_RGB);
         
         System.out.println("Computing diverging iteration stats..");
@@ -46,7 +46,7 @@ public class JuliaSet3 extends WholeDrawing {
         
         int divergingIteration = divergingIteration(x, y, s);
         
-        //fractals traditionally black where no divergence is detected
+        //fractals are traditionally black where no divergence is detected
         if(divergingIteration > MAX_ITERATIONS) return 0; 
 
         // E [0, 1]
@@ -77,7 +77,7 @@ public class JuliaSet3 extends WholeDrawing {
         return WAVELENGTH_TO_RGB.toRgb(wavelength);
     }
 
-    static final int SIZE = 65536; //1024, 2048, 4096, 8192, 16384, 32768(12mn/5mn), 65536
+    static final int SIZE = 32768; //1024, 2048, 4096, 8192, 16384, 32768(12mn/5mn), 65536
     static final int MAX_ITERATIONS = 512;
     //"time constant" of the exponential used to get more detail toward reds
     static final double TAU = 5.0;
@@ -153,9 +153,11 @@ public class JuliaSet3 extends WholeDrawing {
         
         enum Interpolating implements ColorScale {
             LINEARLY { @Override public double wavelength(double x) {
+                if(x<0.0 || x>1.0) return Double.NaN;
                 return PURPLE + RANGE * x;
             }},
             EXPONENTIALLY { @Override public double wavelength(double x) {
+                if(x<0.0 || x>1.0) return Double.NaN;
                 return PURPLE + RANGE * (1.0 - exp(-TAU * x))/(1.0 - exp(-TAU));
             }},
             ;

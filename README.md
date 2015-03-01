@@ -53,25 +53,49 @@ TODO
  -determiner nbtiles en fonction de x*y
  -!!stream(Spliterator<T> spliterator, boolean ____parallel____) {
  
- 
- JuliaSet3_SPIRALSSIDE_65536_IT512_TAU5.png
- MAX_SIZE_BEFORE_SPLIT=512, availableProcessors=2
- Drawing Julia set SPIRALS_SIDE(SIZE=65536, MAX_ITERATIONS=512, COLOR_SCALE=Interpolating.EXPONENTIALLY, TAU=5,00, WAVELENGTH_TO_RGB=THROUGH.HSV)
- Computing diverging iteration stats..
- Diverging iteration took PT22M19.379S, results:IntSummaryStatistics{count=4294967296, sum=407291695105, min=2, average=94,829988, max=513}
- Color scale: COLOR_SCALE.wavelength(0.0)=380
- Color scale: COLOR_SCALE.wavelength(0.25)=667
- Color scale: COLOR_SCALE.wavelength(0.5)=750
- Color scale: COLOR_SCALE.wavelength(0.75)=773
- Color scale: COLOR_SCALE.wavelength(1.0)=780
- Color scale: COLOR_SCALE.wavelength(1.1)=781
- ParallelAsyncTilingDrawer/draw/will store tiles in temp directory: C:\Users\User\AppData\Local\Temp\tiles_7910748554651067801
- ParallelAsyncTilingDrawer/draw/start writing 128 tiles
- ParallelAsyncTilingDrawer/draw/done writing 128 tiles, it took PT39M32.877S
- ParallelAsyncTilingDrawer/draw/stitching tiles together
- ParallelAsyncTilingDrawer/draw/done stitching 128 tiles, it took PT6H51M45.248S
- -->snapshot-1425198534491-cpu-calltree.png
+  
+JuliaSet3_SPIRALSSIDE_65536_IT512_TAU5.png
+    MAX_SIZE_BEFORE_SPLIT=512, availableProcessors=2
+    Drawing Julia set SPIRALS_SIDE(SIZE=65536, MAX_ITERATIONS=512, COLOR_SCALE=Interpolating.EXPONENTIALLY, TAU=5,00, WAVELENGTH_TO_RGB=THROUGH.HSV)
+    Computing diverging iteration stats..
+    Diverging iteration took PT22M19.379S, results:IntSummaryStatistics{count=4294967296, sum=407291695105, min=2, average=94,829988, max=513}
+    Color scale: COLOR_SCALE.wavelength(0.0)=380
+    Color scale: COLOR_SCALE.wavelength(0.25)=667
+    Color scale: COLOR_SCALE.wavelength(0.5)=750
+    Color scale: COLOR_SCALE.wavelength(0.75)=773
+    Color scale: COLOR_SCALE.wavelength(1.0)=780
+    Color scale: COLOR_SCALE.wavelength(1.1)=781
+    ParallelAsyncTilingDrawer/draw/will store tiles in temp directory: C:\Users\User\AppData\Local\Temp\tiles_7910748554651067801
+    ParallelAsyncTilingDrawer/draw/start writing 128 tiles
+    ParallelAsyncTilingDrawer/draw/done writing 128 tiles, it took PT39M32.877S
+    ParallelAsyncTilingDrawer/draw/stitching tiles together
+    ParallelAsyncTilingDrawer/draw/done stitching 128 tiles, it took PT6H51M45.248S
+-->snapshot-1425198534491-cpu-calltree.png
 
 https://www.mail-archive.com/core-libs-dev@openjdk.java.net/msg00131.html
 http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6399199
-flusher pngw periodiquement?
+http://www.devguli.com/blog/eng/java-deflater-and-outofmemoryerror/
+flusher pngw periodiquement? queueChunk(PngChunk chunk) ?
+reinitialiser un pngw a chaque tile?
+
+
+JuliaSet3_SPIRALSSIDE_32768_IT512_TAU5.png, sans setIdatMaxSize
+    "C:\Program Files\Java\jdk1.8.0_25\bin\java" -Didea.launcher.port=7536 "-Didea.launcher.bin.path=C:\Program Files (x86)\JetBrains\IntelliJ IDEA Community Edition 14.0.2\bin" -Dfile.encoding=UTF-8 -classpath "C:\Program Files\Java\jdk1.8.0_25\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\deploy.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\javaws.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jfxswt.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\management-agent.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\plugin.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\cldrdata.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\jaccess.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\jfxrt.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\nashorn.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunec.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunpkcs11.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\zipfs.jar;G:\projets\blog\rgb\target\classes;C:\Users\User\.m2\repository\org\apache\commons\commons-math3\3.4.1\commons-math3-3.4.1.jar;C:\Users\User\.m2\repository\ar\com\hjg\pngj\2.1.0\pngj-2.1.0.jar;C:\Users\User\.m2\repository\org\testng\testng\6.8.13\testng-6.8.13.jar;C:\Users\User\.m2\repository\org\beanshell\bsh\2.0b4\bsh-2.0b4.jar;C:\Users\User\.m2\repository\com\beust\jcommander\1.27\jcommander-1.27.jar;C:\Program Files (x86)\JetBrains\IntelliJ IDEA Community Edition 14.0.2\lib\idea_rt.jar" com.intellij.rt.execution.application.AppMain fr.cla.rgb.drawing.examples.JuliaSet3
+    MAX_SIZE_BEFORE_SPLIT=512, availableProcessors=2
+    Drawing Julia set SPIRALS_SIDE(SIZE=32768, MAX_ITERATIONS=512, COLOR_SCALE=EXPONENTIALLY, TAU=5,00, WAVELENGTH_TO_RGB=HSV)
+    Computing diverging iteration stats..
+    Diverging iteration stats took PT5M20.69S, results:IntSummaryStatistics{count=1073741824, sum=101823792209, min=2, average=94,830796, max=513}
+    Color scale: COLOR_SCALE.wavelength(0.0)=380
+    Color scale: COLOR_SCALE.wavelength(0.25)=667
+    Color scale: COLOR_SCALE.wavelength(0.5)=750
+    Color scale: COLOR_SCALE.wavelength(0.75)=773
+    Color scale: COLOR_SCALE.wavelength(1.0)=780
+    Color scale: COLOR_SCALE.wavelength(1.1)=781
+    ParallelAsyncTilingDrawer/draw/will store tiles in temp directory: C:\Users\User\AppData\Local\Temp\tiles_1603396277261226541
+    ParallelAsyncTilingDrawer/draw/start writing 64 tiles
+    ParallelAsyncTilingDrawer/draw/done writing 64 tiles, it took PT10M17.737S
+    ParallelAsyncTilingDrawer/draw/stitching tiles together
+    ParallelAsyncTilingDrawer/draw/done stitching 64 tiles, it took PT11M6.468S
+
+JuliaSet3_SPIRALSSIDE_32768_IT512_TAU5.png, avec setIdatMaxSize(1<<10)
+    ParallelAsyncTilingDrawer/draw/done stitching 64 tiles, it took PT11M12.819S
