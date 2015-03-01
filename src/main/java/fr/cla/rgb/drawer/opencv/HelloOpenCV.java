@@ -29,7 +29,7 @@ class DetectFaceDemo {
         String imgPath = Paths.get(getClass().getResource("/lena.png").toURI()).toString();
         System.out.println("imgPath: " + imgPath);
         
-        CascadeClassifier faceDetector = new CascadeClassifier();
+        CascadeClassifier faceDetector = new CascadeClassifier(confPath);
         Mat image = Highgui.imread(imgPath);
 
         // Detect faces in the image.
