@@ -32,6 +32,12 @@
         </dependency>
 
         <dependency>
+        	<groupId>org.im4java</groupId>
+        	<artifactId>im4java</artifactId>
+        	<version>1.4.0</version>
+        </dependency>
+        
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>6.8.13</version>
@@ -39,4 +45,10 @@
 
     </dependencies>
 
+    <!--<repositories>-->
+      <!--<repository>-->
+        <!--<id>cedarsoft-thirdparty</id>-->
+        <!--<url>http://maven.cedarsoft.com/content/repositories/thirdparty/</url>-->
+      <!--</repository>-->
+    <!--</repositories>-->
 </project>

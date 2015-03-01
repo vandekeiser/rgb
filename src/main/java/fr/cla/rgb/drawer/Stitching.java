@@ -85,6 +85,30 @@ public interface Stitching {
                 );
             }
         },
+        WITH_PNGJ8A {
+            @Override public void stitch(String[] imagesPaths, String wholeImageName) {
+                PNGJ8A.doTiling(
+                        imagesPaths,
+                        wholeImageName
+                );
+            }
+        },
+        WITH_PngjImageio {
+            @Override public void stitch(String[] imagesPaths, String wholeImageName) {
+                PngjImageio.doTiling(
+                        imagesPaths,
+                        wholeImageName
+                );
+            }
+        },
+        WITH_Im4Java {
+            @Override public void stitch(String[] imagesPaths, String wholeImageName) {
+                Im4Java.doTiling(
+                        imagesPaths,
+                        wholeImageName
+                );
+            }
+        },
         ;
     }
     

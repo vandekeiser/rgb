@@ -99,3 +99,28 @@ JuliaSet3_SPIRALSSIDE_32768_IT512_TAU5.png, sans setIdatMaxSize
 
 JuliaSet3_SPIRALSSIDE_32768_IT512_TAU5.png, avec setIdatMaxSize(1<<10)
     ParallelAsyncTilingDrawer/draw/done stitching 64 tiles, it took PT11M12.819S
+    
+si ecrit en parallele (1 pngw par iteration) ca marche pas
+    
+ImageIo du jdk: TOO_BIG = 16384;
+    1/implements java.awt.image.WritableRenderedImage: dur
+    2/utiliser un autre format que png, qui supporte le tiling
+    http://blogs.mathworks.com/steve/2011/09/23/dealing-with-really-big-images-image-adapters/
+    ->"Not all file formats are amenable to incremental "region-based" I/O."
+    
+    3/overrider bufferedimage, et marcher en "pull"?
+IM4J: 
+    bien (montage *.png output.png), mais imagemagick ca marche pas! (access denied * N)
+    graphicsmagick ca s'installe mm pas..
+PROCESSING
+    PImage.set(x, y, img) a l'air pratique mais COMMENT ON FAIT AVEC UNE GROSSE IMAGE??
+netpbm
+    vieux et compliqué
+OpenCV
+    a l'air plus serieux que les guignolos de imagemagick 
+    org.opencv.imgproc.Imgproc.accumulate(Mat src, Mat dst) 
+        "Adds an image to the accumulator."
+        ressemble a http://computer-vision-talks.com/articles/tile-based-image-processing/
+            -copyTileToResultImage(tileOutput, resultImage, dstTile);
+            -void copyTileToResultImage(const cv::Mat& tileImage, cv::Mat& resultImage, cv::Rect resultRoi);
+        "java opencv tile processing"
