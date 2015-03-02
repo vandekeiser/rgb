@@ -42,7 +42,6 @@ public class OpenCvTiling {
             System.out.println("outMat: " + outMat);
 
             Mat outView = outMat.submat(roi);
-
             tileMat.copyTo(outView);
         });
         
