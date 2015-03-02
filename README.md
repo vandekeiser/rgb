@@ -124,3 +124,12 @@ OpenCV
             -copyTileToResultImage(tileOutput, resultImage, dstTile);
             -void copyTileToResultImage(const cv::Mat& tileImage, cv::Mat& resultImage, cv::Rect resultRoi);
         "java opencv tile processing"
+
+
+    8196:
+BasicDrawer.INSTANCE.draw(js);                     //1M11.515S
+SingleThreadedTilingDrawer.INSTANCE.draw(js);      //1M56.269S
+ParallelBlockingTilingDrawer.INSTANCE.draw(js);    //1M26S
+PngjParallelAsyncTilingDrawer.INSTANCE.draw(js);   //1M22.74S
+OpencvParallelAsyncTilingDrawer.INSTANCE.draw(js); //40.654S
+OpencvAsyncDrawer.INSTANCE.draw(js);               //40.825S

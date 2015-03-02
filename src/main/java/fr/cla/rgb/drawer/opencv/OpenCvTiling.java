@@ -72,18 +72,16 @@ public class OpenCvTiling {
         int tileRows = /*firstTileMat.rows()*/wholeSize / ntiles,
             tileCols = /*firstTileMat.cols()*/wholeSize;
         int type = /*firstTileMat.type()*/16;
-        
         Mat outMat = new Mat(tileCols, tileCols, type);
         
-         //2. Stream of all tiles
-        //Stream<String> tilesPathsStream = Arrays.stream(tilesPaths);
-        Stream<CompletableFuture<WrittenImageAndMat>> tilesMatsStream = tiles.map(cf->
+        CompletableFuture<?>[] done = tiles.map(cf->
             cf.thenApply(wi->
-                new WrittenImageAndMat(wi, Highgui.imread(wi.toPath(tempTilesPath)))
+                new WrittenImageAndMat(
+                    wi,
+                    Highgui.imread(wi.toPath(tempTilesPath))
+                )
             )
-        );
-        
-        CompletableFuture<?>[] done = tilesMatsStream.map(wimcf ->
+        ).map(wimcf ->
             wimcf.thenAccept(wim -> {
                 Rect roi = new Rect(
                         0,
@@ -91,20 +89,13 @@ public class OpenCvTiling {
                         tileCols,
                         tileRows
                 );
-                System.out.println("roi: " + roi);
-                System.out.println("outMat: " + outMat);
-
-                //synchronized (outMat) {
-                    Mat outView = outMat.submat(roi);
-                    wim.mat.copyTo(outView);
-                //}
+                Mat outView = outMat.submat(roi);
+                wim.mat.copyTo(outView);
             })
         ).toArray(i -> new CompletableFuture<?>[i]);
-        CompletableFuture.allOf(done).join();
         
-        //synchronized (outMat) {
-            Highgui.imwrite(outPath, outMat);
-        //}
+        CompletableFuture.allOf(done).join();
+        Highgui.imwrite(outPath, outMat);
     }
 
 //    public static void writeOne(NamedImage image, Path tempTilesPath) {

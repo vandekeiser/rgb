@@ -27,8 +27,21 @@ public class OpencvAsyncDrawer implements Drawer {
         Path tempTilesPath = createTempTilesPath();
         out.printf("%s/draw/will store tiles in temp directory: %s%n", getClass().getSimpleName(), tempTilesPath);
 
-        Stream<CompletableFuture<WrittenImage>> writtenTiles = asyncWrittenImages(drawing, tempTilesPath, DrawExecutors.ioExecutor);
-        OpenCvTiling.tile(writtenTiles, drawing.name(), drawing.xsize(), drawing.nbOfLines(), tempTilesPath);
+        //uses ioExecutor
+        Stream<CompletableFuture<WrittenImage>> writtenTiles = asyncWrittenImages(
+                drawing, 
+                tempTilesPath, 
+                DrawExecutors.ioExecutor
+        );
+        
+        //The previous stream's CompletableFuture already use ioExecutor
+        OpenCvTiling.tile(
+                writtenTiles, 
+                drawing.name(), 
+                drawing.xsize(), 
+                drawing.nbOfLines(), 
+                tempTilesPath
+        );
     }
 
     protected Stream<CompletableFuture<WrittenImage>> asyncWrittenImages(WholeDrawing drawing, Path tempTilesPath, Executor ioExecutor) {
@@ -43,23 +56,24 @@ public class OpencvAsyncDrawer implements Drawer {
     }
     
     protected Stream<CompletableFuture<WrittenImage>> writeTilesAsync(Stream<NamedImage> tiles, Path tempTilesPath, Executor ioExecutor) {
-        return tiles.map(renderedImage ->  supplyAsync(
-            () -> writeOne(renderedImage, tempTilesPath),
-            ioExecutor
-        ));
+        return tiles.map(renderedImage ->  
+            supplyAsync(
+                () -> writeOne(renderedImage, tempTilesPath),
+                ioExecutor
+            )
+        );
     }
 
     //TODO use opencv?
     private static WrittenImage writeOne(NamedImage image, Path tempTilesPath) {
         try (OutputStream out = outputStreamFor(image, tempTilesPath)) {
             ImageIO.write(image.image, Drawing.IMG_TYPE, out);
-            return new WrittenImage(image);
         } catch (IOException e) {
             throw new UncheckedIOException(e);//Stop all processing if one tile fails
         }
-        
         //OpenCvTiling.writeOne(image, tempTilesPath);
-        //return new WrittenImage(image);
+        
+        return new WrittenImage(image);
     }
     
     private static OutputStream outputStreamFor(NamedImage t, Path tempTilesPath) throws IOException {

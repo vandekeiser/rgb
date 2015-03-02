@@ -46,9 +46,8 @@ public class JuliaSet3 extends WholeDrawing {
         //ParallelBlockingTilingDrawer.INSTANCE.draw(js);   //1M26S
         //PngjParallelAsyncTilingDrawer.INSTANCE.draw(js);      //1M22.74S
         //OpencvParallelAsyncTilingDrawer.INSTANCE.draw(js);      //40.654S
-        OpencvAsyncDrawer.INSTANCE.draw(js);              // 41.086S
+        OpencvAsyncDrawer.INSTANCE.draw(js);              // 40.825S
 
-        
         System.out.printf("JuliaSet took:%s%n", Duration.between(START, Instant.now()));
     }
 
