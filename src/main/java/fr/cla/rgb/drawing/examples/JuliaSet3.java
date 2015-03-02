@@ -3,6 +3,7 @@ package fr.cla.rgb.drawing.examples;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.IntSummaryStatistics;
+import fr.cla.rgb.drawer.OpencvAsyncDrawer;
 import fr.cla.rgb.drawer.ParallelAsyncTilingDrawer;
 import fr.cla.rgb.drawing.Point;
 import fr.cla.rgb.drawing.WholeDrawing;
@@ -39,7 +40,8 @@ public class JuliaSet3 extends WholeDrawing {
         System.out.printf("Color scale: COLOR_SCALE.wavelength(1.0)=%.0f%n", COLOR_SCALE.wavelength(1.0));
         System.out.printf("Color scale: COLOR_SCALE.wavelength(1.1)=%.0f%n", COLOR_SCALE.wavelength(1.1));
 
-        ParallelAsyncTilingDrawer.INSTANCE.draw(js);
+        //ParallelAsyncTilingDrawer.INSTANCE.draw(js);
+        OpencvAsyncDrawer.INSTANCE.draw(js);
     }
 
     @Override protected int RGB(Point p, int wholeDrawingsize) {
@@ -78,7 +80,7 @@ public class JuliaSet3 extends WholeDrawing {
         return WAVELENGTH_TO_RGB.toRgb(wavelength);
     }
 
-    static final int SIZE = 32768; //1024, 2048, 4096, 8192, 16384, 32768(12mn/5mn), 65536
+    static final int SIZE = 1024; //1024, 2048, 4096, 8192, 16384, 32768(12mn/5mn), 65536
     static final int MAX_ITERATIONS = 512;
     //"time constant" of the exponential used to get more detail toward reds
     static final double TAU = 5.0;

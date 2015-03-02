@@ -4,9 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
@@ -29,55 +27,42 @@ public class OpencvAsyncDrawer implements Drawer {
         Path tempTilesPath = createTempTilesPath();
         int ntiles = drawing.nbOfLines(); //need to add param
         out.printf("%s/draw/will store tiles in temp directory: %s%n", getClass().getSimpleName(), tempTilesPath);
-        String[] imagesPaths = computeTempTilesPaths(drawing, tempTilesPath);
 
-        Stream<CompletableFuture<WrittenImage>> writtenTiles = asyncWrittenImages(drawing, tempTilesPath);
-        //Stream<CompletableFuture<String>> writtenTilesPath = writtenTiles.map(cf->cf.thenApply(NamedImage::name));
-        Stream<CompletableFuture<WrittenImage>> writtenTilesExample = asyncWrittenImages(drawing, tempTilesPath).limit(1);
 
-        Stream<CompletableFuture<WrittenImage>> writtenTilesExample01 = writtenTilesExample.limit(1);
-        Stream<WrittenImage> writtenTilesExample001 = writtenTilesExample01.map(it-> {
+        Stream<CompletableFuture<WrittenImage>> writtenTilesExample = asyncWrittenImages(drawing, tempTilesPath, null).limit(1);
+        Stream<WrittenImage> writtenTilesExample001 = writtenTilesExample.map(it-> {
             try {return it.get();}
             catch (Exception e) {throw new RuntimeException(e);}
         });
         WrittenImage writtenTilesExample0001 = writtenTilesExample001.findFirst().get();
         String tile0 = writtenTilesExample0001.toPath(tempTilesPath);
         
-//        PngjForAsyncDrawer.PngwImi1Imi2 info = PngjForAsyncDrawer.info2(tile0, ntiles, drawing.name());
-//        PngjForAsyncDrawer.doTiling(
-//                info,
-//                tempTilesPath,
-//                writtenTiles
-//        );
-        OpenCvTiling.tile(writtenTiles, drawing.name(), tile0, ntiles);
+        
+        ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
+        try {
+            Stream<CompletableFuture<WrittenImage>> writtenTiles = asyncWrittenImages(drawing, tempTilesPath, ioExecutor);
+            OpenCvTiling.tile(writtenTiles, drawing.name(), tile0, ntiles);
+        } finally {
+            ioExecutor.shutdown();
+        }
     }
 
-    protected Stream<CompletableFuture<WrittenImage>> asyncWrittenImages(WholeDrawing drawing, Path tempTilesPath) {
+    protected Stream<CompletableFuture<WrittenImage>> asyncWrittenImages(WholeDrawing drawing, Path tempTilesPath, Executor ioExecutor) {
         Stream<Tile> tiles = Tiling.Tilings.DIVIDE_AND_CONQUER.tile(drawing);
         Stream<NamedImage> renderedTiles = renderTiles(tiles);
-        Stream<CompletableFuture<WrittenImage>> writtenTiles = writeTilesAsync (renderedTiles, tempTilesPath);
+        Stream<CompletableFuture<WrittenImage>> writtenTiles = writeTilesAsync (renderedTiles, tempTilesPath, ioExecutor);
         return writtenTiles;
-    }
-
-    protected String[] computeTempTilesPaths(WholeDrawing drawing, Path tempTilesPath) {
-        return drawing.sequentialSplit() //We'll have to stitch tiles together from first line to last line
-            .map(t -> t.toPath(tempTilesPath))
-            .collect(Collectors.toList())
-            .toArray(new String[drawing.nbOfLines()]);
     }
 
     protected Stream<NamedImage> renderTiles(Stream<Tile> tiles) {
         return PARALLEL.maybeParallel(tiles).map(Tile::render);
     }
     
-    protected Stream<CompletableFuture<WrittenImage>> writeTilesAsync(Stream<NamedImage> tiles, Path tempTilesPath) {
-        ExecutorService ioExecutor = Executors.newCachedThreadPool();
-        try {
-            return tiles.map(renderedImage ->  supplyAsync(
-                () -> writeOne(renderedImage, tempTilesPath),
-                ioExecutor
-            ));
-        } finally {/*ioExecutor.shutdown();*/}
+    protected Stream<CompletableFuture<WrittenImage>> writeTilesAsync(Stream<NamedImage> tiles, Path tempTilesPath, Executor ioExecutor) {
+        return tiles.map(renderedImage ->  supplyAsync(
+            () -> writeOne(renderedImage, tempTilesPath)
+            ,ioExecutor==null ? ForkJoinPool.commonPool() : ioExecutor
+        ));
     }
 
     private static WrittenImage writeOne(NamedImage image, Path tempTilesPath) {

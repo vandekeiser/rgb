@@ -71,5 +71,41 @@ public class OpenCvTiling {
         if(tileRows * ntiles != tileCols) throw new AssertionError();
         
         Mat outMat = new Mat(tileCols, tileCols, firstTileMat.type());
+        
+         //2. Stream of all tiles
+        //Stream<String> tilesPathsStream = Arrays.stream(tilesPaths);
+        Stream<CompletableFuture<WrittenImageAndMat>> tilesMatsStream = tiles.map(cf->
+            cf.thenApply(wi->
+                new WrittenImageAndMat(wi, Highgui.imread(wi.name()))
+            )
+        );
+        
+        CompletableFuture<?>[] done = tilesMatsStream.map(wimcf ->
+            wimcf.thenAccept(wim -> {
+                Rect roi = new Rect(
+                        0,
+                        wim.wi.number * tileRows,
+                        tileCols,
+                        tileRows
+                );
+                System.out.println("roi: " + roi);
+                System.out.println("outMat: " + outMat);
+
+                Mat outView = outMat.submat(roi);
+                wim.mat.copyTo(outView);
+            })
+        ).toArray(i -> new CompletableFuture<?>[i]);
+        CompletableFuture.allOf(done).join();
+        
+        Highgui.imwrite(outPath, outMat);
+    }
+    
+    static class WrittenImageAndMat {
+        final WrittenImage wi;
+        final Mat mat;
+        WrittenImageAndMat(WrittenImage wi, Mat mat) {
+            this.wi = wi;
+            this.mat = mat;
+        }
     }
 }
