@@ -37,6 +37,8 @@ public class OpenCvTilingTest {
                     .anyMatch(OpenCvTilingTest::isNotZero),
             "The whole pic is black"
         );
+//        byte buff[] = new byte[m.total() * m.channels()];
+//        m.get(0, 0, buff);
     }
 
     private static String tiled = "tileWithOpenCv_XS.png";

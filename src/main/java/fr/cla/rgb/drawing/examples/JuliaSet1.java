@@ -1,6 +1,6 @@
 package fr.cla.rgb.drawing.examples;
 
-import fr.cla.rgb.drawer.AsyncDrawer;
+import fr.cla.rgb.drawer.PngjAsyncDrawer;
 import fr.cla.rgb.drawing.WholeDrawing;
 
 public class JuliaSet1 extends WholeDrawing {
@@ -36,7 +36,7 @@ public class JuliaSet1 extends WholeDrawing {
 //        ParallelAsyncTilingDrawer/draw/done stitching 256 tiles, it took PT10M26.605S
 //        ParallelAsyncTilingDrawer.INSTANCE.draw(new JuliaSet(32768));
         
-        AsyncDrawer.INSTANCE.draw(new JuliaSet1(2048));
+        PngjAsyncDrawer.INSTANCE.draw(new JuliaSet1(2048));
 
 
     }

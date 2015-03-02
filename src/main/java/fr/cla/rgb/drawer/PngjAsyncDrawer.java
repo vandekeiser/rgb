@@ -1,6 +1,5 @@
 package fr.cla.rgb.drawer;
 
-import java.awt.font.GraphicAttribute;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,7 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
-import fr.cla.rgb.drawer.pngj.PNGJ10;
+import fr.cla.rgb.drawer.pngj.PngjForAsyncDrawer;
 import fr.cla.rgb.drawing.Drawing;
 import fr.cla.rgb.drawing.NamedImage;
 import fr.cla.rgb.drawing.Tile;
@@ -20,10 +19,10 @@ import static fr.cla.rgb.drawer.Parallelism.Parallelisms.*;
 import static java.lang.System.out;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
-public class AsyncDrawer implements Drawer {
+public class PngjAsyncDrawer implements Drawer {
 
-    public static final AsyncDrawer INSTANCE = new AsyncDrawer();
-    private AsyncDrawer() {}
+    public static final PngjAsyncDrawer INSTANCE = new PngjAsyncDrawer();
+    private PngjAsyncDrawer() {}
 
     @Override public final void draw(WholeDrawing drawing) throws Exception {
         Path tempTilesPath = createTempTilesPath();
@@ -43,8 +42,8 @@ public class AsyncDrawer implements Drawer {
         WrittenImage writtenTilesExample0001 = writtenTilesExample001.findFirst().get();
         String tile0 = writtenTilesExample0001.toPath(tempTilesPath);
         
-        PNGJ10.PngwImi1Imi2 info = PNGJ10.info2(tile0, ntiles, drawing.name());
-        PNGJ10.doTiling(
+        PngjForAsyncDrawer.PngwImi1Imi2 info = PngjForAsyncDrawer.info2(tile0, ntiles, drawing.name());
+        PngjForAsyncDrawer.doTiling(
                 info,
                 tempTilesPath,
                 writtenTiles

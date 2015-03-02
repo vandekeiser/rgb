@@ -16,7 +16,7 @@ import static java.util.concurrent.CompletableFuture.runAsync;
 /**
  * info2 prend directement le path de tile0
  */
-public class PNGJ10 {
+public class PngjForAsyncDrawer {
 
     public static void doTiling(PngwImi1Imi2 info, Path tempTilesPath, Stream<CompletableFuture<WrittenImage>> tiles) {
         Stream<CompletableFuture<Void>> fff = tiles.map(

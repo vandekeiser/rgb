@@ -10,7 +10,7 @@ public interface Stitching {
     void stitch(String[] imagesPaths, String wholeImageName);
 
     public enum Stitchings implements Stitching {
-        WITH_PNGJ {
+        WITH_PNGJ {  //very slow for big sets (7h for 65536 JuliaSet3!)
             @Override public void stitch(String[] imagesPaths, String wholeImageName) {
                 Pngj.doTiling(
                         imagesPaths,
@@ -55,7 +55,7 @@ public interface Stitching {
                 );
             }
         },
-        WITH_OPEN_VC {
+        WITH_OPEN_CV {
             @Override public void stitch(String[] imagesPaths, String wholeImageName) {
                 OpenCvTiling.tile(
                         imagesPaths,
