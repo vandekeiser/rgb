@@ -18,7 +18,7 @@ import org.opencv.imgproc.Imgproc;
 //encore plus long que pngj, swap?
 public class OpenCvTiling {
 
-    static{ System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
+    static { OpenCv.loadOpenCvLibrary(); }
 
     public static void tile(String[] tilesPaths, String outPath) {
         try {
