@@ -3,6 +3,7 @@ package fr.cla.rgb.drawer.opencv;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
@@ -20,8 +21,6 @@ public class OpenCvTiling {
     static{ System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
 
     public static void tile(String[] tilesPaths, String outPath) {
-    //writtenImage.toPath(tempTilesPath)
-    
         try {
             doTile(tilesPaths, outPath);
         } catch (IOException e) {
@@ -64,7 +63,7 @@ public class OpenCvTiling {
         Highgui.imwrite(outPath, outMat);
     }
 
-    public static void tile(Stream<CompletableFuture<WrittenImage>> tiles, String outPath, String tile0, int ntiles) {
+    public static void tile(Stream<CompletableFuture<WrittenImage>> tiles, String outPath, String tile0, int ntiles, Path tempTilesPath) {
         Mat firstTileMat = Highgui.imread(tile0);
         int tileRows = firstTileMat.rows(), //whole image / ntiles
             tileCols = firstTileMat.cols(); //same as whole image
@@ -76,7 +75,7 @@ public class OpenCvTiling {
         //Stream<String> tilesPathsStream = Arrays.stream(tilesPaths);
         Stream<CompletableFuture<WrittenImageAndMat>> tilesMatsStream = tiles.map(cf->
             cf.thenApply(wi->
-                new WrittenImageAndMat(wi, Highgui.imread(wi.name()))
+                new WrittenImageAndMat(wi, Highgui.imread(wi.toPath(tempTilesPath)))
             )
         );
         
@@ -91,13 +90,17 @@ public class OpenCvTiling {
                 System.out.println("roi: " + roi);
                 System.out.println("outMat: " + outMat);
 
-                Mat outView = outMat.submat(roi);
-                wim.mat.copyTo(outView);
+                synchronized (outMat) {
+                    Mat outView = outMat.submat(roi);
+                    wim.mat.copyTo(outView);
+                }
             })
         ).toArray(i -> new CompletableFuture<?>[i]);
         CompletableFuture.allOf(done).join();
         
-        Highgui.imwrite(outPath, outMat);
+        synchronized (outMat) {
+            Highgui.imwrite(outPath, outMat);
+        }
     }
     
     static class WrittenImageAndMat {
