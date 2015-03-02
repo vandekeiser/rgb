@@ -18,7 +18,7 @@ import fr.cla.rgb.drawing.Drawing;
 
 /**
  */
-public class pngjPngWriterPerTile {
+public class PngjPngWriterPerTile {
 
     public static void doTiling(String tiles[], String dest) {
         int ntiles = tiles.length;

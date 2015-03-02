@@ -9,36 +9,36 @@ public interface Stitching {
     void stitch(String[] imagesPaths, String wholeImageName);
 
     public enum Stitchings implements Stitching {
-        WITH_PNGJ8 {
+        WITH_PNGJ {
             @Override public void stitch(String[] imagesPaths, String wholeImageName) {
-                PNGJ8.doTiling(
+                Pngj.doTiling(
                         imagesPaths,
                         wholeImageName
                 );
             }
         },
-        WITH_PNGJ9 {
+        WITH_PNGJ_PRECOMPUTE_EXAMPLE_TILE {   //doesn't work
             @Override public void stitch(String[] imagesPaths, String wholeImageName) {
                 int ntiles = 0; //need to add param
                 String tile0 = null; //need to write tile0first
 
-                PNGJ9.PngwImi1Imi2 info = PNGJ9.info2(tile0, ntiles, wholeImageName);
-                PNGJ9.doTiling(
-                        info, 
+                PngjPrecomputeExampleTile.PngwImi1Imi2 info = PngjPrecomputeExampleTile.info2(tile0, ntiles, wholeImageName);
+                PngjPrecomputeExampleTile.doTiling(
+                        info,
                         ntiles,
                         imagesPaths
                 );
             }
         },
-        WITH_PNGJ8A {
+        WITH_PNGJ_PNG_WRITER_PER_TILE {  //doesn't work
             @Override public void stitch(String[] imagesPaths, String wholeImageName) {
-                PNGJ8A.doTiling(
+                PngjPngWriterPerTile.doTiling(
                         imagesPaths,
                         wholeImageName
                 );
             }
         },
-        WITH_PngjImageio {
+        WITH_JDK_IMAGE_IO { //not implemented
             @Override public void stitch(String[] imagesPaths, String wholeImageName) {
                 JdkImageIo.doTiling(
                         imagesPaths,
@@ -46,7 +46,7 @@ public interface Stitching {
                 );
             }
         },
-        WITH_Im4Java {
+        WITH_IM_4_JAVA { //imagemagick doesn't work
             @Override public void stitch(String[] imagesPaths, String wholeImageName) {
                 Im4Java.doTiling(
                         imagesPaths,
