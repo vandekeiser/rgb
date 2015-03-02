@@ -29,12 +29,8 @@ public class OpencvAsyncDrawer implements Drawer {
         out.printf("%s/draw/will store tiles in temp directory: %s%n", getClass().getSimpleName(), tempTilesPath);
 
 
-        Stream<CompletableFuture<WrittenImage>> writtenTilesExample = asyncWrittenImages(drawing, tempTilesPath, null).limit(1);
-        Stream<WrittenImage> writtenTilesExample001 = writtenTilesExample.map(it-> {
-            try {return it.get();}
-            catch (Exception e) {throw new RuntimeException(e);}
-        });
-        WrittenImage writtenTilesExample0001 = writtenTilesExample001.findFirst().get();
+        Stream<CompletableFuture<WrittenImage>> writtenTilesExample = asyncWrittenImages(drawing, tempTilesPath, null);
+        WrittenImage writtenTilesExample0001 = writtenTilesExample.findFirst().get().get();
         String tile0 = writtenTilesExample0001.toPath(tempTilesPath);
         
         
