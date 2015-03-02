@@ -2,6 +2,7 @@ package fr.cla.rgb.drawer;
 
 import fr.cla.rgb.drawer.im4java.Im4Java;
 import fr.cla.rgb.drawer.jdk.JdkImageIo;
+import fr.cla.rgb.drawer.opencv.OpenCvTiling;
 import fr.cla.rgb.drawer.pngj.*;
 
 public interface Stitching {
@@ -49,6 +50,14 @@ public interface Stitching {
         WITH_IM_4_JAVA { //imagemagick doesn't work
             @Override public void stitch(String[] imagesPaths, String wholeImageName) {
                 Im4Java.doTiling(
+                        imagesPaths,
+                        wholeImageName
+                );
+            }
+        },
+        WITH_OPEN_VC {
+            @Override public void stitch(String[] imagesPaths, String wholeImageName) {
+                OpenCvTiling.tile(
                         imagesPaths,
                         wholeImageName
                 );

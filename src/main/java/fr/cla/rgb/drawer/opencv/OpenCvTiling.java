@@ -1,6 +1,7 @@
 package fr.cla.rgb.drawer.opencv;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -14,7 +15,15 @@ public class OpenCvTiling {
 
     static{ System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
 
-    public static void tile(String[] tilesPaths, String outPath) throws IOException {
+    public static void tile(String[] tilesPaths, String outPath) {
+        try {
+            doTile(tilesPaths, outPath);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+        
+    public static void doTile(String[] tilesPaths, String outPath) throws IOException {
         //1. Get info from 1st tile
         Mat firstTileMat = Highgui.imread(tilesPaths[0]);
         int tileRows = firstTileMat.rows(), //whole image / ntiles

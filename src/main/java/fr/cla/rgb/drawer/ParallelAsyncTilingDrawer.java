@@ -23,6 +23,6 @@ public class ParallelAsyncTilingDrawer extends TilingDrawer {
         return ASYNC;
     }
     
-    @Override protected Stitching stitching() { return WITH_PNGJ; }
+    @Override protected Stitching stitching() { return WITH_OPEN_VC; }
     
 }
