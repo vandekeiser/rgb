@@ -3,6 +3,7 @@ package fr.cla.rgb.drawing.examples;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.IntSummaryStatistics;
+import fr.cla.rgb.DrawExecutors;
 import fr.cla.rgb.drawer.*;
 import fr.cla.rgb.drawing.Point;
 import fr.cla.rgb.drawing.WholeDrawing;

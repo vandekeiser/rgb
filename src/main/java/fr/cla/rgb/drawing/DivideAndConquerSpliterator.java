@@ -26,11 +26,12 @@ public class DivideAndConquerSpliterator implements Spliterator<Tile> {
     @Override public boolean tryAdvance(Consumer<? super Tile> action) {
         debug("tryAdvance");
         
-//        action.accept(tiles.remove(0));
-//        return !tiles.isEmpty();
+//        tiles.forEach(action::accept);
+//        return false;
         
-        tiles.forEach(action::accept);
-        return false;
+        //faster
+        action.accept(tiles.remove(0));
+        return !tiles.isEmpty();
     }
 
     @Override public Spliterator<Tile> trySplit() {
@@ -52,9 +53,9 @@ public class DivideAndConquerSpliterator implements Spliterator<Tile> {
         return    SIZED       //Size is the number of tiles..
                 + SUBSIZED    //..same for splits
                 + DISTINCT    //The tiles don't override equals
-                + CONCURRENT  //TODO... relire Mastering Lambdas
+                //+ CONCURRENT  //TODO... relire Mastering Lambdas
                 + NONNULL     //WholeDrawing doesn't produce null tiles
-                + IMMUTABLE   //Yes since WholeDrawing is not modified?
+                //+ IMMUTABLE   //Yes since WholeDrawing is not modified?
                 ;
     }
     

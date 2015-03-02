@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
+import fr.cla.rgb.DrawExecutors;
 import fr.cla.rgb.drawer.pngj.PngjForAsyncDrawer;
 import fr.cla.rgb.drawing.Drawing;
 import fr.cla.rgb.drawing.NamedImage;
@@ -69,13 +70,10 @@ public class PngjAsyncDrawer implements Drawer {
     }
     
     protected Stream<CompletableFuture<WrittenImage>> writeTilesAsync(Stream<NamedImage> tiles, Path tempTilesPath) {
-        ExecutorService ioExecutor = Executors.newCachedThreadPool();
-        try {
-            return tiles.map(renderedImage ->  supplyAsync(
+        return tiles.map(renderedImage -> supplyAsync(
                 () -> writeOne(renderedImage, tempTilesPath),
-                ioExecutor
-            ));
-        } finally {/*ioExecutor.shutdown();*/}
+                DrawExecutors.ioExecutor
+        ));
     }
 
     private static WrittenImage writeOne(NamedImage image, Path tempTilesPath) {

@@ -3,10 +3,13 @@ package fr.cla.rgb.drawing;
 import java.awt.image.BufferedImage;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import fr.cla.rgb.DrawExecutors;
 import static java.util.function.Function.identity;
 
 public abstract class Drawing implements Named {
 
+    static { DrawExecutors.init(); }
+    
     public static final String IMG_TYPE = "png";
 
     private final int xsize, ysize;

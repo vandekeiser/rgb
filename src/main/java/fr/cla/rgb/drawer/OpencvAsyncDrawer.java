@@ -1,17 +1,15 @@
 package fr.cla.rgb.drawer;
 
-import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.*;
-import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
+import fr.cla.rgb.DrawExecutors;
 import fr.cla.rgb.drawer.opencv.OpenCvTiling;
-import fr.cla.rgb.drawer.pngj.PngjForAsyncDrawer;
 import fr.cla.rgb.drawing.Drawing;
 import fr.cla.rgb.drawing.NamedImage;
 import fr.cla.rgb.drawing.Tile;
@@ -29,13 +27,8 @@ public class OpencvAsyncDrawer implements Drawer {
         Path tempTilesPath = createTempTilesPath();
         out.printf("%s/draw/will store tiles in temp directory: %s%n", getClass().getSimpleName(), tempTilesPath);
 
-        ExecutorService ioExecutor = Executors.newCachedThreadPool();
-        try {
-            Stream<CompletableFuture<WrittenImage>> writtenTiles = asyncWrittenImages(drawing, tempTilesPath, ioExecutor);
-            OpenCvTiling.tile(writtenTiles, drawing.name(), drawing.xsize(), drawing.nbOfLines(), tempTilesPath);
-        } finally {
-            ioExecutor.shutdown();
-        }
+        Stream<CompletableFuture<WrittenImage>> writtenTiles = asyncWrittenImages(drawing, tempTilesPath, DrawExecutors.ioExecutor);
+        OpenCvTiling.tile(writtenTiles, drawing.name(), drawing.xsize(), drawing.nbOfLines(), tempTilesPath);
     }
 
     protected Stream<CompletableFuture<WrittenImage>> asyncWrittenImages(WholeDrawing drawing, Path tempTilesPath, Executor ioExecutor) {
