@@ -3,7 +3,7 @@ package fr.cla.rgb.drawer;
 import static fr.cla.rgb.drawer.Parallelism.Parallelisms.PARALLEL;
 import static fr.cla.rgb.drawer.RenderedTilesWriting.*;
 import static fr.cla.rgb.drawer.RenderedTilesWriting.RenderedTilesWritings.*;
-import static fr.cla.rgb.drawer.Stitching.Stitchings.WITH_PNGJ;
+import static fr.cla.rgb.drawer.Stitching.Stitchings.WITH_PNGJ8;
 import static fr.cla.rgb.drawer.Tiling.Tilings.DIVIDE_AND_CONQUER;
 
 public class ParallelBlockingTilingDrawer extends TilingDrawer {
@@ -24,5 +24,5 @@ public class ParallelBlockingTilingDrawer extends TilingDrawer {
         return BLOCKING;
     }
     
-    @Override protected Stitching stitching() { return WITH_PNGJ; }
+    @Override protected Stitching stitching() { return WITH_PNGJ8; }
 }
