@@ -38,7 +38,7 @@ public class OpencvAsyncDrawer implements Drawer {
         String tile0 = writtenTilesExample0001.toPath(tempTilesPath);
         
         
-        ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
+        ExecutorService ioExecutor = Executors.newCachedThreadPool();
         try {
             Stream<CompletableFuture<WrittenImage>> writtenTiles = asyncWrittenImages(drawing, tempTilesPath, ioExecutor);
             OpenCvTiling.tile(writtenTiles, drawing.name(), tile0, ntiles, tempTilesPath);

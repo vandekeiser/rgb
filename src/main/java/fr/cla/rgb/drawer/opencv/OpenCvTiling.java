@@ -90,17 +90,17 @@ public class OpenCvTiling {
                 System.out.println("roi: " + roi);
                 System.out.println("outMat: " + outMat);
 
-                synchronized (outMat) {
+                //synchronized (outMat) {
                     Mat outView = outMat.submat(roi);
                     wim.mat.copyTo(outView);
-                }
+                //}
             })
         ).toArray(i -> new CompletableFuture<?>[i]);
         CompletableFuture.allOf(done).join();
         
-        synchronized (outMat) {
+        //synchronized (outMat) {
             Highgui.imwrite(outPath, outMat);
-        }
+        //}
     }
     
     static class WrittenImageAndMat {
