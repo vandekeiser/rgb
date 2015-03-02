@@ -1,5 +1,8 @@
 package fr.cla.rgb.drawer.opencv;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -9,7 +12,7 @@ public class OpenCvTiling {
 
     static{ System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
 
-    public static void tile(String[] tilesPaths, String s) {
+    public static void tile(String[] tilesPaths, String s) throws IOException {
         Mat m = new Mat(5, 10, CvType.CV_8UC1, new Scalar(0));
         System.out.println("OpenCV Mat: " + m);
         Mat mr1 = m.row(1);
@@ -17,5 +20,7 @@ public class OpenCvTiling {
         Mat mc5 = m.col(5);
         mc5.setTo(new Scalar(5));
         System.out.println("OpenCV Mat data:\n" + m.dump());
+        
+        Files.createFile(Paths.get("OpenCvTilingTest.png"));
     }
 }
