@@ -28,6 +28,7 @@ public class Tile extends Drawing {
     public NamedImage render() {
         NamedImage base = super.render();
         base.number(this.number);
+        base.size(this.xsize(), this.ysize());
         return base;
     }
 

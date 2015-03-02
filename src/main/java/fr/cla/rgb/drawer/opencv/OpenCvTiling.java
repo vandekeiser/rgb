@@ -1,7 +1,10 @@
 package fr.cla.rgb.drawer.opencv;
 
+import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,6 +13,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import fr.cla.rgb.drawer.WrittenImage;
+import fr.cla.rgb.drawing.NamedImage;
 import org.opencv.core.*;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
@@ -83,7 +87,7 @@ public class OpenCvTiling {
             wimcf.thenAccept(wim -> {
                 Rect roi = new Rect(
                         0,
-                        wim.wi.number * tileRows,
+                        wim.wi.number() * tileRows,
                         tileCols,
                         tileRows
                 );
@@ -102,7 +106,20 @@ public class OpenCvTiling {
             Highgui.imwrite(outPath, outMat);
         //}
     }
-    
+
+//    public static void writeOne(NamedImage image, Path tempTilesPath) {
+//        int[] pixels = ((DataBufferInt) image.image.getRaster().getDataBuffer()).getData();
+//        ByteBuffer byteBuffer = ByteBuffer.allocate(pixels.length * 4);
+//        IntBuffer intBuffer = byteBuffer.asIntBuffer();
+//        intBuffer.put(pixels);
+//
+//        //                rows           cols
+//        Mat mat = new Mat(image.ysize(), image.xsize(), 16);
+//        mat.put(0, 0, byteBuffer.array());
+//
+//        Highgui.imwrite(image.toPath(tempTilesPath), mat);
+//    }
+
     static class WrittenImageAndMat {
         final WrittenImage wi;
         final Mat mat;

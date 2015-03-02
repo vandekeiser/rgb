@@ -37,7 +37,7 @@ public class PngjForAsyncDrawer {
             if (!reader.imgInfo.equals(info.imi1)) throw new RuntimeException("different tile ? " + reader.imgInfo);
 
             for (int row1 = 0; row1 < info.imi1.rows; row1++) {
-                int row2 = writtenImage.number * info.imi1.rows + row1;
+                int row2 = writtenImage.number() * info.imi1.rows + row1;
                 ImageLineInt line1 = (ImageLineInt) reader.readRow(row1); // read line
                 System.arraycopy(line1.getScanline(), 0, line2.getScanline(), 0, line1.getScanline().length);
                 

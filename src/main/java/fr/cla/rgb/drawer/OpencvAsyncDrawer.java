@@ -1,6 +1,7 @@
 package fr.cla.rgb.drawer;
 
 import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferInt;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -55,15 +56,17 @@ public class OpencvAsyncDrawer implements Drawer {
         ));
     }
 
-    //TODO use opencv
+    //TODO use opencv?
     private static WrittenImage writeOne(NamedImage image, Path tempTilesPath) {
         try (OutputStream out = outputStreamFor(image, tempTilesPath)) {
             ImageIO.write(image.image, Drawing.IMG_TYPE, out);
-            //byte[] pixels = ((DataBufferByte) image.image.getRaster().getDataBuffer()).getData();
             return new WrittenImage(image);
         } catch (IOException e) {
             throw new UncheckedIOException(e);//Stop all processing if one tile fails
         }
+        
+        //OpenCvTiling.writeOne(image, tempTilesPath);
+        //return new WrittenImage(image);
     }
     
     private static OutputStream outputStreamFor(NamedImage t, Path tempTilesPath) throws IOException {

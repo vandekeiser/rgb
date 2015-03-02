@@ -25,10 +25,12 @@ public class DivideAndConquerSpliterator implements Spliterator<Tile> {
 
     @Override public boolean tryAdvance(Consumer<? super Tile> action) {
         debug("tryAdvance");
-        //tiles.forEach(action::accept);
-        action.accept(tiles.remove(0));
-        return !tiles.isEmpty();
-        //return false;
+        
+//        action.accept(tiles.remove(0));
+//        return !tiles.isEmpty();
+        
+        tiles.forEach(action::accept);
+        return false;
     }
 
     @Override public Spliterator<Tile> trySplit() {
