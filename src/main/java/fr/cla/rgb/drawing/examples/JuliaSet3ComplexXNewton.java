@@ -1,7 +1,7 @@
 package fr.cla.rgb.drawing.examples;
 
 import java.util.IntSummaryStatistics;
-import fr.cla.rgb.drawer.ParallelAsyncTilingDrawer;
+import fr.cla.rgb.drawer.OpencvParallelAsyncTilingDrawer;
 import fr.cla.rgb.drawing.Point;
 import fr.cla.rgb.drawing.WholeDrawing;
 import org.apache.commons.math3.complex.Complex;
@@ -35,7 +35,7 @@ public class JuliaSet3ComplexXNewton extends WholeDrawing {
         System.out.printf("Color scale: nonlinearWavelength(maxDivergingIteration+1)=%.0f%n", 
                 js.nonlinearWavelength(js.maxDivergingIteration+1));
 
-        ParallelAsyncTilingDrawer.INSTANCE.draw(js);
+        OpencvParallelAsyncTilingDrawer.INSTANCE.draw(js);
     }
 
     @Override protected int RGB(Point p, int wholeDrawingsize) {

@@ -5,11 +5,11 @@ import static fr.cla.rgb.drawer.RenderedTilesWriting.RenderedTilesWritings.ASYNC
 import static fr.cla.rgb.drawer.Stitching.Stitchings.*;
 import static fr.cla.rgb.drawer.Tiling.Tilings.DIVIDE_AND_CONQUER;
 
-public class ParallelAsyncTilingDrawer extends TilingDrawer {
+public class OpencvParallelAsyncTilingDrawer extends TilingDrawer {
 
-    public static final ParallelAsyncTilingDrawer INSTANCE = new ParallelAsyncTilingDrawer();
+    public static final OpencvParallelAsyncTilingDrawer INSTANCE = new OpencvParallelAsyncTilingDrawer();
 
-    private ParallelAsyncTilingDrawer() {}
+    private OpencvParallelAsyncTilingDrawer() {}
     
     @Override protected Tiling tiling() {
         return DIVIDE_AND_CONQUER;

@@ -3,7 +3,7 @@ package fr.cla.rgb.drawing.examples;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.IntSummaryStatistics;
-import fr.cla.rgb.drawer.ParallelAsyncTilingDrawer;
+import fr.cla.rgb.drawer.OpencvParallelAsyncTilingDrawer;
 import fr.cla.rgb.drawing.Point;
 import fr.cla.rgb.drawing.WholeDrawing;
 
@@ -23,7 +23,7 @@ public class BigDecimalJuliaSet4 extends WholeDrawing {
         js.maxDivergingIteration = divergingIterationStats.getMax();
         System.out.println("Color scale: stats="+divergingIterationStats);
         
-        ParallelAsyncTilingDrawer.INSTANCE.draw(js);
+        OpencvParallelAsyncTilingDrawer.INSTANCE.draw(js);
     }
 
     @Override protected int RGB(Point p, int wholeDrawingsize) {

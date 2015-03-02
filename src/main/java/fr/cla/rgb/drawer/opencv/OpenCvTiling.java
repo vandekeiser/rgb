@@ -63,13 +63,13 @@ public class OpenCvTiling {
         Highgui.imwrite(outPath, outMat);
     }
 
-    public static void tile(Stream<CompletableFuture<WrittenImage>> tiles, String outPath, String tile0, int ntiles, Path tempTilesPath) {
-        Mat firstTileMat = Highgui.imread(tile0);
-        int tileRows = firstTileMat.rows(), //whole image / ntiles
-            tileCols = firstTileMat.cols(); //same as whole image
-        if(tileRows * ntiles != tileCols) throw new AssertionError();
+    public static void tile(Stream<CompletableFuture<WrittenImage>> tiles, String outPath, int wholeSize, int ntiles, Path tempTilesPath) {
+        //Mat firstTileMat = Highgui.imread(tile0);
+        int tileRows = /*firstTileMat.rows()*/wholeSize / ntiles,
+            tileCols = /*firstTileMat.cols()*/wholeSize;
+        int type = /*firstTileMat.type()*/16;
         
-        Mat outMat = new Mat(tileCols, tileCols, firstTileMat.type());
+        Mat outMat = new Mat(tileCols, tileCols, type);
         
          //2. Stream of all tiles
         //Stream<String> tilesPathsStream = Arrays.stream(tilesPaths);

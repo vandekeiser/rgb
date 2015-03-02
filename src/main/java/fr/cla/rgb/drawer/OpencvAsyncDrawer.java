@@ -1,5 +1,6 @@
 package fr.cla.rgb.drawer;
 
+import java.awt.image.DataBufferByte;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,19 +26,12 @@ public class OpencvAsyncDrawer implements Drawer {
 
     @Override public final void draw(WholeDrawing drawing) throws Exception {
         Path tempTilesPath = createTempTilesPath();
-        int ntiles = drawing.nbOfLines(); //need to add param
         out.printf("%s/draw/will store tiles in temp directory: %s%n", getClass().getSimpleName(), tempTilesPath);
 
-
-        Stream<CompletableFuture<WrittenImage>> writtenTilesExample = asyncWrittenImages(drawing, tempTilesPath, null);
-        WrittenImage writtenTilesExample0001 = writtenTilesExample.findFirst().get().get();
-        String tile0 = writtenTilesExample0001.toPath(tempTilesPath);
-        
-        
         ExecutorService ioExecutor = Executors.newCachedThreadPool();
         try {
             Stream<CompletableFuture<WrittenImage>> writtenTiles = asyncWrittenImages(drawing, tempTilesPath, ioExecutor);
-            OpenCvTiling.tile(writtenTiles, drawing.name(), tile0, ntiles, tempTilesPath);
+            OpenCvTiling.tile(writtenTiles, drawing.name(), drawing.xsize(), drawing.nbOfLines(), tempTilesPath);
         } finally {
             ioExecutor.shutdown();
         }
@@ -56,14 +50,16 @@ public class OpencvAsyncDrawer implements Drawer {
     
     protected Stream<CompletableFuture<WrittenImage>> writeTilesAsync(Stream<NamedImage> tiles, Path tempTilesPath, Executor ioExecutor) {
         return tiles.map(renderedImage ->  supplyAsync(
-            () -> writeOne(renderedImage, tempTilesPath)
-            ,ioExecutor==null ? ForkJoinPool.commonPool() : ioExecutor
+            () -> writeOne(renderedImage, tempTilesPath),
+            ioExecutor
         ));
     }
 
+    //TODO use opencv
     private static WrittenImage writeOne(NamedImage image, Path tempTilesPath) {
         try (OutputStream out = outputStreamFor(image, tempTilesPath)) {
             ImageIO.write(image.image, Drawing.IMG_TYPE, out);
+            //byte[] pixels = ((DataBufferByte) image.image.getRaster().getDataBuffer()).getData();
             return new WrittenImage(image);
         } catch (IOException e) {
             throw new UncheckedIOException(e);//Stop all processing if one tile fails
@@ -72,7 +68,7 @@ public class OpencvAsyncDrawer implements Drawer {
     
     private static OutputStream outputStreamFor(NamedImage t, Path tempTilesPath) throws IOException {
         return new BufferedOutputStream(new FileOutputStream(
-                t.toPath(tempTilesPath))
+            t.toPath(tempTilesPath))
         );
     }
     

@@ -3,8 +3,7 @@ package fr.cla.rgb.drawing.examples;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.IntSummaryStatistics;
-import fr.cla.rgb.drawer.OpencvAsyncDrawer;
-import fr.cla.rgb.drawer.ParallelAsyncTilingDrawer;
+import fr.cla.rgb.drawer.*;
 import fr.cla.rgb.drawing.Point;
 import fr.cla.rgb.drawing.WholeDrawing;
 import static java.lang.Math.exp;
@@ -23,7 +22,6 @@ public class JuliaSet3 extends WholeDrawing {
                 "Drawing Julia set %s(SIZE=%d-%d tiles, MAX_ITERATIONS=%d, COLOR_SCALE=%s, TAU=%.2f, WAVELENGTH_TO_RGB=%s)%n",
                 JULIA_SET, SIZE, js.nbOfLines(), MAX_ITERATIONS, COLOR_SCALE, TAU, WAVELENGTH_TO_RGB
         );
-        Instant START = Instant.now();
         
         System.out.println("Computing diverging iteration stats..");
         Instant beforeStats = Instant.now();
@@ -41,8 +39,13 @@ public class JuliaSet3 extends WholeDrawing {
         System.out.printf("Color scale: COLOR_SCALE.wavelength(1.0)=%.0f%n", COLOR_SCALE.wavelength(1.0));
         System.out.printf("Color scale: COLOR_SCALE.wavelength(1.1)=%.0f%n", COLOR_SCALE.wavelength(1.1));
 
-        ParallelAsyncTilingDrawer.INSTANCE.draw(js);//PT1M1.669S
-        //OpencvAsyncDrawer.INSTANCE.draw(js); //JuliaSet took:PT1M48.062S
+        Instant START = Instant.now();
+        //BasicDrawer.INSTANCE.draw(js);                      //1M11.515S
+        //SingleThreadedTilingDrawer.INSTANCE.draw(js);     //1M56.269S
+        //ParallelBlockingTilingDrawer.INSTANCE.draw(js);   //1M26S
+        //PngjParallelAsyncTilingDrawer.INSTANCE.draw(js);      //1M22.74S
+        //OpencvParallelAsyncTilingDrawer.INSTANCE.draw(js);      //40.654S
+        OpencvAsyncDrawer.INSTANCE.draw(js);              // 41.086S
 
         
         System.out.printf("JuliaSet took:%s%n", Duration.between(START, Instant.now()));
