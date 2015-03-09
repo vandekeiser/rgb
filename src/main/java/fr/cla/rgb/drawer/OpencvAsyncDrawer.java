@@ -27,7 +27,11 @@ public class OpencvAsyncDrawer implements Drawer {
         Path tempTilesPath = createTempTilesPath();
         out.printf("%s/draw/will store tiles in temp directory: %s%n", getClass().getSimpleName(), tempTilesPath);
 
-        //uses ioExecutor
+        //TODO: ecrire directement des MatWrittenImage
+        //XML? https://stackoverflow.com/questions/26445747/is-there-a-way-of-storing-opencv-javacv-mat-objects-in-a-database
+        //serialization proxy? https://stackoverflow.com/questions/27065062/opencv-mat-object-serialization-in-java
+        //Highgui.imwrite(outPath, outMat)?
+            //uses ioExecutor
         Stream<CompletableFuture<WrittenImage>> writtenTiles = asyncWrittenImages(
                 drawing, 
                 tempTilesPath, 

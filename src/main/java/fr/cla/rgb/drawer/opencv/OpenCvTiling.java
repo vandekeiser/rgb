@@ -8,6 +8,8 @@ import java.nio.IntBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -74,6 +76,8 @@ public class OpenCvTiling {
         int type = /*firstTileMat.type()*/16;
         Mat outMat = new Mat(tileCols, tileCols, type);
         
+        Instant a = Instant.now();
+        
         CompletableFuture<?>[] done = tiles.map(cf->
             cf.thenApply(wi->
                 new WrittenImageAndMat(
@@ -82,20 +86,32 @@ public class OpenCvTiling {
                 )
             )
         ).map(wimcf ->
-            wimcf.thenAccept(wim -> {
+            wimcf.thenAcceptAsync(wim -> { //no IO block
                 Rect roi = new Rect(
-                        0,
-                        wim.wi.number() * tileRows,
-                        tileCols,
-                        tileRows
+                    0,
+                    wim.wi.number() * tileRows,
+                    tileCols,
+                    tileRows
                 );
                 Mat outView = outMat.submat(roi);
                 wim.mat.copyTo(outView);
+                wim.mat.release();
             })
-        ).toArray(i -> new CompletableFuture<?>[i]);
+        )
+        .toArray(i -> new CompletableFuture<?>[i]);
+        System.out.printf("CompletableFuture[] done in %s%n", Duration.between(a, Instant.now()));
         
+        Instant b = Instant.now();
         CompletableFuture.allOf(done).join();
+        System.out.printf("CompletableFuture.allOf(done).join()[] done in %s%n", Duration.between(b, Instant.now()));
+        
+        Instant c = Instant.now();
         Highgui.imwrite(outPath, outMat);
+        System.out.printf("Highgui.imwrite done in %s%n", Duration.between(c, Instant.now()));
+        
+        Instant d = Instant.now();
+        outMat.release();
+        System.out.printf("outMat.release done in %s%n", Duration.between(d, Instant.now()));
     }
 
 //    public static void writeOne(NamedImage image, Path tempTilesPath) {

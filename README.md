@@ -133,3 +133,38 @@ ParallelBlockingTilingDrawer.INSTANCE.draw(js);    //1M26S
 PngjParallelAsyncTilingDrawer.INSTANCE.draw(js);   //1M22.74S
 OpencvParallelAsyncTilingDrawer.INSTANCE.draw(js); //40.654S
 OpencvAsyncDrawer.INSTANCE.draw(js);               //40.825S
+
+    16384:
+OpencvAsyncDrawer.INSTANCE.draw(js);               //2M36.852S
+    32768
+                                                   //16M16.075S
+                                                   
+                                                   
+"C:\Program Files\Java\jdk1.8.0_25\bin\java" -mx1G -Djava.library.path=G:\projets\blog\rgb\opencv-full\opencv\build\java\x64 -Didea.launcher.port=7536 "-Didea.launcher.bin.path=C:\Program Files (x86)\JetBrains\IntelliJ IDEA Community Edition 14.0.2\bin" -Dfile.encoding=UTF-8 -classpath "C:\Program Files\Java\jdk1.8.0_25\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\deploy.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\javaws.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jfxswt.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\management-agent.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\plugin.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\cldrdata.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\jaccess.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\jfxrt.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\nashorn.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunec.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunpkcs11.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\zipfs.jar;G:\projets\blog\rgb\target\classes;C:\Users\User\.m2\repository\org\apache\commons\commons-math3\3.4.1\commons-math3-3.4.1.jar;C:\Users\User\.m2\repository\ar\com\hjg\pngj\2.1.0\pngj-2.1.0.jar;C:\Users\User\.m2\repository\org\im4java\im4java\1.4.0\im4java-1.4.0.jar;C:\Users\User\.m2\repository\com\byteground\byteground-opencv_2.10\0.4.0\byteground-opencv_2.10-0.4.0.jar;C:\Users\User\.m2\repository\org\scala-lang\scala-library\2.10.4\scala-library-2.10.4.jar;C:\Users\User\.m2\repository\org\scala-lang\scala-reflect\2.10.4\scala-reflect-2.10.4.jar;C:\Users\User\.m2\repository\com\byteground\byteground-opencv-native_2.10\0.4.0\byteground-opencv-native_2.10-0.4.0.jar;C:\Users\User\.m2\repository\org\testng\testng\6.8.13\testng-6.8.13.jar;C:\Users\User\.m2\repository\org\beanshell\bsh\2.0b4\bsh-2.0b4.jar;C:\Users\User\.m2\repository\com\beust\jcommander\1.27\jcommander-1.27.jar;C:\Program Files (x86)\JetBrains\IntelliJ IDEA Community Edition 14.0.2\lib\idea_rt.jar" com.intellij.rt.execution.application.AppMain fr.cla.rgb.drawing.examples.JuliaSet3
+MAX_SIZE_BEFORE_SPLIT=512, availableProcessors=2
+Drawing Julia set SPIRALS_SIDE(SIZE=65536-128 tiles, MAX_ITERATIONS=512, COLOR_SCALE=EXPONENTIALLY, TAU=5,00, WAVELENGTH_TO_RGB=HSV)
+Computing diverging iteration stats..
+Diverging iteration stats took PT20M59.792S, results:IntSummaryStatistics{count=4294967296, sum=407291695105, min=2, average=94,829988, max=513}
+Color scale: COLOR_SCALE.wavelength(0.0)=380
+Color scale: COLOR_SCALE.wavelength(0.25)=667
+Color scale: COLOR_SCALE.wavelength(0.5)=750
+Color scale: COLOR_SCALE.wavelength(0.75)=773
+Color scale: COLOR_SCALE.wavelength(1.0)=780
+Color scale: COLOR_SCALE.wavelength(1.1)=NaN
+OpencvAsyncDrawer/draw/will store tiles in temp directory: C:\Users\User\AppData\Local\Temp\tiles_8541515164998254189
+________7eda2dbb/new, nbOfTiles=128
+OpenCV Error: Insufficient memory (Failed to allocate 4 bytes) in cv::OutOfMemoryError, file ..\..\..\..\opencv\modules\core\src\alloc.cpp, line 52
+Exception in thread "main" CvException [org.opencv.core.CvException: cv::Exception: ..\..\..\..\opencv\modules\core\src\alloc.cpp:52: error: (-4) Failed to allocate 4 bytes in function cv::OutOfMemoryError
+]
+at org.opencv.core.Mat.n_Mat(Native Method)
+at org.opencv.core.Mat.<init>(Mat.java:477)
+at fr.cla.rgb.drawer.opencv.OpenCvTiling.tile(OpenCvTiling.java:77)
+at fr.cla.rgb.drawer.OpencvAsyncDrawer.draw(OpencvAsyncDrawer.java:42)
+at fr.cla.rgb.drawing.examples.JuliaSet3.main(JuliaSet3.java:49)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.lang.reflect.Method.invoke(Method.java:483)
+at com.intellij.rt.execution.application.AppMain.main(AppMain.java:134)
+
+Process finished with exit code 1

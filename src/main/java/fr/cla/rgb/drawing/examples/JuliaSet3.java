@@ -87,7 +87,7 @@ public class JuliaSet3 extends WholeDrawing {
         return WAVELENGTH_TO_RGB.toRgb(wavelength);
     }
 
-    static final int SIZE = 8192; //1024, 2048, 4096, 8192, 16384, 32768(12mn/5mn), 65536
+    static final int SIZE = 65536; //1024, 2048, 4096, 8192, 16384, 32768(12mn/5mn), 65536
     static final int MAX_ITERATIONS = 512;
     //"time constant" of the exponential used to get more detail toward reds
     static final double TAU = 5.0;
